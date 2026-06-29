@@ -15,6 +15,9 @@ Route::get('/dashboard-dosen', function () {
     return view('dosen.dashboard');
 });
 
+Route::get('/persetujuan-dokumen', function(){
+    return view('dosen.pengajuan-surat');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
