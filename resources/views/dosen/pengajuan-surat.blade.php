@@ -228,7 +228,7 @@
                 <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="font-variation-settings: 'FILL' 1;">description</span>
                 <span class="font-label-lg text-label-lg">Persetujuan Dokumen</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="#">
+            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/riwayat-persetujuan') }}">
                 <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">history</span>
                 <span class="font-label-lg text-label-lg">Riwayat</span>
             </a>
