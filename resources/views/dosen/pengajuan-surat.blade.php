@@ -198,7 +198,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-</head>
+  </head>
 <body class="flex h-screen overflow-hidden text-sm">
 
 <!-- BEGIN: Sidebar -->
@@ -373,7 +373,7 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 text-body-md">
                         @forelse ($submissions as $sub)
-                            <tr class="hover:bg-gray-50 cursor-pointer transition-colors group">
+                            <tr class="hover:bg-gray-50 cursor-pointer transition-colors group" onclick="window.location='{{ url('/persetujuan-dokumen/detail') }}'">
                                 <td class="whitespace-nowrap px-3 py-4">
                                     <div class="flex items-center">
                                         <div class="ml-3">

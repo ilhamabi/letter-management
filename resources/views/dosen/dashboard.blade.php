@@ -209,6 +209,7 @@
     <!-- Material Symbols & Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Public+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 </head>
 <body class="flex h-screen overflow-hidden text-sm">
@@ -390,7 +391,7 @@
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             @foreach (array_slice($submissions, 0, 5) as $submission)
-                                <tr class="transition-colors group cursor-pointer hover:bg-gray-50">
+                                <tr class="transition-colors group cursor-pointer hover:bg-gray-50" onclick="window.location='{{ url('/persetujuan-dokumen/detail') }}'">
                                     <td class="px-6 py-4">
                                         <span class="font-semibold text-gray-900">{{ $submission['name'] }}</span>
                                     </td>

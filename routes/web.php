@@ -19,9 +19,18 @@ Route::get('/persetujuan-dokumen', function(){
     return view('dosen.pengajuan-surat');
 });
 
+Route::get('/persetujuan-dokumen/detail', function(){
+    return view('dosen.detail-pengajuan');
+});
+
 Route::get('/riwayat-persetujuan', function(){
     return view('dosen.approval-history');
 });
+
+Route::get('/dashboard-mahasiswa', function(){
+    return view('mahasiswa.dashboard');
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
