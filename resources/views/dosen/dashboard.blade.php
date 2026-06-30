@@ -28,58 +28,160 @@
         ];
         $submissions = $submissions ?? [
             [
-                'name' => 'Budi Santoso',
-                'nim' => '21.11.4321',
+                'name' => 'Aditya Saputra Ramadhan',
+                'nim' => '21.11.4589',
                 'type' => 'Surat Keterangan Aktif',
-                'date' => '12 Oct 2023',
+                'date' => '12 Okt 2023',
                 'roles' => [
-                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
-                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
                 ],
-                'status' => 'Pending',
+                'status' => 'PENDING',
             ],
             [
-                'name' => 'Ani Wijaya',
-                'nim' => '21.11.4322',
+                'name' => 'Budi Pratama Kusuma',
+                'nim' => '20.11.3902',
                 'type' => 'Surat Keterangan Lulus',
-                'date' => '13 Oct 2023',
+                'date' => '10 Okt 2023',
                 'roles' => [
-                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
                 ],
-                'status' => 'Pending',
+                'status' => 'PENDING',
             ],
             [
-                'name' => 'Bambang Sudjatmiko',
-                'nim' => '21.11.4323',
-                'type' => 'Surat Keterangan Beasiswa',
-                'date' => '14 Oct 2023',
-                'roles' => [
-                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
-                    ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
-                ],
-                'status' => 'Pending',
-            ],
-            [
-                'name' => 'Siti Aminah',
-                'nim' => '21.11.4324',
-                'type' => 'Surat Pengantar Magang',
-                'date' => '15 Oct 2023',
-                'roles' => [
-                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
-                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
-                    ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
-                ],
-                'status' => 'Pending',
-            ],
-            [
-                'name' => 'Rizky Pratama',
-                'nim' => '21.11.4325',
+                'name' => 'Dewi Anggraini Lestari',
+                'nim' => '21.11.4722',
                 'type' => 'Surat Keterangan Aktif',
-                'date' => '16 Oct 2023',
+                'date' => '09 Okt 2023',
                 'roles' => [
-                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
                 ],
-                'status' => 'Pending',
+                'status' => 'PENDING',
+            ],
+            [
+                'name' => 'Rizky Fauzi Rahman',
+                'nim' => '21.11.4123',
+                'type' => 'Surat Pengantar Magang',
+                'date' => '08 Okt 2023',
+                'roles' => [
+                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
+                ],
+                'status' => 'PENDING',
+            ],
+            [
+                'name' => 'Siti Nurhaliza Putri',
+                'nim' => '21.11.4256',
+                'type' => 'Surat Keterangan Aktif',
+                'date' => '08 Okt 2023',
+                'roles' => [
+                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
+                ],
+                'status' => 'PENDING',
+            ],
+            [
+                'name' => 'Ahmad Fauzi',
+                'nim' => '21.11.4301',
+                'type' => 'Surat Keterangan Aktif',
+                'date' => '07 Okt 2023',
+                'roles' => [
+                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                ],
+                'status' => 'PENDING',
+            ],
+            [
+                'name' => 'Laila Sari',
+                'nim' => '21.11.4302',
+                'type' => 'Surat Keterangan Aktif',
+                'date' => '07 Okt 2023',
+                'roles' => [
+                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
+                ],
+                'status' => 'PENDING',
+            ],
+            [
+                'name' => 'Muhammad Rizky',
+                'nim' => '21.11.4303',
+                'type' => 'Surat Pengantar Magang',
+                'date' => '06 Okt 2023',
+                'roles' => [
+                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
+                ],
+                'status' => 'PENDING',
+            ],
+            [
+                'name' => 'Putri Indah',
+                'nim' => '21.11.4304',
+                'type' => 'Surat Keterangan Aktif',
+                'date' => '06 Okt 2023',
+                'roles' => [
+                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                ],
+                'status' => 'PENDING',
+            ],
+            [
+                'name' => 'Dimas Prayoga',
+                'nim' => '21.11.4305',
+                'type' => 'Surat Keterangan Lulus',
+                'date' => '05 Okt 2023',
+                'roles' => [
+                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
+                ],
+                'status' => 'PENDING',
+            ],
+            [
+                'name' => 'Siska Amelia',
+                'nim' => '21.11.4306',
+                'type' => 'Surat Keterangan Aktif',
+                'date' => '05 Okt 2023',
+                'roles' => [
+                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
+                ],
+                'status' => 'PENDING',
+            ],
+            [
+                'name' => 'Fajar Ramadhan',
+                'nim' => '21.11.4307',
+                'type' => 'Surat Pengantar Magang',
+                'date' => '04 Okt 2023',
+                'roles' => [
+                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                ],
+                'status' => 'PENDING',
+            ],
+            [
+                'name' => 'Nadia Safira',
+                'nim' => '21.11.4308',
+                'type' => 'Surat Keterangan Aktif',
+                'date' => '04 Okt 2023',
+                'roles' => [
+                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
+                ],
+                'status' => 'PENDING',
+            ],
+            [
+                'name' => 'Eko Prasetyo',
+                'nim' => '21.11.4309',
+                'type' => 'Surat Keterangan Lulus',
+                'date' => '03 Okt 2023',
+                'roles' => [
+                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
+                ],
+                'status' => 'PENDING',
+            ],
+            [
+                'name' => 'Rina Melati',
+                'nim' => '21.11.4310',
+                'type' => 'Surat Keterangan Aktif',
+                'date' => '03 Okt 2023',
+                'roles' => [
+                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                ],
+                'status' => 'PENDING',
             ],
         ];
     }
@@ -266,7 +368,7 @@
                     <p class="text-sm text-gray-600">Ringkasan pengajuan terbaru yang membutuhkan perhatian Anda.</p>
                 </div>
                 <div class="flex items-center gap-4">
-                    <a class="flex items-center gap-1 text-amikom-purple hover:underline text-sm font-semibold ml-2" href="#">
+                    <a class="flex items-center gap-1 text-amikom-purple hover:underline text-sm font-semibold ml-2" href="{{ url('/persetujuan-dokumen') }}">
                         <span>Lihat Semua Pengajuan</span>
                         <span class="material-symbols-outlined text-sm">chevron_right</span>
                     </a>
@@ -287,7 +389,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                            @foreach ($submissions as $submission)
+                            @foreach (array_slice($submissions, 0, 5) as $submission)
                                 <tr class="transition-colors group cursor-pointer hover:bg-gray-50">
                                     <td class="px-6 py-4">
                                         <span class="font-semibold text-gray-900">{{ $submission['name'] }}</span>
