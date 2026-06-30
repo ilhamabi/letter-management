@@ -1,105 +1,117 @@
 @php
+    // Detect if we want to simulate the empty state (via query parameter e.g., ?empty=1)
+    $isEmpty = request()->has('empty');
+
     // Default / Mock data so the dashboard works out of the box even without controller variables
     $studentName = $studentName ?? 'Alex Chandra';
     $nim = $nim ?? '21.11.9999';
     $prodi = $prodi ?? 'S1 Informatika';
     $profilePhoto = $profilePhoto ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuAI8U6QdliiTjyZkmQbBg28RYGNyEZiVLatEqMLpzH_ob8gvGl3P0O3s-Qt3Fc_D79jcaahFcbv3qSGezuoYVvawMrNM46hPYZSlOtyaAlPOojd2ZNhDPc1JYxE7y4tEponJE2zSBgJXYCeIo86cW_9J3AKqWvThHpMPKk9_JoTHl67QUOIb6pY3uPxrBpOxsik07pJOMRi5tfE-Y5BWv_wSM8ZGJ0l6pO-W_bb1XcmX1-qIBDqQRuXnyhiZkKKhr43d09ocXNKJ80';
 
-    $stats = $stats ?? [
-        'pending' => 3,
-        'approved' => 12,
-        'rejected' => 1,
-    ];
+    if ($isEmpty) {
+        $stats = $stats ?? [
+            'pending' => 0,
+            'approved' => 12,
+            'rejected' => 1,
+        ];
+        $submissions = [];
+    } else {
+        $stats = $stats ?? [
+            'pending' => 3,
+            'approved' => 12,
+            'rejected' => 1,
+        ];
 
-    $submissions = $submissions ?? [
-        [
-            'id' => 1,
-            'type' => 'Surat Keterangan Aktif',
-            'date' => '24 Okt 2023',
-            'status' => 'Sedang Diproses',
-            'purpose' => 'Syarat Beasiswa',
-            'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
-            'time' => '09:45 WIB',
-            'attachments' => [
-                ['name' => 'KTM_Alex.pdf', 'size' => '1.2 MB'],
-                ['name' => 'Transkrip_Nilai.pdf', 'size' => '850 KB'],
+        $submissions = $submissions ?? [
+            [
+                'id' => 1,
+                'type' => 'Surat Keterangan Aktif',
+                'date' => '24 Okt 2023',
+                'status' => 'Sedang Diproses',
+                'purpose' => 'Syarat Beasiswa',
+                'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
+                'time' => '09:45 WIB',
+                'attachments' => [
+                    ['name' => 'KTM_Alex.pdf', 'size' => '1.2 MB'],
+                    ['name' => 'Transkrip_Nilai.pdf', 'size' => '850 KB'],
+                ],
+                'timeline' => [
+                    ['title' => 'Pengajuan Terkirim', 'time' => '24 Okt 2023, 09:45 WIB', 'status' => 'completed'],
+                    ['title' => 'Persetujuan Dosen Wali', 'time' => 'SEDANG DIPROSES oleh Heri Setyawan, M.Kom.', 'status' => 'active'],
+                    ['title' => 'Verifikasi Program Studi', 'time' => 'Akan datang', 'status' => 'upcoming']
+                ]
             ],
-            'timeline' => [
-                ['title' => 'Pengajuan Terkirim', 'time' => '24 Okt 2023, 09:45 WIB', 'status' => 'completed'],
-                ['title' => 'Persetujuan Dosen Wali', 'time' => 'SEDANG DIPROSES oleh Heri Setyawan, M.Kom.', 'status' => 'active'],
-                ['title' => 'Verifikasi Program Studi', 'time' => 'Akan datang', 'status' => 'upcoming']
-            ]
-        ],
-        [
-            'id' => 2,
-            'type' => 'Verifikasi Pendaftaran',
-            'date' => '02 Nov 2023',
-            'status' => 'Sedang Diproses',
-            'purpose' => 'Lomba Kompetisi Nasional',
-            'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
-            'time' => '10:15 WIB',
-            'attachments' => [
-                ['name' => 'KTM_Alex.pdf', 'size' => '1.2 MB'],
+            [
+                'id' => 2,
+                'type' => 'Verifikasi Pendaftaran',
+                'date' => '02 Nov 2023',
+                'status' => 'Sedang Diproses',
+                'purpose' => 'Lomba Kompetisi Nasional',
+                'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
+                'time' => '10:15 WIB',
+                'attachments' => [
+                    ['name' => 'KTM_Alex.pdf', 'size' => '1.2 MB'],
+                ],
+                'timeline' => [
+                    ['title' => 'Pengajuan Terkirim', 'time' => '02 Nov 2023, 10:15 WIB', 'status' => 'completed'],
+                    ['title' => 'Persetujuan Dosen Wali', 'time' => 'SEDANG DIPROSES oleh Heri Setyawan, M.Kom.', 'status' => 'active'],
+                    ['title' => 'Verifikasi Program Studi', 'time' => 'Akan datang', 'status' => 'upcoming']
+                ]
             ],
-            'timeline' => [
-                ['title' => 'Pengajuan Terkirim', 'time' => '02 Nov 2023, 10:15 WIB', 'status' => 'completed'],
-                ['title' => 'Persetujuan Dosen Wali', 'time' => 'SEDANG DIPROSES oleh Heri Setyawan, M.Kom.', 'status' => 'active'],
-                ['title' => 'Verifikasi Program Studi', 'time' => 'Akan datang', 'status' => 'upcoming']
-            ]
-        ],
-        [
-            'id' => 3,
-            'type' => 'Legalisir Ijazah',
-            'date' => '15 Nov 2023',
-            'status' => 'Sedang Diproses',
-            'purpose' => 'Persyaratan Melamar Pekerjaan',
-            'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
-            'time' => '08:30 WIB',
-            'attachments' => [
-                ['name' => 'Ijazah_Alex.pdf', 'size' => '2.1 MB'],
+            [
+                'id' => 3,
+                'type' => 'Legalisir Ijazah',
+                'date' => '15 Nov 2023',
+                'status' => 'Sedang Diproses',
+                'purpose' => 'Persyaratan Melamar Pekerjaan',
+                'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
+                'time' => '08:30 WIB',
+                'attachments' => [
+                    ['name' => 'Ijazah_Alex.pdf', 'size' => '2.1 MB'],
+                ],
+                'timeline' => [
+                    ['title' => 'Pengajuan Terkirim', 'time' => '15 Nov 2023, 08:30 WIB', 'status' => 'completed'],
+                    ['title' => 'Persetujuan Dosen Wali', 'time' => 'SEDANG DIPROSES oleh Heri Setyawan, M.Kom.', 'status' => 'active'],
+                    ['title' => 'Verifikasi Program Studi', 'time' => 'Akan datang', 'status' => 'upcoming']
+                ]
             ],
-            'timeline' => [
-                ['title' => 'Pengajuan Terkirim', 'time' => '15 Nov 2023, 08:30 WIB', 'status' => 'completed'],
-                ['title' => 'Persetujuan Dosen Wali', 'time' => 'SEDANG DIPROSES oleh Heri Setyawan, M.Kom.', 'status' => 'active'],
-                ['title' => 'Verifikasi Program Studi', 'time' => 'Akan datang', 'status' => 'upcoming']
-            ]
-        ],
-        [
-            'id' => 4,
-            'type' => 'Transkrip Akademik Sementara',
-            'date' => '20 Nov 2023',
-            'status' => 'Sedang Diproses',
-            'purpose' => 'Magang MBKM Merdeka Belajar',
-            'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
-            'time' => '11:00 WIB',
-            'attachments' => [
-                ['name' => 'KTM_Alex.pdf', 'size' => '1.2 MB'],
-                ['name' => 'KRS_Terakhir.pdf', 'size' => '720 KB'],
+            [
+                'id' => 4,
+                'type' => 'Transkrip Akademik Sementara',
+                'date' => '20 Nov 2023',
+                'status' => 'Sedang Diproses',
+                'purpose' => 'Magang MBKM Merdeka Belajar',
+                'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
+                'time' => '11:00 WIB',
+                'attachments' => [
+                    ['name' => 'KTM_Alex.pdf', 'size' => '1.2 MB'],
+                    ['name' => 'KRS_Terakhir.pdf', 'size' => '720 KB'],
+                ],
+                'timeline' => [
+                    ['title' => 'Pengajuan Terkirim', 'time' => '20 Nov 2023, 11:00 WIB', 'status' => 'completed'],
+                    ['title' => 'Persetujuan Dosen Wali', 'time' => 'SEDANG DIPROSES oleh Heri Setyawan, M.Kom.', 'status' => 'active'],
+                    ['title' => 'Verifikasi Program Studi', 'time' => 'Akan datang', 'status' => 'upcoming']
+                ]
             ],
-            'timeline' => [
-                ['title' => 'Pengajuan Terkirim', 'time' => '20 Nov 2023, 11:00 WIB', 'status' => 'completed'],
-                ['title' => 'Persetujuan Dosen Wali', 'time' => 'SEDANG DIPROSES oleh Heri Setyawan, M.Kom.', 'status' => 'active'],
-                ['title' => 'Verifikasi Program Studi', 'time' => 'Akan datang', 'status' => 'upcoming']
-            ]
-        ],
-        [
-            'id' => 5,
-            'type' => 'Surat Bebas Pustaka',
-            'date' => '25 Nov 2023',
-            'status' => 'Sedang Diproses',
-            'purpose' => 'Syarat Kelulusan Wisuda',
-            'lecturer' => 'Perpustakaan Amikom',
-            'time' => '14:20 WIB',
-            'attachments' => [
-                ['name' => 'Bebas_Pinjam_Perpus.pdf', 'size' => '510 KB'],
+            [
+                'id' => 5,
+                'type' => 'Surat Bebas Pustaka',
+                'date' => '25 Nov 2023',
+                'status' => 'Sedang Diproses',
+                'purpose' => 'Syarat Kelulusan Wisuda',
+                'lecturer' => 'Perpustakaan Amikom',
+                'time' => '14:20 WIB',
+                'attachments' => [
+                    ['name' => 'Bebas_Pinjam_Perpus.pdf', 'size' => '510 KB'],
+                ],
+                'timeline' => [
+                    ['title' => 'Pengajuan Terkirim', 'time' => '25 Nov 2023, 14:20 WIB', 'status' => 'completed'],
+                    ['title' => 'Persetujuan Dosen Wali', 'time' => 'SEDANG DIPROSES oleh Heri Setyawan, M.Kom.', 'status' => 'active'],
+                    ['title' => 'Verifikasi Program Studi', 'time' => 'Akan datang', 'status' => 'upcoming']
+                ]
             ],
-            'timeline' => [
-                ['title' => 'Pengajuan Terkirim', 'time' => '25 Nov 2023, 14:20 WIB', 'status' => 'completed'],
-                ['title' => 'Persetujuan Dosen Wali', 'time' => 'SEDANG DIPROSES oleh Heri Setyawan, M.Kom.', 'status' => 'active'],
-                ['title' => 'Verifikasi Program Studi', 'time' => 'Akan datang', 'status' => 'upcoming']
-            ]
-        ],
-    ];
+        ];
+    }
 @endphp
 
 <!DOCTYPE html>
@@ -353,36 +365,44 @@
                 </button>
             </div>
             
-            <div class="overflow-x-auto w-full">
-                <table class="w-full text-left border-collapse">
-                    <thead class="bg-surface-container-low">
-                        <tr>
-                            <th class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant py-4 px-6 font-medium">Jenis Surat</th>
-                            <th class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant py-4 px-6 font-medium">Tanggal Pengajuan</th>
-                            <th class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant py-4 px-6 font-medium text-center">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="font-body-sm text-body-sm text-on-surface divide-y divide-outline-variant">
-                        @forelse ($submissions as $sub)
-                            <tr class="hover:bg-surface-container-low transition-colors duration-200 cursor-pointer" onclick="openStatusModal({{ json_encode($sub) }})">
-                                <td class="py-5 px-6 font-semibold text-deep-black">{{ $sub['type'] }}</td>
-                                <td class="py-5 px-6 text-on-surface-variant">{{ $sub['date'] }}</td>
-                                <td class="py-5 px-6 text-center">
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-surface-container text-on-surface-variant border border-outline-variant">
-                                        {{ $sub['status'] }}
-                                    </span>
-                                </td>
-                            </tr>
-                        @empty
+            @if (count($submissions) > 0)
+                <div class="overflow-x-auto w-full">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-surface-container-low">
                             <tr>
-                                <td colspan="3" class="py-12 text-center text-on-surface-variant italic">
-                                    Tidak ada pengajuan yang berlangsung.
-                                </td>
+                                <th class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant py-4 px-6 font-medium">Jenis Surat</th>
+                                <th class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant py-4 px-6 font-medium">Tanggal Pengajuan</th>
+                                <th class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant py-4 px-6 font-medium text-center">Status</th>
                             </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody class="font-body-sm text-body-sm text-on-surface divide-y divide-outline-variant">
+                            @foreach ($submissions as $sub)
+                                <tr class="hover:bg-surface-container-low transition-colors duration-200 cursor-pointer" onclick="openStatusModal({{ json_encode($sub) }})">
+                                    <td class="py-5 px-6 font-semibold text-deep-black">{{ $sub['type'] }}</td>
+                                    <td class="py-5 px-6 text-on-surface-variant">{{ $sub['date'] }}</td>
+                                    <td class="py-5 px-6 text-center">
+                                        <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-surface-container text-on-surface-variant border border-outline-variant">
+                                            {{ $sub['status'] }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="flex flex-col items-center justify-center py-12 px-6 text-center">
+                    <div class="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center text-on-surface-variant mb-4">
+                        <span class="material-symbols-outlined text-4xl">description</span>
+                    </div>
+                    <h4 class="font-headline-sm text-headline-sm text-deep-black mb-2">Tidak ada pengajuan yang sedang berlangsung</h4>
+                    <p class="font-body-md text-body-md text-on-surface-variant mb-6">Semua permintaan dokumen Anda telah selesai diproses atau belum ada pengajuan baru.</p>
+                    <a class="text-primary font-label-lg text-label-lg hover:underline flex items-center gap-2" href="#">
+                        Lihat Riwayat Pengajuan
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                </div>
+            @endif
         </section>
     </main>
 </div>
