@@ -337,12 +337,12 @@
                         @empty
                             <tr>
                                 <td class="py-20 text-center" colspan="6">
-                                    <div class="flex flex-col items-center justify-center space-y-4">
-                                        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-2">
-                                            <span class="material-symbols-outlined text-gray-400" style="font-size: 48px;">history</span>
+                                    <div class="flex flex-col items-center justify-center gap-4">
+                                        <span class="material-symbols-outlined text-gray-300 text-6xl" style="font-size: 64px;">history_toggle_off</span>
+                                        <div>
+                                            <p class="text-lg font-semibold text-gray-900">Belum ada riwayat persetujuan</p>
+                                            <p class="text-gray-500">Semua dokumen yang telah Anda proses akan muncul di sini.</p>
                                         </div>
-                                        <h3 class="text-xl font-bold text-gray-900">Belum Ada Riwayat Persetujuan</h3>
-                                        <p class="text-gray-500 max-w-md mx-auto">Semua dokumen yang Anda proses (setujui atau tolak) akan muncul di halaman ini.</p>
                                     </div>
                                 </td>
                             </tr>

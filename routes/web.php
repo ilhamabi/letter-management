@@ -31,6 +31,13 @@ Route::get('/dashboard-mahasiswa', function(){
     return view('mahasiswa.dashboard');
 });
 
+Route::get('/pengajuan', function(){
+    return view('mahasiswa.pengajuan');
+});
+
+Route::get('/riwayat-pengajuan', function(){
+    return view('mahasiswa.riwayat-pengajuan');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -260,7 +260,7 @@
             <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="font-variation-settings: 'FILL' 1;">grid_view</span>
             <span class="font-label-lg text-label-lg">Dashboard</span>
         </a>
-        <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors" href="#">
+        <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors" href="{{ url('/pengajuan') }}">
             <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">add_circle</span>
             <span class="font-label-lg text-label-lg">Buat Baru</span>
         </a>
