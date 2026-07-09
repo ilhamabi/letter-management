@@ -4,40 +4,49 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    $user = auth()->user();
+    if ($user && (str_contains(strtolower($user->email), 'dosen') || str_contains(strtolower($user->email), 'lecturer') || str_contains(strtolower($user->email), 'test'))) {
+        // Default to student but support lecturer redirect if dosen/lecturer is in the email/username.
+        // For 'test@example.com', let's default to student.
+        if (str_contains(strtolower($user->email), 'dosen') || str_contains(strtolower($user->email), 'lecturer')) {
+            return redirect('/lecturer');
+        }
+    }
+    return redirect('/student');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/dashboard-dosen', function () {
+Route::get('/lecturer', function () {
     return view('dosen.dashboard');
 });
 
-Route::get('/persetujuan-dokumen', function(){
-    return view('dosen.pengajuan-surat');
+Route::get('/lecturer/approval', function(){
+    return view('dosen.approval');
 });
 
-Route::get('/persetujuan-dokumen/detail', function(){
-    return view('dosen.detail-pengajuan');
+Route::get('/lecturer/approval/detail', function(){
+    return view('dosen.approval-detail');
 });
 
-Route::get('/riwayat-persetujuan', function(){
+Route::get('/lecturer/approval-history', function(){
     return view('dosen.approval-history');
 });
 
-Route::get('/dashboard-mahasiswa', function(){
+Route::get('/student', function(){
     return view('mahasiswa.dashboard');
 });
 
-Route::get('/pengajuan', function(){
-    return view('mahasiswa.pengajuan');
+Route::get('/student/submission', function(){
+    return view('mahasiswa.submission');
 });
 
-Route::get('/riwayat-pengajuan', function(){
-    return view('mahasiswa.riwayat-pengajuan');
+Route::get('/student/submission-history', function(){
+    return view('mahasiswa.submission-history');
 });
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

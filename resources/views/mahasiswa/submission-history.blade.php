@@ -235,15 +235,15 @@
     </div>
     
     <nav class="flex-1 px-4 py-4 space-y-1" data-purpose="navigation">
-        <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors" href="{{ url('/dashboard-mahasiswa') }}">
+        <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors" href="{{ url('/student') }}">
             <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">grid_view</span>
             <span class="font-label-lg text-label-lg">Dashboard</span>
         </a>
-        <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors" href="{{ url('/pengajuan') }}">
+        <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors" href="{{ url('/student/submission') }}">
             <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">add_circle</span>
             <span class="font-label-lg text-label-lg">Buat Baru</span>
         </a>
-        <a class="flex items-center gap-3 px-3 py-2 bg-primary text-white rounded-lg transition-colors font-bold relative" href="{{ url('/riwayat-pengajuan') }}">
+        <a class="flex items-center gap-3 px-3 py-2 bg-primary text-white rounded-lg transition-colors font-bold relative" href="{{ url('/student/submission-history') }}">
             <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="font-variation-settings: 'FILL' 1;">history</span>
             <span class="font-label-lg text-label-lg">Riwayat Pengajuan</span>
         </a>

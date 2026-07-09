@@ -67,15 +67,15 @@
         
         <!-- Navigation -->
         <nav class="flex-1 px-4 py-4 space-y-1">
-            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/dashboard-dosen') }}">
+            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/lecturer') }}">
                 <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">grid_view</span>
                 <span class="font-label-lg text-label-lg">Dashboard</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 bg-amikom-purple text-white rounded-lg transition-colors font-bold relative" href="{{ url('/persetujuan-dokumen') }}">
+            <a class="flex items-center gap-3 px-3 py-2 bg-amikom-purple text-white rounded-lg transition-colors font-bold relative" href="{{ url('/lecturer/approval') }}">
                 <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="font-variation-settings: 'FILL' 1;">description</span>
                 <span class="font-label-lg text-label-lg">Persetujuan Dokumen</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/riwayat-persetujuan') }}">
+            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/lecturer/approval-history') }}">
                 <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">history</span>
                 <span class="font-label-lg text-label-lg">Riwayat</span>
             </a>
@@ -136,7 +136,7 @@
         <!-- Breadcrumbs & Header -->
         <div class="mb-4">
             <nav class="flex items-center gap-2 text-gray-400 mb-3">
-                <a class="font-body-sm text-body-sm hover:text-primary transition-colors" href="{{ url('/persetujuan-dokumen') }}">Persetujuan Dokumen</a>
+                <a class="font-body-sm text-body-sm hover:text-primary transition-colors" href="{{ url('/lecturer/approval') }}">Persetujuan Dokumen</a>
                 <span class="material-symbols-outlined text-[16px]">chevron_right</span>
                 <span class="font-label-sm text-label-sm text-gray-900 uppercase tracking-wider">Detail Permintaan</span>
             </nav>

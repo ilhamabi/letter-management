@@ -233,15 +233,15 @@
         
         <!-- Navigation -->
         <nav class="flex-1 px-4 py-4 space-y-1" data-purpose="navigation">
-            <a class="flex items-center gap-3 px-3 py-2 bg-amikom-purple text-white rounded-lg transition-colors font-bold relative" href="{{ url('/dashboard-dosen') }}">
+            <a class="flex items-center gap-3 px-3 py-2 bg-amikom-purple text-white rounded-lg transition-colors font-bold relative" href="{{ url('/lecturer') }}">
                 <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="font-variation-settings: 'FILL' 1;">grid_view</span>
                 <span class="font-label-lg text-label-lg">Dashboard</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/persetujuan-dokumen') }}">
+            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/lecturer/approval') }}">
                 <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">description</span>
                 <span class="font-label-lg text-label-lg">Persetujuan Dokumen</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/riwayat-persetujuan') }}">
+            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/lecturer/approval-history') }}">
                 <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">history</span>
                 <span class="font-label-lg text-label-lg">Riwayat</span>
             </a>
@@ -369,7 +369,7 @@
                     <p class="text-sm text-gray-600">Ringkasan pengajuan terbaru yang membutuhkan perhatian Anda.</p>
                 </div>
                 <div class="flex items-center gap-4">
-                    <a class="flex items-center gap-1 text-amikom-purple hover:underline text-sm font-semibold ml-2" href="{{ url('/persetujuan-dokumen') }}">
+                    <a class="flex items-center gap-1 text-amikom-purple hover:underline text-sm font-semibold ml-2" href="{{ url('/lecturer/approval') }}">
                         <span>Lihat Semua Pengajuan</span>
                         <span class="material-symbols-outlined text-sm">chevron_right</span>
                     </a>
@@ -391,7 +391,7 @@
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             @foreach (array_slice($submissions, 0, 5) as $submission)
-                                <tr class="transition-colors group cursor-pointer hover:bg-gray-50" onclick="window.location='{{ url('/persetujuan-dokumen/detail') }}'">
+                                <tr class="transition-colors group cursor-pointer hover:bg-gray-50" onclick="window.location='{{ url('/lecturer/approval/detail') }}'">
                                     <td class="px-6 py-4">
                                         <span class="font-semibold text-gray-900">{{ $submission['name'] }}</span>
                                     </td>
