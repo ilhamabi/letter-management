@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -8,9 +9,13 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Public+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Public+Sans:wght@400;500;600&amp;display=swap"
+        rel="stylesheet">
     <!-- Material Symbols -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <!-- Tailwind Config -->
@@ -97,16 +102,49 @@
                         "headline-lg": ["Montserrat", "sans-serif"]
                     },
                     "fontSize": {
-                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
-                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
-                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
-                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
-                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
-                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
-                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
-                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }]
+                        "label-lg": ["14px", {
+                            "lineHeight": "20px",
+                            "letterSpacing": "0.01em",
+                            "fontWeight": "600"
+                        }],
+                        "headline-lg-mobile": ["24px", {
+                            "lineHeight": "32px",
+                            "fontWeight": "600"
+                        }],
+                        "body-md": ["16px", {
+                            "lineHeight": "24px",
+                            "fontWeight": "400"
+                        }],
+                        "body-lg": ["18px", {
+                            "lineHeight": "28px",
+                            "fontWeight": "400"
+                        }],
+                        "headline-md": ["24px", {
+                            "lineHeight": "32px",
+                            "fontWeight": "600"
+                        }],
+                        "title-lg": ["20px", {
+                            "lineHeight": "28px",
+                            "fontWeight": "600"
+                        }],
+                        "display-lg": ["48px", {
+                            "lineHeight": "56px",
+                            "letterSpacing": "-0.02em",
+                            "fontWeight": "700"
+                        }],
+                        "body-sm": ["14px", {
+                            "lineHeight": "20px",
+                            "fontWeight": "400"
+                        }],
+                        "label-sm": ["12px", {
+                            "lineHeight": "16px",
+                            "letterSpacing": "0.04em",
+                            "fontWeight": "500"
+                        }],
+                        "headline-lg": ["32px", {
+                            "lineHeight": "40px",
+                            "fontWeight": "600"
+                        }]
                     }
                 }
             }
@@ -116,6 +154,7 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
+
         .bg-pattern {
             background-color: #410063;
             background-image: radial-gradient(#59207b 1px, transparent 1px);
@@ -123,94 +162,99 @@
         }
     </style>
 </head>
+
 <body class="bg-surface-gray min-h-screen flex items-center justify-center font-body-md text-on-surface">
-<main class="w-full max-w-[480px] bg-pure-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.08)] flex flex-col overflow-hidden">
-    <!-- Centered Login Form -->
-    <div class="w-full p-8 md:p-12 flex flex-col justify-center">
-        <!-- Logo -->
-        <div class="flex justify-center mb-8">
-            <img alt="Amikom Logo" class="h-16 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPwgxwir4KI6SoWZNdKJxltvkHVQx_0luCzc3fgrPNb_X4Ugn8bIR04eM4VknpmU8CNX15KjM5BQZIo6_Q20X8KTTlxSS8LPfWRJ-4wGXXn6i4oDaFrLzCHISooOJ58JPBMI-q49ow1OriJyfl0yqIyzg8RhbAeQoJg_Lx_z-qdpFkLDJBMNBk-cPspF6SuwY4-YUXTMsgvZflrxB3f48PLjVVKCr8ZjmXfQs7bO8R8LWqncJv61LKMj5lFXVD8BfqlWTFW8GCnno">
-        </div>
-        <div class="mb-8 text-center">
-            <h2 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang</h2>
-            <p class="font-body-sm text-body-sm text-on-surface-variant">Silakan masuk ke akun Anda untuk melanjutkan.</p>
-        </div>
-
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
+    <main
+        class="w-full max-w-[480px] bg-pure-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.08)] flex flex-col overflow-hidden">
+        <!-- Centered Login Form -->
+        <div class="w-full p-8 md:p-12 flex flex-col justify-center">
+            <!-- Logo -->
+            <div class="flex justify-center mb-8">
+                <img alt="Amikom Logo" class="h-16 w-auto"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPwgxwir4KI6SoWZNdKJxltvkHVQx_0luCzc3fgrPNb_X4Ugn8bIR04eM4VknpmU8CNX15KjM5BQZIo6_Q20X8KTTlxSS8LPfWRJ-4wGXXn6i4oDaFrLzCHISooOJ58JPBMI-q49ow1OriJyfl0yqIyzg8RhbAeQoJg_Lx_z-qdpFkLDJBMNBk-cPspF6SuwY4-YUXTMsgvZflrxB3f48PLjVVKCr8ZjmXfQs7bO8R8LWqncJv61LKMj5lFXVD8BfqlWTFW8GCnno">
             </div>
-        @endif
+            <div class="mb-8 text-center">
+                <h2 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Silakan masuk ke akun Anda untuk
+                    melanjutkan.</p>
+            </div>
 
-        <form action="{{ route('login') }}" class="space-y-6" method="POST">
-            @csrf
-
-            <!-- Username / Email Field -->
-            <div>
-                <label class="block font-label-lg text-label-lg text-on-surface mb-2" for="email">NIDN / NIM</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline">
-                        <span class="material-symbols-outlined text-[20px]">person</span>
-                    </span>
-                    <input class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline/30 bg-pure-white text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors" 
-                           id="email" 
-                           name="email" 
-                           value="{{ old('email') }}" 
-                           placeholder="Masukkan NIDN atau NIM" 
-                           required 
-                           type="text" 
-                           autofocus 
-                           autocomplete="username">
+            @if (session('status'))
+                <div class="mb-4 font-medium text-sm text-green-600">
+                    {{ session('status') }}
                 </div>
-                @if ($errors->has('email'))
-                    <p class="text-sm text-error mt-1">{{ $errors->first('email') }}</p>
-                @endif
-            </div>
+            @endif
 
-            <!-- Password Field -->
-            <div>
-                <label class="block font-label-lg text-label-lg text-on-surface mb-2" for="password">Password</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline">
-                        <span class="material-symbols-outlined text-[20px]">lock</span>
-                    </span>
-                    <input class="w-full pl-10 pr-10 py-3 rounded-lg border border-outline/30 bg-pure-white text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors" 
-                           id="password" 
-                           name="password" 
-                           placeholder="Masukkan Password" 
-                           required 
-                           type="password" 
-                           autocomplete="current-password">
-                    <button class="absolute inset-y-0 right-0 flex items-center pr-3 text-outline hover:text-primary transition-colors" onclick="togglePassword()" type="button">
-                        <span class="material-symbols-outlined text-[20px]" id="visibility-icon">visibility_off</span>
-                    </button>
+            <form action="{{ route('login') }}" class="space-y-6" method="POST">
+                @csrf
+
+                <!-- Username / Email Field -->
+                <div>
+                    <label class="block font-label-lg text-label-lg text-on-surface mb-2" for="email">NIDN /
+                        NIM</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline">
+                            <span class="material-symbols-outlined text-[20px]">person</span>
+                        </span>
+                        <input
+                            class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline/30 bg-pure-white text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
+                            id="email" name="email" value="{{ old('email') }}"
+                            placeholder="Masukkan NIDN atau NIM" required type="text" autofocus
+                            autocomplete="username">
+                    </div>
+                    @if ($errors->has('email'))
+                        <p class="text-sm text-error mt-1">{{ $errors->first('email') }}</p>
+                    @endif
                 </div>
-                @if ($errors->has('password'))
-                    <p class="text-sm text-error mt-1">{{ $errors->first('password') }}</p>
-                @endif
-            </div>
 
-            <!-- Submit Button -->
-            <button class="w-full bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6" type="submit">
-                Login
-                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-            </button>
-        </form>
-    </div>
-</main>
-<script>
-    function togglePassword() {
-        const passwordInput = document.getElementById('password');
-        const icon = document.getElementById('visibility-icon');
-        
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            icon.textContent = 'visibility';
-        } else {
-            passwordInput.type = 'password';
-            icon.textContent = 'visibility_off';
+                <!-- Password Field -->
+                <div>
+                    <label class="block font-label-lg text-label-lg text-on-surface mb-2"
+                        for="password">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline">
+                            <span class="material-symbols-outlined text-[20px]">lock</span>
+                        </span>
+                        <input
+                            class="w-full pl-10 pr-10 py-3 rounded-lg border border-outline/30 bg-pure-white text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
+                            id="password" name="password" placeholder="Masukkan Password" required type="password"
+                            autocomplete="current-password">
+                        <button
+                            class="absolute inset-y-0 right-0 flex items-center pr-3 text-outline hover:text-primary transition-colors"
+                            onclick="togglePassword()" type="button">
+                            <span class="material-symbols-outlined text-[20px]"
+                                id="visibility-icon">visibility_off</span>
+                        </button>
+                    </div>
+                    @if ($errors->has('password'))
+                        <p class="text-sm text-error mt-1">{{ $errors->first('password') }}</p>
+                    @endif
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                    class="w-full bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6"
+                    type="submit">
+                    Login
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </button>
+            </form>
+        </div>
+    </main>
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const icon = document.getElementById('visibility-icon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.textContent = 'visibility';
+            } else {
+                passwordInput.type = 'password';
+                icon.textContent = 'visibility_off';
+            }
         }
-    }
-</script>
+    </script>
 </body>
+
 </html>

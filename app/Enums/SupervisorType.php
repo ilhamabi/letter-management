@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Enums;
+
+enum SupervisorType: string
+{
+  case ACADEMIC_ADVISOR = 'ACADEMIC_ADVISOR';
+  case INTERNSHIP_SUPERVISOR = 'INTERNSHIP_SUPERVISOR';
+  case THESIS_SUPERVISOR = 'THESIS_SUPERVISOR';
+}
