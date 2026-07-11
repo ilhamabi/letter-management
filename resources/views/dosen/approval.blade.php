@@ -232,6 +232,10 @@
                 <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">history</span>
                 <span class="font-label-lg text-label-lg">Riwayat</span>
             </a>
+            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/lecturer/settings') }}">
+                <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">settings</span>
+                <span class="font-label-lg text-label-lg">Pengaturan Akun</span>
+            </a>
         </nav>
     </div>
 

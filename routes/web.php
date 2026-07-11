@@ -35,6 +35,11 @@ Route::get('/lecturer/approval-history', function(){
     return view('dosen.approval-history');
 });
 
+Route::get('/lecturer/settings', function(){
+    return view('dosen.settings');
+});
+
+
 Route::get('/student', function(){
     return view('mahasiswa.dashboard');
 });
@@ -45,6 +50,10 @@ Route::get('/student/submission', function(){
 
 Route::get('/student/submission-history', function(){
     return view('mahasiswa.submission-history');
+});
+
+Route::get('/student/settings', function(){
+    return view('mahasiswa.settings');
 });
 
 

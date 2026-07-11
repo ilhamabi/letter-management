@@ -159,6 +159,10 @@
             <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">history</span>
             <span class="font-label-lg text-label-lg">Riwayat Pengajuan</span>
         </a>
+        <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors" href="{{ url('/student/settings') }}">
+            <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">account_circle</span>
+            <span class="font-label-lg text-label-lg">Pengaturan Akun</span>
+        </a>
     </nav>
     <div class="border-t border-outline-variant bg-surface-container-low/30">
         <div class="flex items-center gap-4 px-6 py-4">
