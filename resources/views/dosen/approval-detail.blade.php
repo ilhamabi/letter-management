@@ -9,358 +9,234 @@
     ];
 @endphp
 
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layouts.dosen')
 
-    <title>Layanan Dokumen - Detail Permintaan Persetujuan</title>
+@section('title', 'Layanan Dokumen - Detail Permintaan Persetujuan')
 
-    <!-- Tailwind CSS (Vite / Fallback CDN) -->
-    @if (Route::has('login'))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    @endif
-
-    <!-- Separated Custom Stylesheet -->
-    <link rel="stylesheet" href="{{ asset('css/dosen-dashboard.css') }}">
-
-    <!-- Google Fonts & Material Symbols -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Public+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            display: inline-block;
-            line-height: 1;
-            text-transform: none;
-            letter-spacing: normal;
-            word-wrap: normal;
-            white-space: nowrap;
-            direction: ltr;
-        }
-    </style>
-</head>
-<body class="flex h-screen overflow-hidden text-sm relative">
-
-<!-- BEGIN: Sidebar Navigation -->
-<aside class="w-64 flex-shrink-0 bg-white border-r border-gray-200 flex flex-col justify-between h-full overflow-y-auto" data-purpose="sidebar">
-    <div>
-        <!-- Logo -->
-        <div class="px-6 py-8 flex items-center gap-4 mb-6">
-            <div class="flex items-center gap-3">
-                <img alt="Universitas Amikom Logo" class="w-10 h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjgUI4zaYlX51lbXCaQCgsysUwapK1PGQCi-WXmC5mHugpUw0m1Hc2HsTQTMeTSUVEj-f1a3Q8hyOCxeXdcBHRieKppabbINKUbu8GvOBrmQDltQRNBaxc43NNCNssv3V109JdKSRGK-Kditdog1qCT5qiIigPZn5NJit1sGMgQL397ZCVG-KWQcJyJ55apPJygmFqyDZtvWKPL_bJSWbI0SgnkQINZFh9cOXAHGnNEPqz2UoD24dbXC3jyQlaR3QB-SSvpo0hoh8">
-                <div>
-                    <h1 class="font-headline-lg text-[18px] leading-[1.1] text-primary font-bold" style="color: rgb(65, 0, 99);">
-                        UNIVERSITAS<br>AMIKOM
-                    </h1>
-                    <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-medium text-gray-500">Student Services</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Navigation -->
-        <nav class="flex-1 px-4 py-4 space-y-1">
-            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/lecturer') }}">
-                <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">grid_view</span>
-                <span class="font-label-lg text-label-lg">Dashboard</span>
-            </a>
-            <a class="flex items-center gap-3 px-3 py-2 bg-amikom-purple text-white rounded-lg transition-colors font-bold relative" href="{{ url('/lecturer/approval') }}">
-                <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="font-variation-settings: 'FILL' 1;">description</span>
-                <span class="font-label-lg text-label-lg">Persetujuan Dokumen</span>
-            </a>
-            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/lecturer/approval-history') }}">
-                <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">history</span>
-                <span class="font-label-lg text-label-lg">Riwayat</span>
-            </a>
-            <a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="{{ url('/lecturer/settings') }}">
-                <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">settings</span>
-                <span class="font-label-lg text-label-lg">Pengaturan Akun</span>
-            </a>
+@section('content')
+<div class="space-y-8">
+    <!-- Breadcrumbs & Header -->
+    <div class="mb-4">
+        <nav class="flex items-center gap-2 text-gray-400 mb-3">
+            <a class="font-body-sm text-body-sm hover:text-primary transition-colors" href="{{ url('/lecturer/approval') }}">Persetujuan Dokumen</a>
+            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+            <span class="font-label-sm text-label-sm text-gray-900 uppercase tracking-wider">Detail Permintaan</span>
         </nav>
-    </div>
-
-    <!-- User Profile -->
-    <div class="p-6 border-t border-gray-200 bg-white mt-auto" data-purpose="user-profile">
-        <div class="flex flex-col gap-4 px-2">
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
-                    <img alt="{{ $lecturerName }}" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLsHUqb9lePpAkuZBB4EY_kmGB_qH99xpJTT5LrXNWLswF7ijJNXzre2g_OE6rOGyPrMqZxU9X6brzK_hTo1sSZgL_0r7i97LY53fQ-csLV1mToJvT5FHGmIAXJcriWvbJth3LN2OrfqhLApjsCSVhJMCaJF0xRZUomarXFAF9qu0t_rFc-kxSshL5zzP1vHQ3iD_DWB0D-AXzSO2Waps6HHTcdLC3u4N0pVJHinjsr7GYjga6rt0kf7U34">
-                </div>
-                <div class="flex-1">
-                    <p class="text-body-md font-headline-lg text-gray-900 leading-tight font-bold">{{ $lecturerName }}</p>
-                    <p class="text-xs text-gray-500 truncate mt-0.5">NIDN: {{ $nidn }}</p>
-                </div>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Detail Pengajuan Surat Keterangan Aktif</h2>
+                <p class="font-body-md text-body-md text-gray-500 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                    Diajukan pada 12 Oktober 2023
+                </p>
             </div>
-            <div class="flex flex-wrap gap-1.5">
-                @foreach ($roles as $role)
-                    <span class="text-[10px] font-semibold text-white uppercase tracking-wider px-2.5 py-1 rounded-full {{ $role['bg'] }}">{{ $role['name'] }}</span>
-                @endforeach
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-[#FEF3C7] border border-[#FDE68A] rounded-full self-start">
+                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                <span class="font-label-lg text-label-lg text-[#92400E]">Menunggu Persetujuan</span>
             </div>
         </div>
     </div>
-</aside>
-<!-- END: Sidebar Navigation -->
 
-<!-- BEGIN: Main Content -->
-<main class="flex-1 flex flex-col bg-background h-full overflow-hidden">
-    <!-- Top App Bar -->
-    <header class="h-16 flex items-center justify-between px-8 bg-white border-b border-gray-200 shrink-0">
-        <h2 class="text-xl font-semibold text-amikom-purple">Layanan Dokumen</h2>
-        
-        <!-- Logout Button -->
-        @if (Route::has('logout'))
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors shadow-sm text-sm font-medium">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                    </svg>
-                    Logout
-                </button>
-            </form>
-        @else
-            <button class="flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors shadow-sm text-sm font-medium" onclick="alert('Logout action placeholder')">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                </svg>
-                Logout
-            </button>
-        @endif
-    </header>
-
-    <!-- Scrollable Area -->
-    <div class="flex-1 p-8 space-y-8 overflow-y-auto">
-        <!-- Breadcrumbs & Header -->
-        <div class="mb-4">
-            <nav class="flex items-center gap-2 text-gray-400 mb-3">
-                <a class="font-body-sm text-body-sm hover:text-primary transition-colors" href="{{ url('/lecturer/approval') }}">Persetujuan Dokumen</a>
-                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-                <span class="font-label-sm text-label-sm text-gray-900 uppercase tracking-wider">Detail Permintaan</span>
-            </nav>
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Detail Pengajuan Surat Keterangan Aktif</h2>
-                    <p class="font-body-md text-body-md text-gray-500 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[18px]">calendar_today</span>
-                        Diajukan pada 12 Oktober 2023
-                    </p>
-                </div>
-                <div class="inline-flex items-center gap-2 px-4 py-2 bg-[#FEF3C7] border border-[#FDE68A] rounded-full self-start">
-                    <span class="w-2 h-2 rounded-full bg-secondary"></span>
-                    <span class="font-label-lg text-label-lg text-[#92400E]">Menunggu Persetujuan</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bento Grid Layout -->
-        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
-            <!-- Left Column: Document Viewer -->
-            <div class="xl:col-span-8 flex flex-col gap-6">
-                <div class="bg-white border border-gray-200 rounded-xl flex flex-col shadow-sm">
-                    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary">description</span>
-                            <div>
-                                <h3 class="font-label-lg text-label-lg text-gray-900">Surat_Keterangan_Aktif_Draft.pdf</h3>
-                                <p class="text-[12px] text-gray-400 font-body-sm">245 KB • Generated by System</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
-                                <span class="material-symbols-outlined">zoom_in</span>
-                            </button>
-                            <button class="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
-                                <span class="material-symbols-outlined">zoom_out</span>
-                            </button>
-                            <div class="w-px h-6 bg-gray-200 my-auto mx-1"></div>
-                            <button class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center gap-1">
-                                <span class="material-symbols-outlined">download</span>
-                                <span class="font-label-sm text-label-sm hidden sm:inline font-semibold">Unduh File</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex-1 bg-gray-50 p-8 flex justify-center overflow-x-auto">
-                        <div class="w-full max-w-[600px] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-200 min-h-[800px] p-12 shrink-0">
-                            <div class="border-b-2 border-[#410063] pb-6 mb-8 text-center">
-                                <h4 class="font-title-lg text-title-lg font-bold text-primary uppercase tracking-widest">Universitas Amikom</h4>
-                                <p class="font-body-sm text-body-sm text-gray-400 mt-1">Fakultas Ilmu Komputer</p>
-                            </div>
-                            <h5 class="font-label-lg text-label-lg text-center mb-8 underline">SURAT KETERANGAN AKTIF KULIAH</h5>
-                            <div class="space-y-4 font-body-sm text-body-sm text-gray-900">
-                                <p class="">Yang bertanda tangan di bawah ini, Dekan Fakultas Ilmu Komputer menerangkan bahwa:</p>
-                                <div class="grid grid-cols-[150px_1fr] gap-2 pl-4">
-                                    <div class="font-semibold">Nama</div><div class="">: Budi Santoso</div>
-                                    <div class="font-semibold">NIM</div><div class="">: 19.11.1234</div>
-                                    <div class="font-semibold">Program Studi</div><div class="">: S1 Informatika</div>
-                                    <div class="font-semibold">Semester</div><div class="">: V (Lima)</div>
-                                </div>
-                                <p class="pt-4">Adalah benar mahasiswa yang bersangkutan aktif mengikuti perkuliahan pada semester Ganjil Tahun Akademik 2023/2024.</p>
-                                <p class="">Surat keterangan ini dibuat untuk keperluan: <strong>Pengajuan Beasiswa Prestasi</strong>.</p>
-                                <div class="mt-16 text-right">
-                                    <p class="">Yogyakarta, 12 Oktober 2023</p>
-                                    <p class="">Mengetahui,</p>
-                                    <div class="h-20"></div>
-                                    <p class="font-semibold">Dr. Heri Santoso</p>
-                                    <p class="text-xs">NIDN: 0611028401</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Column: Student Info, Roles & Details -->
-            <div class="xl:col-span-4 flex flex-col gap-6">
-                <!-- Student Profile Card -->
-                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-                    <h3 class="font-title-lg text-title-lg text-gray-900 mb-6 flex items-center gap-2 pb-3 border-b border-gray-200">
-                        <span class="material-symbols-outlined text-primary">person_search</span>
-                        Informasi Mahasiswa
-                    </h3>
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="relative">
-                            <img alt="Student Photo" class="w-20 h-20 rounded-xl object-cover border-2 border-primary/10 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWpkD_4yvUyMSwxHNUJuzKAKtY12jPb_MLsTooCargeRYX6NaQBI2bff_U-c21QrYBvM1FYwxvAITMWnMUrppNQC6Ua_LSuH1uNB6we5T5ONUMone2gSEHrfN5r0Id5XFDPvf2MdJfnu_6r8c-ucwsIZVzl86oO5BBn8tgU_f4RZhrumAQD37GnuaZN8UVyo_60E7fGmV9No8H1uJhOCEGCSnJCIhzRmBKcgySgGlFdDFMNKs6zj8ybc3fcDlxL2mtBsJwBLFQBNo">
-                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-secondary rounded-full border-2 border-white flex items-center justify-center">
-                                <span class="material-symbols-outlined text-white text-[14px]">verified</span>
-                            </div>
-                        </div>
+    <!-- Bento Grid Layout -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        <!-- Left Column: Document Viewer -->
+        <div class="xl:col-span-8 flex flex-col gap-6">
+            <div class="bg-white border border-gray-200 rounded-xl flex flex-col shadow-sm">
+                <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary">description</span>
                         <div>
-                            <p class="text-xl font-bold text-gray-900 leading-tight">Budi Santoso</p>
-                            <p class="font-body-md text-primary font-semibold mt-1">19.11.1234</p>
+                            <h3 class="font-label-lg text-label-lg text-gray-900">Surat_Keterangan_Aktif_Draft.pdf</h3>
+                            <p class="text-[12px] text-gray-400 font-body-sm">245 KB • Generated by System</p>
                         </div>
                     </div>
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-primary text-[20px]">school</span>
-                                </div>
-                                <span class="font-label-sm text-label-sm text-gray-500 uppercase tracking-wider font-semibold">Program Studi</span>
-                            </div>
-                            <span class="font-body-sm text-body-sm text-primary bg-primary/10 px-3 py-1 rounded-full font-bold">S1 Informatika</span>
+                    <div class="flex gap-2">
+                        <button class="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
+                            <span class="material-symbols-outlined">zoom_in</span>
+                        </button>
+                        <button class="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
+                            <span class="material-symbols-outlined">zoom_out</span>
+                        </button>
+                        <div class="w-px h-6 bg-gray-200 my-auto mx-1"></div>
+                        <button class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined">download</span>
+                            <span class="font-label-sm text-label-sm hidden sm:inline font-semibold">Unduh File</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex-1 bg-gray-50 p-8 flex justify-center overflow-x-auto">
+                    <div class="w-full max-w-[600px] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-200 min-h-[800px] p-12 shrink-0">
+                        <div class="border-b-2 border-[#410063] pb-6 mb-8 text-center">
+                            <h4 class="font-title-lg text-title-lg font-bold text-primary uppercase tracking-widest">Universitas Amikom</h4>
+                            <p class="font-body-sm text-body-sm text-gray-400 mt-1">Fakultas Ilmu Komputer</p>
                         </div>
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-primary text-[20px]">trending_up</span>
-                                </div>
-                                <span class="font-label-sm text-label-sm text-gray-500 uppercase tracking-wider font-semibold">Status</span>
+                        <h5 class="font-label-lg text-label-lg text-center mb-8 underline">SURAT KETERANGAN AKTIF KULIAH</h5>
+                        <div class="space-y-4 font-body-sm text-body-sm text-gray-900">
+                            <p class="">Yang bertanda tangan di bawah ini, Dekan Fakultas Ilmu Komputer menerangkan bahwa:</p>
+                            <div class="grid grid-cols-[150px_1fr] gap-2 pl-4">
+                                <div class="font-semibold">Nama</div><div class="">: Budi Santoso</div>
+                                <div class="font-semibold">NIM</div><div class="">: 19.11.1234</div>
+                                <div class="font-semibold">Program Studi</div><div class="">: S1 Informatika</div>
+                                <div class="font-semibold">Semester</div><div class="">: V (Lima)</div>
                             </div>
-                            <span class="font-body-sm text-body-sm text-[#584409] bg-[#ffe16d] px-3 py-1 rounded-full font-bold">Aktif (Sem. 5)</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div class="p-3 bg-blue-50 rounded-xl border border-blue-100">
-                                <p class="font-label-sm text-label-sm text-blue-800 uppercase tracking-wider mb-1 font-semibold">Total SKS</p>
-                                <div class="inline-block bg-blue-100 px-3 py-1 rounded-lg">
-                                    <p class="font-title-lg text-title-lg text-blue-800 font-bold">110</p>
-                                </div>
-                            </div>
-                            <div class="p-3 bg-green-50 rounded-xl border border-green-100">
-                                <p class="font-label-sm text-label-sm text-green-800 uppercase tracking-wider mb-1 font-semibold">IPK</p>
-                                <div class="inline-block bg-green-100 px-3 py-1 rounded-lg">
-                                    <p class="font-title-lg text-title-lg text-green-800 font-bold">3.85</p>
-                                </div>
+                            <p class="pt-4">Adalah benar mahasiswa yang bersangkutan aktif mengikuti perkuliahan pada semester Ganjil Tahun Akademik 2023/2024.</p>
+                            <p class="">Surat keterangan ini dibuat untuk keperluan: <strong>Pengajuan Beasiswa Prestasi</strong>.</p>
+                            <div class="mt-16 text-right">
+                                <p class="">Yogyakarta, 12 Oktober 2023</p>
+                                <p class="">Mengetahui,</p>
+                                <div class="h-20"></div>
+                                <p class="font-semibold">Dr. Heri Santoso</p>
+                                <p class="text-xs">NIDN: 0611028401</p>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Lecturer Roles Detail Card -->
-                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-                    <h3 class="font-title-lg text-title-lg text-gray-900 mb-6 flex items-center gap-2 pb-3 border-b border-gray-200">
-                        <span class="material-symbols-outlined text-primary">badge</span>Peran Dosen
-                    </h3>
-                    <div class="">
-                        <div class="flex items-center justify-between border-b border-gray-100 last:border-0 py-3">
-                            <div class="flex flex-col gap-1.5">
-                                <span class="text-[10px] font-bold text-white uppercase tracking-widest px-3 py-1 rounded-full bg-amikom-purple self-start">Kaprodi</span>
-                                <span class="text-body-md font-semibold text-gray-900">Heri Setyawan, M.Kom.</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between border-b border-gray-100 last:border-0 py-3">
-                            <div class="flex flex-col gap-1.5">
-                                <span class="text-[10px] font-bold text-white uppercase tracking-widest px-3 py-1 rounded-full bg-amikom-gold self-start">Dosen Wali</span>
-                                <span class="text-body-md font-semibold text-gray-900">Heri Setyawan, M.Kom.</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between border-b border-gray-100 last:border-0 py-3">
-                            <div class="flex flex-col gap-1.5">
-                                <span class="text-[10px] font-bold text-white uppercase tracking-widest px-3 py-1 rounded-full bg-amikom-green self-start">Dosen Pembimbing</span>
-                                <span class="text-body-md font-semibold text-gray-900">Heri Setyawan, M.Kom.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Detail Pengajuan Card -->
-                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-6">
-                    <div class="pb-4 border-b border-gray-100">
-                        <h3 class="font-title-lg text-title-lg text-gray-900 mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary">info</span>Detail Pengajuan</h3>
-                        <div class="space-y-1">
-                            <p class="text-label-sm text-gray-500 uppercase tracking-wider font-semibold">Tujuan Dokumen</p>
-                            <p class="text-body-md font-medium text-gray-900">Pengajuan Beasiswa Prestasi Kemendikbud 2023</p>
+        <!-- Right Column: Student Info, Roles & Details -->
+        <div class="xl:col-span-4 flex flex-col gap-6">
+            <!-- Student Profile Card -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                <h3 class="font-title-lg text-title-lg text-gray-900 mb-6 flex items-center gap-2 pb-3 border-b border-gray-200">
+                    <span class="material-symbols-outlined text-primary">person_search</span>
+                    Informasi Mahasiswa
+                </h3>
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="relative">
+                        <img alt="Student Photo" class="w-20 h-20 rounded-xl object-cover border-2 border-primary/10 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWpkD_4yvUyMSwxHNUJuzKAKtY12jPb_MLsTooCargeRYX6NaQBI2bff_U-c21QrYBvM1FYwxvAITMWnMUrppNQC6Ua_LSuH1uNB6we5T5ONUMone2gSEHrfN5r0Id5XFDPvf2MdJfnu_6r8c-ucwsIZVzl86oO5BBn8tgU_f4RZhrumAQD37GnuaZN8UVyo_60E7fGmV9No8H1uJhOCEGCSnJCIhzRmBKcgySgGlFdDFMNKs6zj8ybc3fcDlxL2mtBsJwBLFQBNo">
+                        <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-secondary rounded-full border-2 border-white flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white text-[14px]">verified</span>
                         </div>
                     </div>
                     <div>
-                        <h3 class="font-title-lg text-title-lg text-gray-900 mb-6 flex items-center gap-2"><span class="material-symbols-outlined text-primary">history</span>Riwayat Status</h3>
-                        <div class="space-y-0">
-                            <div class="relative pl-8 pb-8 border-l-2 border-amikom-purple">
-                                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-amikom-purple border-4 border-white shadow-sm"></div>
-                                <div class="flex flex-col">
-                                    <span class="text-label-lg text-gray-900 font-bold">Pengajuan Terkirim</span>
-                                    <span class="text-body-sm text-gray-500">15 Nov 2023, 09:45</span>
-                                    <span class="mt-2 inline-flex self-start px-2 py-0.5 bg-green-50 text-green-800 text-[10px] font-bold uppercase rounded border border-green-100">Selesai</span>
-                                </div>
+                        <p class="text-xl font-bold text-gray-900 leading-tight">Budi Santoso</p>
+                        <p class="font-body-md text-primary font-semibold mt-1">19.11.1234</p>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary text-[20px]">school</span>
                             </div>
-                            <div class="relative pl-8 pb-8 border-l-2 border-gray-200">
-                                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-amikom-gold border-4 border-white shadow-sm"></div>
-                                <div class="flex flex-col">
-                                    <span class="text-label-lg text-gray-900 font-bold">Persetujuan Dosen Wali</span>
-                                    <span class="text-body-sm text-gray-500">Sedang diverifikasi...</span>
-                                    <span class="mt-2 inline-flex self-start px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold uppercase rounded border border-blue-100">Proses</span>
-                                </div>
+                            <span class="font-label-sm text-label-sm text-gray-500 uppercase tracking-wider font-semibold">Program Studi</span>
+                        </div>
+                        <span class="font-body-sm text-body-sm text-primary bg-primary/10 px-3 py-1 rounded-full font-bold">S1 Informatika</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary text-[20px]">trending_up</span>
                             </div>
-                            <div class="relative pl-8">
-                                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-200 border-4 border-white shadow-sm"></div>
-                                <div class="flex flex-col">
-                                    <span class="text-label-lg text-gray-400 font-bold">Verifikasi Program Studi</span>
-                                    <span class="text-body-sm text-gray-400">Akan datang</span>
-                                </div>
+                            <span class="font-label-sm text-label-sm text-gray-500 uppercase tracking-wider font-semibold">Status</span>
+                        </div>
+                        <span class="font-body-sm text-body-sm text-[#584409] bg-[#ffe16d] px-3 py-1 rounded-full font-bold">Aktif (Sem. 5)</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="p-3 bg-blue-50 rounded-xl border border-blue-100">
+                            <p class="font-label-sm text-label-sm text-blue-800 uppercase tracking-wider mb-1 font-semibold">Total SKS</p>
+                            <div class="inline-block bg-blue-100 px-3 py-1 rounded-lg">
+                                <p class="font-title-lg text-title-lg text-blue-800 font-bold">110</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-green-50 rounded-xl border border-green-100">
+                            <p class="font-label-sm text-label-sm text-green-800 uppercase tracking-wider mb-1 font-semibold">IPK</p>
+                            <div class="inline-block bg-green-100 px-3 py-1 rounded-lg">
+                                <p class="font-title-lg text-title-lg text-green-800 font-bold">3.85</p>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Actions & Notes Card -->
-                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-                    <h3 class="font-title-lg text-title-lg text-gray-900 mb-4 flex items-center gap-2 pb-3 border-b border-gray-200">
-                        <span class="material-symbols-outlined text-primary">edit_note</span>
-                        Tindakan
-                    </h3>
-                    <div class="flex gap-3 pt-2">
-                        <button class="flex-1 py-3 px-4 border border-error text-error font-bold rounded-xl hover:bg-error/5 transition-colors flex items-center justify-center gap-2" onclick="toggleModal('reject-modal', true)">
-                            <span class="material-symbols-outlined">close</span>
-                            Tolak
-                        </button>
-                        <button class="flex-[2] py-3 px-4 bg-primary text-white font-bold rounded-xl hover:bg-primary-container shadow-sm transition-colors flex items-center justify-center gap-2" onclick="toggleModal('approve-modal', true)">
-                            <span class="material-symbols-outlined">check_circle</span>
-                            Setujui Dokumen
-                        </button>
+            <!-- Lecturer Roles Detail Card -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                <h3 class="font-title-lg text-title-lg text-gray-900 mb-6 flex items-center gap-2 pb-3 border-b border-gray-200">
+                    <span class="material-symbols-outlined text-primary">badge</span>Peran Dosen
+                </h3>
+                <div class="">
+                    <div class="flex items-center justify-between border-b border-gray-100 last:border-0 py-3">
+                        <div class="flex flex-col gap-1.5">
+                            <span class="text-[10px] font-bold text-white uppercase tracking-widest px-3 py-1 rounded-full bg-amikom-purple self-start">Kaprodi</span>
+                            <span class="text-body-md font-semibold text-gray-900">Heri Setyawan, M.Kom.</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between border-b border-gray-100 last:border-0 py-3">
+                        <div class="flex flex-col gap-1.5">
+                            <span class="text-[10px] font-bold text-white uppercase tracking-widest px-3 py-1 rounded-full bg-amikom-gold self-start">Dosen Wali</span>
+                            <span class="text-body-md font-semibold text-gray-900">Heri Setyawan, M.Kom.</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between border-b border-gray-100 last:border-0 py-3">
+                        <div class="flex flex-col gap-1.5">
+                            <span class="text-[10px] font-bold text-white uppercase tracking-widest px-3 py-1 rounded-full bg-amikom-green self-start">Dosen Pembimbing</span>
+                            <span class="text-body-md font-semibold text-gray-900">Heri Setyawan, M.Kom.</span>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Detail Pengajuan Card -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-6">
+                <div class="pb-4 border-b border-gray-100">
+                    <h3 class="font-title-lg text-title-lg text-gray-900 mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary">info</span>Detail Pengajuan</h3>
+                    <div class="space-y-1">
+                        <p class="text-label-sm text-gray-500 uppercase tracking-wider font-semibold">Tujuan Dokumen</p>
+                        <p class="text-body-md font-medium text-gray-900">Pengajuan Beasiswa Prestasi Kemendikbud 2023</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-title-lg text-title-lg text-gray-900 mb-6 flex items-center gap-2"><span class="material-symbols-outlined text-primary">history</span>Riwayat Status</h3>
+                    <div class="space-y-0">
+                        <div class="relative pl-8 pb-8 border-l-2 border-amikom-purple">
+                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-amikom-purple border-4 border-white shadow-sm"></div>
+                            <div class="flex flex-col">
+                                <span class="text-label-lg text-gray-900 font-bold">Pengajuan Terkirim</span>
+                                <span class="text-body-sm text-gray-500">15 Nov 2023, 09:45</span>
+                                <span class="mt-2 inline-flex self-start px-2 py-0.5 bg-green-50 text-green-800 text-[10px] font-bold uppercase rounded border border-green-100">Selesai</span>
+                            </div>
+                        </div>
+                        <div class="relative pl-8 pb-8 border-l-2 border-gray-200">
+                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-amikom-gold border-4 border-white shadow-sm"></div>
+                            <div class="flex flex-col">
+                                <span class="text-label-lg text-gray-900 font-bold">Persetujuan Dosen Wali</span>
+                                <span class="text-body-sm text-gray-500">Sedang diverifikasi...</span>
+                                <span class="mt-2 inline-flex self-start px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold uppercase rounded border border-blue-100">Proses</span>
+                            </div>
+                        </div>
+                        <div class="relative pl-8">
+                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-200 border-4 border-white shadow-sm"></div>
+                            <div class="flex flex-col">
+                                <span class="text-label-lg text-gray-400 font-bold">Verifikasi Program Studi</span>
+                                <span class="text-body-sm text-gray-400">Akan datang</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions & Notes Card -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                <h3 class="font-title-lg text-title-lg text-gray-900 mb-4 flex items-center gap-2 pb-3 border-b border-gray-200">
+                    <span class="material-symbols-outlined text-primary">edit_note</span>
+                    Tindakan
+                </h3>
+                <div class="flex gap-3 pt-2">
+                    <button class="flex-1 py-3 px-4 border border-error text-error font-bold rounded-xl hover:bg-error/5 transition-colors flex items-center justify-center gap-2" onclick="toggleModal('reject-modal', true)">
+                        <span class="material-symbols-outlined">close</span>
+                        Tolak
+                    </button>
+                    <button class="flex-[2] py-3 px-4 bg-primary text-white font-bold rounded-xl hover:bg-primary-container shadow-sm transition-colors flex items-center justify-center gap-2" onclick="toggleModal('approve-modal', true)">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        Setujui Dokumen
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="h-12"></div>
     </div>
-</main>
-<!-- END: Main Content -->
+    <div class="h-12"></div>
+</div>
 
 <!-- Success Toast -->
 <div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] opacity-0 pointer-events-none transform translate-y-4" id="success-toast">
@@ -529,7 +405,6 @@
 
     function confirmRejection() {
         toggleModal('reject-modal', false);
-        // Show simulated rejection toast/success
         showSuccessToast('Dokumen ditolak');
     }
 
@@ -569,5 +444,4 @@
         updateApproveButtonState();
     });
 </script>
-</body>
-</html>
+@endsection
