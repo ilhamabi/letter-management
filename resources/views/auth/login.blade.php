@@ -190,7 +190,7 @@
 
                 <!-- Username / Email Field -->
                 <div>
-                    <label class="block font-label-lg text-label-lg text-on-surface mb-2" for="email">NIDN /
+                    <label class="block font-label-lg text-label-lg text-on-surface mb-2" for="username">NIK /
                         NIM</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline">
@@ -198,12 +198,12 @@
                         </span>
                         <input
                             class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline/30 bg-pure-white text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
-                            id="email" name="email" value="{{ old('email') }}"
-                            placeholder="Masukkan NIDN atau NIM" required type="text" autofocus
+                            id="username" name="username" value="{{ old('username') }}"
+                            placeholder="Masukkan NIK atau NIM" required type="text" autofocus
                             autocomplete="username">
                     </div>
-                    @if ($errors->has('email'))
-                        <p class="text-sm text-error mt-1">{{ $errors->first('email') }}</p>
+                    @if ($errors->has('username'))
+                        <p class="text-sm text-error mt-1">{{ $errors->first('username') }}</p>
                     @endif
                 </div>
 
