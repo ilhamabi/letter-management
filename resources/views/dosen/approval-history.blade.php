@@ -22,10 +22,10 @@
                 'date' => '12 Okt 2023',
                 'timestamp' => strtotime('2023-10-12'),
                 'roles' => [
-                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
-                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
+                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
                 ],
-                'status' => 'DISETUJUI',
+                'status' => 'Disetujui',
             ],
             [
                 'name' => 'Siti Aminah',
@@ -34,11 +34,11 @@
                 'date' => '11 Okt 2023',
                 'timestamp' => strtotime('2023-10-11'),
                 'roles' => [
-                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
-                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
-                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
+                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
                 ],
-                'status' => 'DITOLAK',
+                'status' => 'Ditolak',
             ],
             [
                 'name' => 'Rizky Aditya',
@@ -47,9 +47,9 @@
                 'date' => '10 Okt 2023',
                 'timestamp' => strtotime('2023-10-10'),
                 'roles' => [
-                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
                 ],
-                'status' => 'DISETUJUI',
+                'status' => 'Sedang Diproses',
             ],
             [
                 'name' => 'Dian Permatasari',
@@ -58,9 +58,9 @@
                 'date' => '08 Okt 2023',
                 'timestamp' => strtotime('2023-10-08'),
                 'roles' => [
-                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
                 ],
-                'status' => 'DISETUJUI',
+                'status' => 'Disetujui',
             ],
         ];
     }
@@ -71,9 +71,10 @@
 @section('title', 'Riwayat Persetujuan - Universitas Amikom')
 
 @section('content')
-<div class="space-y-8">
+
+<div class="space-y-8 font-body-md">
     <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-900 mb-2">Riwayat Persetujuan</h1>
+        <h1 class="text-2xl font-bold text-gray-900 mb-2 font-headline-lg">Riwayat Persetujuan</h1>
         <p class="text-gray-600">Lihat riwayat permintaan dokumen yang telah diproses dan status akhirnya.</p>
     </div>
 
@@ -82,7 +83,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <!-- Row 1: Search & Batch -->
             <div>
-                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase" for="searchHistory">Cari Dokumen</label>
+                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase font-label-sm" for="searchHistory">Cari Dokumen</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,7 +94,7 @@
                 </div>
             </div>
             <div>
-                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase" for="batch">Angkatan</label>
+                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase font-label-sm" for="batch">Angkatan</label>
                 <div class="relative">
                     <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-amikom-purple focus:border-amikom-purple sm:text-sm rounded-md appearance-none bg-white" id="batch">
                         <option value="all">Semua Angkatan</option>
@@ -110,7 +111,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <!-- Row 2: Doc Type, Role, Status, Sort -->
             <div>
-                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase" for="docType">Jenis Surat</label>
+                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase font-label-sm" for="docType">Jenis Surat</label>
                 <div class="relative">
                     <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-amikom-purple focus:border-amikom-purple sm:text-sm rounded-md appearance-none bg-white" id="docType">
                         <option value="all">Semua Jenis</option>
@@ -124,7 +125,7 @@
                 </div>
             </div>
             <div>
-                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase" for="role">Peran</label>
+                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase font-label-sm" for="role">Peran</label>
                 <div class="relative">
                     <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-amikom-purple focus:border-amikom-purple sm:text-sm rounded-md appearance-none bg-white" id="role">
                         <option value="all">Semua Peran</option>
@@ -138,12 +139,13 @@
                 </div>
             </div>
             <div>
-                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase" for="status">Status</label>
+                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase font-label-sm" for="status">Status</label>
                 <div class="relative">
                     <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-amikom-purple focus:border-amikom-purple sm:text-sm rounded-md appearance-none bg-white" id="status">
                         <option value="all">Semua</option>
                         <option value="disetujui">Disetujui</option>
                         <option value="ditolak">Ditolak</option>
+                        <option value="sedang diproses">Sedang Diproses</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
                         <span class="material-symbols-outlined text-gray-400">expand_more</span>
@@ -151,7 +153,7 @@
                 </div>
             </div>
             <div>
-                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase" for="sort">Urutan</label>
+                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase font-label-sm" for="sort">Urutan</label>
                 <div class="relative">
                     <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-amikom-purple focus:border-amikom-purple sm:text-sm rounded-md appearance-none bg-white font-headline-md" id="sort">
                         <option value="newest">Terbaru</option>
@@ -170,7 +172,7 @@
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden" data-purpose="data-table">
         <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
             <table class="min-w-full divide-y divide-gray-200 text-sm">
-                <thead class="bg-[#F8F9FA] sticky top-0 z-10 text-base">
+                <thead class="bg-[#F8F9FA] sticky top-0 z-10 text-base font-title-lg">
                     <tr>
                         <th class="px-6 py-4 text-left text-gray-600 tracking-wider uppercase w-1/4" scope="col">Nama Mahasiswa</th>
                         <th class="px-6 py-4 text-left text-gray-600 tracking-wider uppercase w-32" scope="col">NIM</th>
@@ -180,7 +182,7 @@
                         <th class="px-6 py-4 text-center text-gray-600 tracking-wider uppercase w-24" scope="col">Status</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200 text-body-md">
+                <tbody class="bg-white divide-y divide-gray-200 text-body-md font-body-md">
                     @forelse ($submissions as $sub)
                         @php
                             // Extract batch from NIM: e.g. 21.11.4321 -> 2021
@@ -192,7 +194,7 @@
                                 return strtolower($r['name']);
                             }, $sub['roles']);
                         @endphp
-                        <tr class="hover:bg-gray-50 cursor-pointer transition-colors group submission-row"
+                        <tr class="hover:bg-surface-container-low cursor-pointer transition-colors group submission-row"
                             data-name="{{ strtolower($sub['name']) }}"
                             data-nim="{{ $sub['nim'] }}"
                             data-type="{{ strtolower($sub['type']) }}"
@@ -213,17 +215,19 @@
                             <td class="px-6 whitespace-nowrap py-4">
                                 <div class="flex flex-col gap-1.5">
                                     @foreach ($sub['roles'] as $r)
-                                        <span class="inline-flex items-center w-fit px-2.5 py-0.5 rounded-full font-semibold {{ $r['bg'] }} text-white text-[10px] uppercase">{{ $r['name'] }}</span>
+                                        <span class="inline-flex items-center w-fit px-2.5 py-0.5 rounded-full font-semibold {{ $r['bg'] }} text-white text-xs">{{ $r['name'] }}</span>
                                     @endforeach
                                 </div>
                             </td>
                             <td class="px-6 whitespace-nowrap py-4 text-center">
                                 @if (strtoupper($sub['status']) === 'DISETUJUI')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-bold bg-[#DCFCE7] text-[#166534] border border-[#166534]/10 text-[10px] tracking-wider uppercase">DISETUJUI</span>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-bold bg-[#DCFCE7] text-[#166534] border border-[#166534]/10 text-xs tracking-wider">Disetujui</span>
                                 @elseif (strtoupper($sub['status']) === 'DITOLAK')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-bold bg-[#FEE2E2] text-[#991B1B] border border-[#991B1B]/10 text-[10px] tracking-wider uppercase">DITOLAK</span>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-bold bg-[#FEE2E2] text-[#991B1B] border border-[#991B1B]/10 text-xs tracking-wider">Ditolak</span>
+                                @elseif (strtoupper($sub['status']) === 'SEDANG DIPROSES' || strtoupper($sub['status']) === 'PENDING')
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-bold bg-[#FFEDD5] text-[#9A3412] border border-[#9A3412]/10 text-xs tracking-wider">Sedang Diproses</span>
                                 @else
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-bold bg-gray-100 text-gray-800 border border-gray-200 text-[10px] tracking-wider uppercase">{{ $sub['status'] }}</span>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-bold bg-gray-100 text-gray-800 border border-gray-200 text-xs tracking-wider">{{ $sub['status'] }}</span>
                                 @endif
                             </td>
                         </tr>
@@ -277,7 +281,95 @@
     <!-- END: Data Table -->
 </div>
 
-<!-- Client-side Interactive Filter Logic -->
+<!-- Modal Detail Alur Persetujuan -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-opacity hidden" id="approval-modal">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]" onclick="event.stopPropagation()">
+        <!-- Modal Header -->
+        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-surface-container">
+            <div class="flex items-center gap-3">
+                <h3 class="text-lg font-bold text-amikom-purple font-title-lg">Detail Alur Persetujuan</h3>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FFEDD5] text-[#9A3412] border border-[#9A3412]/10" id="modal-status-badge">SEDANG DIPROSES</span>
+            </div>
+            <button class="p-1 hover:bg-gray-200 rounded-full transition-colors" id="close-modal-btn">
+                <span class="material-symbols-outlined text-gray-500">close</span>
+            </button>
+        </div>
+        <!-- Modal Body -->
+        <div class="p-6 overflow-y-auto">
+            <!-- Student Info Summary -->
+            <div class="mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 tracking-wider font-label-sm">Mahasiswa</p>
+                        <p class="text-base font-bold text-gray-900" id="modal-student-name">-</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 tracking-wider font-label-sm">NIM</p>
+                        <p class="text-base text-gray-700" id="modal-student-nim">-</p>
+                    </div>
+                    <div class="col-span-2">
+                        <p class="text-xs font-semibold text-gray-500 tracking-wider font-label-sm">Jenis Dokumen</p>
+                        <p class="text-base text-gray-700" id="modal-doc-type">-</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Rejection Reason -->
+            <div class="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg hidden" id="modal-rejection-reason">
+                <h4 class="text-sm font-semibold text-red-800 mb-1">Alasan Penolakan</h4>
+                <p class="text-sm text-red-700">Dokumen tidak lengkap atau tidak sesuai dengan persyaratan administrasi yang berlaku. Silakan perbaiki dan ajukan kembali.</p>
+            </div>
+            <!-- Timeline -->
+            <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+                <!-- Step 1 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                        <span class="material-symbols-outlined text-sm">check_circle</span>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
+                        <div class="flex items-center justify-between space-x-2 mb-1">
+                            <div class="font-bold text-slate-900 font-label-lg font-headline-md">Pengajuan Terkirim</div>
+                            <time class="font-medium text-xs text-amikom-green">Selesai</time>
+                        </div>
+                        <div class="text-slate-500 text-xs">Dokumen telah berhasil diunggah oleh mahasiswa.</div>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" id="step-2">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2" id="step-2-icon">
+                        <span class="material-symbols-outlined text-sm">check_circle</span>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
+                        <div class="flex items-center justify-between space-x-2 mb-1">
+                            <div class="font-bold text-slate-900 font-label-lg font-headline-md">Persetujuan Dosen Wali</div>
+                            <time class="font-medium text-xs text-amikom-green" id="step-2-time">Selesai</time>
+                        </div>
+                        <div class="text-slate-500 text-xs" id="step-2-desc">Telah diverifikasi oleh Dosen Wali.</div>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" id="step-3">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-purple text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 animate-pulse" id="step-3-icon">
+                        <span class="material-symbols-outlined text-sm">sync</span>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
+                        <div class="flex items-center justify-between space-x-2 mb-1">
+                            <div class="font-bold text-slate-900 font-label-lg font-headline-md">Verifikasi Program Studi</div>
+                            <time class="font-medium text-xs text-amikom-purple" id="step-3-time">Menunggu</time>
+                        </div>
+                        <div class="text-slate-500 text-xs" id="step-3-desc">Sedang dalam tahap verifikasi oleh Program Studi.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="px-6 py-4 border-t border-gray-200 flex justify-end gap-3 bg-gray-50">
+            <button class="px-6 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-50 transition-colors shadow-sm" id="close-modal-footer-btn">
+                Tutup
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchHistory');
@@ -328,7 +420,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const matchesRole = role === 'all' || rowRoles.includes(role);
 
             // 5. Status
-            const matchesStatus = status === 'all' || rowStatus === status;
+            const matchesStatus = status === 'all' || rowStatus === status ||
+                                  (status === 'sedang diproses' && rowStatus === 'sedang diproses');
 
             if (matchesQuery && matchesBatch && matchesDocType && matchesRole && matchesStatus) {
                 row.style.display = '';
@@ -378,6 +471,120 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial run
     filterAndSort();
+
+    // Modal Interaction
+    const modal = document.getElementById('approval-modal');
+    
+    function closeModal() {
+        modal.classList.add('hidden');
+    }
+
+    document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+    document.getElementById('close-modal-footer-btn').addEventListener('click', closeModal);
+    modal.addEventListener('click', closeModal);
+
+    rows.forEach(row => {
+        row.addEventListener('click', () => {
+            const name = row.querySelector('td:nth-child(1) p').innerText;
+            const nim = row.querySelector('td:nth-child(2)').innerText;
+            const doc = row.querySelector('td:nth-child(3)').innerText;
+            const statusElement = row.querySelector('td:nth-child(6) span');
+            const statusText = statusElement ? statusElement.innerText.trim().toUpperCase() : '';
+            
+            document.getElementById('modal-student-name').innerText = name;
+            document.getElementById('modal-student-nim').innerText = nim;
+            document.getElementById('modal-doc-type').innerText = doc;
+            
+            const badge = document.getElementById('modal-status-badge');
+            const rejectionSection = document.getElementById('modal-rejection-reason');
+            
+            const step2Icon = document.getElementById('step-2-icon');
+            const step2Time = document.getElementById('step-2-time');
+            const step2Desc = document.getElementById('step-2-desc');
+
+            const step3Icon = document.getElementById('step-3-icon');
+            const step3Time = document.getElementById('step-3-time');
+            const step3Desc = document.getElementById('step-3-desc');
+
+            if (statusText === 'DISETUJUI') {
+                badge.innerText = 'DISETUJUI';
+                badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#DCFCE7] text-[#166534] border border-[#166534]/10';
+                
+                rejectionSection.classList.add('hidden');
+
+                // Step 2
+                step2Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
+                step2Icon.innerHTML = '<span class="material-symbols-outlined text-sm">check_circle</span>';
+                step2Time.innerText = 'Selesai';
+                step2Time.className = 'font-medium text-xs text-amikom-green';
+                step2Desc.innerText = 'Telah diverifikasi oleh Dosen Wali.';
+
+                // Step 3
+                step3Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
+                step3Icon.innerHTML = '<span class="material-symbols-outlined text-sm">check_circle</span>';
+                step3Time.innerText = 'Selesai';
+                step3Time.className = 'font-medium text-xs text-amikom-green';
+                step3Desc.innerText = 'Telah disetujui oleh Kepala Program Studi.';
+
+            } else if (statusText === 'DITOLAK') {
+                badge.innerText = 'DITOLAK';
+                badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FEE2E2] text-[#991B1B] border border-[#991B1B]/10';
+                
+                rejectionSection.classList.remove('hidden');
+
+                // Step 2
+                step2Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-red-600 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
+                step2Icon.innerHTML = '<span class="material-symbols-outlined text-sm">cancel</span>';
+                step2Time.innerText = 'Ditolak';
+                step2Time.className = 'font-medium text-xs text-red-600';
+                step2Desc.innerText = 'Ditolak oleh Dosen Wali.';
+
+                // Step 3
+                step3Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-gray-200 text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
+                step3Icon.innerHTML = '<span class="material-symbols-outlined text-sm">hourglass_empty</span>';
+                step3Time.innerText = 'Dibatalkan';
+                step3Time.className = 'font-medium text-xs text-gray-400';
+                step3Desc.innerText = 'Tahap ini tidak dilanjutkan.';
+            } else if (statusText === 'SEDANG DIPROSES') {
+                badge.innerText = 'SEDANG DIPROSES';
+                badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FFEDD5] text-[#9A3412] border border-[#9A3412]/10';
+                
+                rejectionSection.classList.add('hidden');
+
+                // Step 2
+                step2Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
+                step2Icon.innerHTML = '<span class="material-symbols-outlined text-sm">check_circle</span>';
+                step2Time.innerText = 'Selesai';
+                step2Time.className = 'font-medium text-xs text-amikom-green';
+                step2Desc.innerText = 'Telah diverifikasi oleh Dosen Wali.';
+
+                // Step 3
+                step3Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-purple text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 animate-pulse';
+                step3Icon.innerHTML = '<span class="material-symbols-outlined text-sm">sync</span>';
+                step3Time.innerText = 'Menunggu';
+                step3Time.className = 'font-medium text-xs text-amikom-purple';
+                step3Desc.innerText = 'Sedang dalam tahap verifikasi oleh Program Studi.';
+            } else {
+                badge.innerText = statusText;
+                badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-gray-100 text-gray-800 border border-gray-200';
+                rejectionSection.classList.add('hidden');
+                
+                step2Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-gold text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
+                step2Icon.innerHTML = '<span class="material-symbols-outlined text-sm">pending</span>';
+                step2Time.innerText = 'Menunggu';
+                step2Time.className = 'font-medium text-xs text-amikom-gold';
+                step2Desc.innerText = 'Menunggu verifikasi dari Dosen Wali terkait.';
+
+                step3Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-gray-200 text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
+                step3Icon.innerHTML = '<span class="material-symbols-outlined text-sm">hourglass_empty</span>';
+                step3Time.innerText = 'Belum Dimulai';
+                step3Time.className = 'font-medium text-xs text-gray-400';
+                step3Desc.innerText = 'Tahap akhir persetujuan oleh Kepala Program Studi.';
+            }
+            
+            modal.classList.remove('hidden');
+        });
+    });
 });
 </script>
 @endsection

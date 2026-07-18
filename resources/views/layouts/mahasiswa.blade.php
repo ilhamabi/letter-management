@@ -12,14 +12,10 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Universitas Amikom')</title>
+    <title>Sistem Layanan Surat D3 Teknik Informatika – Universitas Amikom</title>
     
-    <!-- Tailwind CSS (Vite / Fallback CDN) -->
-    @if (Route::has('login'))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    @endif
+    <!-- Tailwind CSS (Vite) -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Public+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
@@ -27,118 +23,7 @@
     <!-- Separated Custom Stylesheet -->
     <link rel="stylesheet" href="{{ asset('css/mahasiswa-dashboard.css') }}">
 
-    <script id="tailwind-config">
-        try {
-            tailwind.config = {
-                darkMode: "class",
-                theme: {
-                    extend: {
-                        "colors": {
-                            "error-container": "#ffdad6",
-                            "secondary-fixed-dim": "#e9c400",
-                            "surface-container-lowest": "#ffffff",
-                            "on-surface": "#1b1c1c",
-                            "secondary-container": "#fcd400",
-                            "on-primary": "#ffffff",
-                            "on-secondary-fixed": "#221b00",
-                            "surface": "#fbf9f9",
-                            "surface-bright": "#fbf9f9",
-                            "on-secondary": "#ffffff",
-                            "primary-container": "#59207b",
-                            "inverse-surface": "#303031",
-                            "outline": "#7e7481",
-                            "tertiary": "#332500",
-                            "surface-container-low": "#f5f3f3",
-                            "on-secondary-fixed-variant": "#544600",
-                            "on-tertiary-container": "#c0a461",
-                            "on-tertiary-fixed-variant": "#584409",
-                            "surface-gray": "#F7F7F7",
-                            "background": "#fbf9f9",
-                            "on-error": "#ffffff",
-                            "on-primary-container": "#cc8ff0",
-                            "tertiary-fixed": "#ffdf96",
-                            "surface-container": "#efeded",
-                            "surface-dim": "#dbdad9",
-                            "tertiary-fixed-dim": "#e1c37d",
-                            "secondary": "#705d00",
-                            "surface-tint": "#7e45a0",
-                            "surface-container-highest": "#e3e2e2",
-                            "deep-black": "#1A1A1A",
-                            "on-background": "#1b1c1c",
-                            "inverse-on-surface": "#f2f0f0",
-                            "on-primary-fixed": "#30004b",
-                            "tertiary-container": "#4d3a00",
-                            "on-secondary-container": "#6e5c00",
-                            "on-surface-variant": "#4d4450",
-                            "on-primary-fixed-variant": "#642c86",
-                            "primary": "#410063",
-                            "outline-variant": "#cfc2d1",
-                            "on-tertiary": "#ffffff",
-                            "error": "#ba1a1a",
-                            "secondary-fixed": "#ffe16d",
-                            "on-error-container": "#93000a",
-                            "inverse-primary": "#e5b4ff",
-                            "pure-white": "#FFFFFF",
-                            "on-tertiary-fixed": "#251a00",
-                            "primary-fixed-dim": "#e5b4ff",
-                            "surface-container-high": "#e9e8e7",
-                            "primary-fixed": "#f5d9ff",
-                            "surface-variant": "#e3e2e2"
-                        },
-                        "borderRadius": {
-                            "DEFAULT": "0.125rem",
-                            "lg": "0.25rem",
-                            "xl": "0.5rem",
-                            "full": "0.75rem"
-                        },
-                        "spacing": {
-                            "gutter": "24px",
-                            "container-max": "1280px",
-                            "margin-desktop": "48px",
-                            "margin-mobile": "16px",
-                            "base": "8px",
-                            "sidebar-width": "280px",
-                            "unit": "8px",
-                            "stack-lg": "32px",
-                            "stack-sm": "8px",
-                            "container-padding": "32px",
-                            "stack-md": "16px"
-                        },
-                        "fontFamily": {
-                            "body-md": ["Public Sans"],
-                            "headline-lg-mobile": ["Montserrat"],
-                            "body-sm": ["Public Sans"],
-                            "title-lg": ["Montserrat"],
-                            "headline-md": ["Montserrat"],
-                            "headline-lg": ["Montserrat"],
-                            "label-lg": ["Public Sans"],
-                            "body-lg": ["Public Sans"],
-                            "label-sm": ["Public Sans"],
-                            "display-lg": ["Montserrat"],
-                            "headline-sm": ["Montserrat"],
-                            "label-md": ["Public Sans"]
-                        },
-                        "fontSize": {
-                            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
-                            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
-                            "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
-                            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
-                            "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
-                            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
-                            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
-                            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
-                            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
-                            "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }]
-                        }
-                    },
-                }
-            };
-        } catch (e) {
-            // Tailwind CDN is not loaded, styled via compiled Vite CSS assets
-        }
-    </script>
+
     @stack('styles')
 </head>
 <body class="bg-surface-gray text-on-surface min-h-screen flex">

@@ -18,14 +18,8 @@
     
     <title>Sistem Layanan Surat D3 Teknik Informatika – Universitas Amikom</title>
 
-    <!-- Tailwind CSS (Vite / Fallback CDN) -->
-    @if (Route::has('login'))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-        <!-- AlpineJS CDN Fallback -->
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @endif
+    <!-- Tailwind CSS & JS (Vite) -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Separated Custom Stylesheet -->
     <link rel="stylesheet" href="{{ asset('css/dosen-dashboard.css') }}">
