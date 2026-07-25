@@ -1,4 +1,4 @@
-@extends('layouts.mahasiswa')
+@extends('layouts.student')
 
 @section('title', 'Dashboard - Universitas Amikom')
 

@@ -187,7 +187,7 @@
     }
 @endphp
 
-@extends('layouts.dosen')
+@extends('layouts.lecturer')
 
 @section('title', 'Dashboard Dosen')
 

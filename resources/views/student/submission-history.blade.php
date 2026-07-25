@@ -1,4 +1,4 @@
-@extends('layouts.mahasiswa')
+@extends('layouts.student')
 
 @section('title', 'Riwayat Pengajuan - Universitas Amikom')
 

@@ -66,7 +66,7 @@
     }
 @endphp
 
-@extends('layouts.dosen')
+@extends('layouts.lecturer')
 
 @section('title', 'Riwayat Persetujuan - Universitas Amikom')
 

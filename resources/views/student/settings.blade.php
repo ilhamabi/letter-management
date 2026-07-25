@@ -1,4 +1,4 @@
-@extends('layouts.mahasiswa')
+@extends('layouts.student')
 
 @section('title', 'Pengaturan Akun - Layanan Dokumen')
 

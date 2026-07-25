@@ -20,40 +20,40 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/lecturer', function () {
-    return view('dosen.dashboard');
+    return view('lecturer.dashboard');
 });
 
 Route::get('/lecturer/approval', function(){
-    return view('dosen.approval');
+    return view('lecturer.approval');
 });
 
 Route::get('/lecturer/approval/detail', function(){
-    return view('dosen.approval-detail');
+    return view('lecturer.approval-detail');
 });
 
 Route::get('/lecturer/approval-history', function(){
-    return view('dosen.approval-history');
+    return view('lecturer.approval-history');
 });
 
 Route::get('/lecturer/settings', function(){
-    return view('dosen.settings');
+    return view('lecturer.settings');
 });
 
 
 Route::get('/student', function(){
-    return view('mahasiswa.dashboard');
+    return view('student.dashboard');
 });
 
 Route::get('/student/submission', function(){
-    return view('mahasiswa.submission');
+    return view('student.submission');
 });
 
 Route::get('/student/submission-history', function(){
-    return view('mahasiswa.submission-history');
+    return view('student.submission-history');
 });
 
 Route::get('/student/settings', function(){
-    return view('mahasiswa.settings');
+    return view('student.settings');
 });
 
 
