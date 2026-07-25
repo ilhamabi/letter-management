@@ -6,19 +6,11 @@
     // Default / Mock data so the submission page works out of the box even without controller variables
     $studentName = $studentName ?? (auth()->check() ? auth()->user()->name : 'Alex Chandra');
     $nim = $nim ?? '21.11.9999';
-    $prodi = $prodi ?? 'S1 Informatika';
+    $prodi = $prodi ?? 'D3 Teknik Informatika';
     $profilePhoto = $profilePhoto ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuAI8U6QdliiTjyZkmQbBg28RYGNyEZiVLatEqMLpzH_ob8gvGl3P0O3s-Qt3Fc_D79jcaahFcbv3qSGezuoYVvawMrNM46hPYZSlOtyaAlPOojd2ZNhDPc1JYxE7y4tEponJE2zSBgJXYCeIo86cW_9J3AKqWvThHpMPKk9_JoTHl67QUOIb6pY3uPxrBpOxsik07pJOMRi5tfE-Y5BWv_wSM8ZGJ0l6pO-W_bb1XcmX1-qIBDqQRuXnyhiZkKKhr43d09ocXNKJ80';
 @endphp
 
 @section('content')
-    <nav class="flex items-center gap-2 text-on-surface-variant font-label-sm">
-        <a class="hover:text-primary transition-colors" href="#">Portal</a>
-        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-        <a class="hover:text-primary transition-colors" href="#">Layanan Dokumen</a>
-        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-        <span class="text-primary font-semibold">Buat Permintaan Baru</span>
-    </nav>
-    
     <header>
         <h3 class="font-headline-lg text-[32px] text-on-surface font-bold mb-3">Buat Permintaan Baru</h3>
         <p class="font-body-md text-on-surface-variant max-w-3xl leading-relaxed">
@@ -26,9 +18,9 @@
         </p>
     </header>
     
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full">
         <div class="lg:col-span-8 bg-pure-white border border-outline-variant rounded-xl shadow-sm overflow-hidden">
-            <div class="p-8">
+            <div class="pt-1 px-8 pb-8">
                 <form class="space-y-8" id="request-form">
                     @csrf
                     <div class="space-y-2">
@@ -36,11 +28,9 @@
                         <div class="relative">
                             <select class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface font-body-md" id="jenis_surat">
                                 <option disabled="" selected="" value="">Pilih jenis surat...</option>
-                                <option value="transkrip">Transkrip Resmi (Official Transcript)</option>
-                                <option value="keterangan_aktif">Surat Keterangan Aktif Kuliah</option>
-                                <option value="sertifikat_lulus">Sertifikat Kelulusan (SKL)</option>
-                                <option value="legalisir">Legalisir Ijazah/Transkrip</option>
-                                <option value="pengantar_magang">Surat Pengantar Magang</option>
+                                <option value="persetujuan_ta_non_reguler">Surat Persetujuan Tugas Akhir Jalur Non-Reguler</option>
+                                <option value="rekomendasi_magang">Surat Rekomendasi Magang</option>
+                                <option value="rekomendasi_pendadaran">Surat Rekomendasi Pendaftaran Pendadaran</option>
                             </select>
                         </div>
                     </div>
@@ -49,16 +39,17 @@
                         <textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface font-body-md resize-none" id="keperluan" placeholder="Contoh: Pengajuan Beasiswa PPA, Persyaratan Magang di PT. Telkom..." rows="3"></textarea>
                         <p class="text-[12px] text-on-surface-variant">Jelaskan secara singkat tujuan penggunaan dokumen ini.</p>
                     </div>
-                    <div class="space-y-2">
-                        <label class="block font-label-lg text-on-surface mb-1" for="catatan">Catatan Tambahan <span class="text-on-surface-variant font-normal text-sm ml-1">(Opsional)</span></label>
-                        <textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface font-body-md resize-none" id="catatan" placeholder="Tambahkan informasi tambahan jika diperlukan..." rows="4"></textarea>
-                    </div>
                     <div class="space-y-4">
                         <div>
                             <label class="block font-label-lg text-on-surface mb-1">Lampiran Pendukung</label>
                             <p class="text-[12px] text-on-surface-variant mb-3">Unggah dokumen pendukung (KTM, Transkrip, atau Bukti Bayar) dalam format PDF (Maks. 2MB)</p>
                         </div>
-                        <div class="border-2 border-dashed border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center gap-3 bg-surface-container-low/30 hover:bg-surface-container-low transition-colors cursor-pointer group">
+                        
+                        <!-- Hidden PDF Input (Multiple) -->
+                        <input type="file" id="file-input" name="attachments[]" accept=".pdf,application/pdf" multiple class="hidden" />
+
+                        <!-- Drag and Drop Zone -->
+                        <div id="drop-zone" class="border-2 border-dashed border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center gap-3 bg-surface-container-low/30 hover:bg-surface-container-low transition-colors cursor-pointer group">
                             <div class="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                                 <span class="material-symbols-outlined text-[28px]">upload_file</span>
                             </div>
@@ -66,24 +57,17 @@
                                 <p class="font-medium text-on-surface">Tarik dan lepas berkas di sini</p>
                                 <p class="text-xs text-on-surface-variant mt-1">atau</p>
                             </div>
-                            <button class="px-6 py-2 bg-pure-white border border-outline-variant rounded-lg text-primary font-label-md hover:bg-primary hover:text-on-primary transition-all" type="button">Pilih Berkas</button>
+                            <button id="btn-select-file" class="px-6 py-2 bg-pure-white border border-outline-variant rounded-lg text-primary font-label-md hover:bg-primary hover:text-on-primary transition-all" type="button">Pilih Berkas</button>
                         </div>
-                        <div class="space-y-2">
-                            <div class="flex items-center justify-between p-3 bg-surface-container-lowest border border-outline-variant rounded-lg">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded bg-error/10 flex items-center justify-center text-error">
-                                        <span class="material-symbols-outlined">picture_as_pdf</span>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-medium text-on-surface">KTM_Alex_Chandra.pdf</p>
-                                        <p class="text-[10px] text-on-surface-variant">1.2 MB</p>
-                                    </div>
-                                </div>
-                                <button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-error transition-colors" type="button">
-                                    <span class="material-symbols-outlined text-[20px]">delete</span>
-                                </button>
-                            </div>
+
+                        <!-- Error Message Alert -->
+                        <div id="file-error-msg" class="hidden p-3 bg-error-container/40 border border-error/30 rounded-lg text-error text-xs flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">error</span>
+                            <span id="file-error-text">Hanya berkas format PDF yang diperbolehkan!</span>
                         </div>
+
+                        <!-- File Item List Container (Dynamic Multi-File Rendering) -->
+                        <div class="space-y-2" id="file-list-container"></div>
                     </div>
                     <div class="pt-6 border-t border-outline-variant">
                         <button class="w-full bg-primary text-on-primary font-label-lg py-4 px-6 rounded-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-md shadow-primary/10 flex items-center justify-center gap-2" id="submit-request-btn" type="button">
@@ -104,15 +88,11 @@
                 <ul class="space-y-4 text-[13px] leading-relaxed">
                     <li class="flex gap-3">
                         <span class="material-symbols-outlined text-[18px] shrink-0 text-primary-container-on">timer</span>
-                        <span class="">Proses pengerjaan dokumen membutuhkan waktu <strong>2-3 hari kerja</strong>.</span>
-                    </li>
-                    <li class="flex gap-3">
-                        <span class="material-symbols-outlined text-[18px] shrink-0 text-primary-container-on">mail</span>
-                        <span class="">Notifikasi akan dikirimkan melalui email dan dashboard portal.</span>
+                        <span class="">Proses pengerjaan dokumen membutuhkan waktu 1<strong>-2 hari kerja</strong>.</span>
                     </li>
                     <li class="flex gap-3">
                         <span class="material-symbols-outlined text-[18px] shrink-0 text-primary-container-on">download</span>
-                        <span class="">Dokumen digital dapat diunduh langsung setelah status <strong>"Selesai"</strong>.</span>
+                        <span class="">Dokumen digital dapat diunduh langsung setelah status <strong>"Disetujui"</strong>.</span>
                     </li>
                 </ul>
             </div>
@@ -121,7 +101,7 @@
                 <div class="relative p-6 space-y-6">
                     <div class="flex items-center justify-between">
                         <h4 class="font-title-lg text-[18px] font-bold text-on-secondary-container">Informasi Mahasiswa</h4>
-                        <span class="px-2 py-1 bg-pure-white/50 rounded-full text-[10px] font-bold text-secondary uppercase tracking-wider border border-secondary/20">Identity Verified</span>
+                        <!-- <span class="px-2 py-1 bg-pure-white/50 rounded-full text-[10px] font-bold text-secondary uppercase tracking-wider border border-secondary/20">Identity Verified</span> -->
                     </div>
                     <div class="space-y-4">
                         <div class="flex items-center gap-3">
@@ -144,7 +124,7 @@
                             </div>
                         </div>
                         <div class="pt-4 border-t border-secondary/10">
-                            <p class="text-[10px] text-on-secondary-container/70 uppercase font-bold tracking-wider mb-3">Dosen Wali</p>
+                            <p class="text-[10px] text-on-secondary-container/70 font-bold tracking-wider mb-3">Dosen Wali</p>
                             <div class="flex items-start gap-3">
                                 <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
                                     <span class="material-symbols-outlined text-[20px]">person_4</span>
@@ -152,10 +132,11 @@
                                 <div>
                                     <p class="font-semibold text-on-secondary-container text-[14px]">Heri Setyawan, M.Kom.</p>
                                     <p class="text-[12px] text-on-secondary-container/70">NIDN: 123456789</p>
+                                    <p class="text-[12px] text-on-secondary-container/70">heri.s@amikom.ac.id</p>
                                 </div>
                             </div>
                             <div class="pt-4 border-t border-secondary/10 mt-4">
-                                <p class="text-[10px] text-on-secondary-container/70 uppercase font-bold tracking-wider mb-3">Ketua Program Studi</p>
+                                <p class="text-[10px] text-on-secondary-container/70 font-bold tracking-wider mb-3">Ketua Program Studi</p>
                                 <div class="flex items-start gap-3">
                                     <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
                                         <span class="material-symbols-outlined text-[20px]">person_3</span>
@@ -163,11 +144,12 @@
                                     <div>
                                         <p class="font-semibold text-on-secondary-container text-[14px]">Dr. Andi Wijaya, M.T.</p>
                                         <p class="text-[12px] text-on-secondary-container/70">NIDN: 061234567</p>
+                                        <p class="text-[12px] text-on-secondary-container/70">andi.w@amikom.ac.id</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="pt-4 border-t border-secondary/10 mt-4">
-                                <p class="text-[10px] text-on-secondary-container/70 uppercase font-bold tracking-wider mb-3">Dosen Pembimbing</p>
+                                <p class="text-[10px] text-on-secondary-container/70 font-bold tracking-wider mb-3">Dosen Pembimbing</p>
                                 <div class="flex items-start gap-3">
                                     <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
                                         <span class="material-symbols-outlined text-[20px]">person_2</span>
@@ -175,6 +157,7 @@
                                     <div>
                                         <p class="font-semibold text-on-secondary-container text-[14px]">Siti Aminah, S.Kom., M.Cs.</p>
                                         <p class="text-[12px] text-on-secondary-container/70">NIDN: 069876543</p>
+                                        <p class="text-[12px] text-on-secondary-container/70">siti.a@amikom.ac.id</p>
                                     </div>
                                 </div>
                             </div>
@@ -248,5 +231,137 @@
             alert('Permintaan Anda telah berhasil dikirim!');
         }, 1500);
     });
+
+    // Multi-File PDF Upload Validation & Drag-and-Drop
+    const fileInput = document.getElementById('file-input');
+    const dropZone = document.getElementById('drop-zone');
+    const btnSelectFile = document.getElementById('btn-select-file');
+    const errorMsg = document.getElementById('file-error-msg');
+    const errorText = document.getElementById('file-error-text');
+    const fileListContainer = document.getElementById('file-list-container');
+
+    let selectedFiles = [];
+
+    const showError = (message) => {
+        errorText.innerText = message;
+        errorMsg.classList.remove('hidden');
+    };
+
+    const hideError = () => {
+        errorMsg.classList.add('hidden');
+    };
+
+    const formatSize = (bytes) => {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    };
+
+    const renderFileList = () => {
+        fileListContainer.innerHTML = '';
+
+        selectedFiles.forEach((file, index) => {
+            const itemHtml = `
+                <div class="flex items-center justify-between p-3 bg-surface-container-lowest border border-outline-variant rounded-lg animate-fade-in">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <div class="w-10 h-10 rounded bg-error/10 flex items-center justify-center text-error shrink-0">
+                            <span class="material-symbols-outlined">picture_as_pdf</span>
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="text-sm font-medium text-on-surface truncate">${file.name}</p>
+                            <p class="text-[10px] text-on-surface-variant">${formatSize(file.size)}</p>
+                        </div>
+                    </div>
+                    <button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-error transition-colors shrink-0" type="button" onclick="deleteSelectedFile(${index})">
+                        <span class="material-symbols-outlined text-[20px]">delete</span>
+                    </button>
+                </div>
+            `;
+            fileListContainer.insertAdjacentHTML('beforeend', itemHtml);
+        });
+    };
+
+    window.deleteSelectedFile = (index) => {
+        selectedFiles.splice(index, 1);
+        renderFileList();
+        if (selectedFiles.length === 0) {
+            hideError();
+        }
+    };
+
+    const processFiles = (files) => {
+        if (!files || files.length === 0) return;
+        let invalidFormatCount = 0;
+        let oversizedCount = 0;
+
+        Array.from(files).forEach(file => {
+            const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+            if (!isPdf) {
+                invalidFormatCount++;
+                return;
+            }
+            if (file.size > 2 * 1024 * 1024) {
+                oversizedCount++;
+                return;
+            }
+            // Avoid duplicate file addition
+            const exists = selectedFiles.some(f => f.name === file.name && f.size === file.size);
+            if (!exists) {
+                selectedFiles.push(file);
+            }
+        });
+
+        if (invalidFormatCount > 0) {
+            showError('Format berkas tidak valid! Hanya berkas format PDF yang diperbolehkan.');
+        } else if (oversizedCount > 0) {
+            showError('Terdapat berkas yang ukurannya melebihi batas maksimal 2MB!');
+        } else {
+            hideError();
+        }
+
+        renderFileList();
+    };
+
+    // Trigger file dialog
+    if (btnSelectFile && fileInput) {
+        btnSelectFile.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fileInput.click();
+        });
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                processFiles(e.target.files);
+            }
+        });
+
+        // Drag and Drop Events
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.add('bg-primary/5', 'border-primary');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.remove('bg-primary/5', 'border-primary');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                processFiles(files);
+            }
+        });
+    }
 </script>
 @endpush

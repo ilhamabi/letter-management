@@ -76,7 +76,7 @@
                             <div class="grid grid-cols-[150px_1fr] gap-2 pl-4">
                                 <div class="font-semibold">Nama</div><div class="">: Budi Santoso</div>
                                 <div class="font-semibold">NIM</div><div class="">: 19.11.1234</div>
-                                <div class="font-semibold">Program Studi</div><div class="">: S1 Informatika</div>
+                                <div class="font-semibold">Program Studi</div><div class="">: D3 Teknik Informatika</div>
                                 <div class="font-semibold">Semester</div><div class="">: V (Lima)</div>
                             </div>
                             <p class="pt-4">Adalah benar mahasiswa yang bersangkutan aktif mengikuti perkuliahan pada semester Ganjil Tahun Akademik 2023/2024.</p>
@@ -104,7 +104,7 @@
                 </h3>
                 <div class="flex items-center gap-4 mb-8">
                     <div class="relative">
-                        <img alt="Student Photo" class="w-20 h-20 rounded-xl object-cover border-2 border-primary/10 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWpkD_4yvUyMSwxHNUJuzKAKtY12jPb_MLsTooCargeRYX6NaQBI2bff_U-c21QrYBvM1FYwxvAITMWnMUrppNQC6Ua_LSuH1uNB6we5T5ONUMone2gSEHrfN5r0Id5XFDPvf2MdJfnu_6r8c-ucwsIZVzl86oO5BBn8tgU_f4RZhrumAQD37GnuaZN8UVyo_60E7fGmV9No8H1uJhOCEGCSnJCIhzRmBKcgySgGlFdDFMNKs6zj8ybc3fcDlxL2mtBsJwBLFQBNo">
+                        <img alt="Student Photo" class="w-20 h-20 rounded-xl object-cover border-2 border-primary/10 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI8U6QdliiTjyZkmQbBg28RYGNyEZiVLatEqMLpzH_ob8gvGl3P0O3s-Qt3Fc_D79jcaahFcbv3qSGezuoYVvawMrNM46hPYZSlOtyaAlPOojd2ZNhDPc1JYxE7y4tEponJE2zSBgJXYCeIo86cW_9J3AKqWvThHpMPKk9_JoTHl67QUOIb6pY3uPxrBpOxsik07pJOMRi5tfE-Y5BWv_wSM8ZGJ0l6pO-W_bb1XcmX1-qIBDqQRuXnyhiZkKKhr43d09ocXNKJ80">
                         <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-secondary rounded-full border-2 border-white flex items-center justify-center">
                             <span class="material-symbols-outlined text-white text-[14px]">verified</span>
                         </div>
@@ -122,7 +122,7 @@
                             </div>
                             <span class="font-label-sm text-label-sm text-gray-500 uppercase tracking-wider font-semibold">Program Studi</span>
                         </div>
-                        <span class="font-body-sm text-body-sm text-primary bg-primary/10 px-3 py-1 rounded-full font-bold">S1 Informatika</span>
+                        <span class="font-body-sm text-body-sm text-primary bg-primary/10 px-3 py-1 rounded-full font-bold">D3 Teknik Informatika</span>
                     </div>
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
                         <div class="flex items-center gap-3">

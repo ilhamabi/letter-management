@@ -2,7 +2,7 @@
     // Default / Mock data in case variables aren't passed from controller or view
     $studentName = $studentName ?? (auth()->check() ? auth()->user()->name : 'Alex Chandra');
     $nim = $nim ?? '21.11.9999';
-    $prodi = $prodi ?? 'S1 Informatika';
+    $prodi = $prodi ?? 'D3 Teknik Informatika';
     $profilePhoto = $profilePhoto ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuAI8U6QdliiTjyZkmQbBg28RYGNyEZiVLatEqMLpzH_ob8gvGl3P0O3s-Qt3Fc_D79jcaahFcbv3qSGezuoYVvawMrNM46hPYZSlOtyaAlPOojd2ZNhDPc1JYxE7y4tEponJE2zSBgJXYCeIo86cW_9J3AKqWvThHpMPKk9_JoTHl67QUOIb6pY3uPxrBpOxsik07pJOMRi5tfE-Y5BWv_wSM8ZGJ0l6pO-W_bb1XcmX1-qIBDqQRuXnyhiZkKKhr43d09ocXNKJ80';
 @endphp
 
@@ -12,7 +12,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Sistem Layanan Surat D3 Teknik Informatika – Universitas Amikom</title>
+    <title>@yield('title', 'Universitas Amikom')</title>
     
     <!-- Tailwind CSS (Vite) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -51,7 +51,7 @@
             <span class="font-label-lg text-label-lg">Riwayat Pengajuan</span>
         </a>
         <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->is('student/settings') ? 'bg-primary text-white font-bold relative' : 'text-on-surface-variant hover:bg-surface-container' }}" href="{{ url('/student/settings') }}">
-            <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->is('student/settings') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">account_circle</span>
+            <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->is('student/settings') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">settings</span>
             <span class="font-label-lg text-label-lg">Pengaturan Akun</span>
         </a>
     </nav>
@@ -95,7 +95,7 @@
     </header>
     
     <!-- Main Canvas -->
-    <main class="flex-grow p-container-padding flex flex-col gap-8 max-w-6xl">
+    <main class="flex-grow p-container-padding flex flex-col gap-8 w-full">
         @yield('content')
     </main>
 </div>
