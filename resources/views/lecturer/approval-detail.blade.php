@@ -7,6 +7,56 @@
         ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
         ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
     ];
+
+    // Load letter HTML and style
+    $letterHtmlPath = resource_path('views/letter/surat_persetujuan_non_reguler_ahmad_doni.html');
+    $letterCssPath = resource_path('views/letter/letter-style.css');
+
+    $bodyContent = '';
+    $scopedCss = '';
+
+    if (file_exists($letterHtmlPath)) {
+        $htmlContent = file_get_contents($letterHtmlPath);
+        // Extract content inside body tag
+        if (preg_match('/<body[^>]*>(.*?)<\/body>/is', $htmlContent, $matches)) {
+            $bodyContent = $matches[1];
+        } else {
+            $bodyContent = $htmlContent;
+        }
+
+        // Rewrite image paths: src="filename" -> src="/letter/filename"
+        $bodyContent = preg_replace('/src=["\']([^"\']+\.(png|webp|svg|jpg|jpeg|gif))["\']/i', 'src="' . url('/letter') . '/$1"', $bodyContent);
+    }
+
+    if (file_exists($letterCssPath)) {
+        $cssContent = file_get_contents($letterCssPath);
+        
+        // Scope prefixing helper for .letter-preview-wrapper
+        $blocks = explode('}', $cssContent);
+        foreach ($blocks as &$block) {
+            if (trim($block) === '') continue;
+            
+            $parts = explode('{', $block);
+            if (count($parts) === 2) {
+                $selectors = explode(',', $parts[0]);
+                foreach ($selectors as &$selector) {
+                    $selector = trim($selector);
+                    if ($selector === 'body') {
+                        $selector = '.letter-preview-wrapper';
+                    } elseif ($selector === '*') {
+                        $selector = '.letter-preview-wrapper *';
+                    } elseif (str_starts_with($selector, '@media') || str_starts_with($selector, '@page')) {
+                        // Skip media/page rules
+                    } else {
+                        $selector = '.letter-preview-wrapper ' . $selector;
+                    }
+                }
+                $parts[0] = implode(', ', $selectors);
+                $block = implode('{', $parts);
+            }
+        }
+        $scopedCss = implode('}', $blocks);
+    }
 @endphp
 
 @extends('layouts.lecturer')
@@ -51,44 +101,30 @@
                         </div>
                     </div>
                     <div class="flex gap-2">
-                        <button class="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
-                            <span class="material-symbols-outlined">zoom_in</span>
-                        </button>
-                        <button class="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
-                            <span class="material-symbols-outlined">zoom_out</span>
-                        </button>
-                        <div class="w-px h-6 bg-gray-200 my-auto mx-1"></div>
-                        <button class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center gap-1">
+                        <a href="{{ url('/letter/surat_persetujuan_non_reguler_ahmad_doni.html') }}" download class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center gap-1">
                             <span class="material-symbols-outlined">download</span>
                             <span class="font-label-sm text-label-sm hidden sm:inline font-semibold">Unduh File</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
-                <div class="flex-1 bg-gray-50 p-8 flex justify-center overflow-x-auto">
-                    <div class="w-full max-w-[600px] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-200 min-h-[800px] p-12 shrink-0">
-                        <div class="border-b-2 border-[#410063] pb-6 mb-8 text-center">
-                            <h4 class="font-title-lg text-title-lg font-bold text-primary uppercase tracking-widest">Universitas Amikom</h4>
-                            <p class="font-body-sm text-body-sm text-gray-400 mt-1">Fakultas Ilmu Komputer</p>
-                        </div>
-                        <h5 class="font-label-lg text-label-lg text-center mb-8 underline">SURAT PERSETUJUAN TUGAS AKHIR JALUR NON-REGULER</h5>
-                        <div class="space-y-4 font-body-sm text-body-sm text-gray-900">
-                            <p class="">Yang bertanda tangan di bawah ini, Dekan Fakultas Ilmu Komputer menerangkan bahwa:</p>
-                            <div class="grid grid-cols-[150px_1fr] gap-2 pl-4">
-                                <div class="font-semibold">Nama</div><div class="">: Budi Santoso</div>
-                                <div class="font-semibold">NIM</div><div class="">: 19.11.1234</div>
-                                <div class="font-semibold">Program Studi</div><div class="">: D3 Teknik Informatika</div>
-                                <div class="font-semibold">Semester</div><div class="">: V (Lima)</div>
-                            </div>
-                            <p class="pt-4">Adalah benar mahasiswa yang bersangkutan aktif mengikuti perkuliahan pada semester Ganjil Tahun Akademik 2023/2024.</p>
-                            <p class="">Surat keterangan ini dibuat untuk keperluan: <strong>Pengajuan Beasiswa Prestasi</strong>.</p>
-                            <div class="mt-16 text-right">
-                                <p class="">Yogyakarta, 12 Oktober 2023</p>
-                                <p class="">Mengetahui,</p>
-                                <div class="h-20"></div>
-                                <p class="font-semibold">Dr. Heri Santoso</p>
-                                <p class="text-xs">NIDN: 0611028401</p>
-                            </div>
-                        </div>
+                <style>
+                    {!! $scopedCss !!}
+                    
+                    /* Document alignment override: flush to borders, no extra margins or shadows */
+                    .letter-preview-wrapper .sheet-wrap {
+                        margin: 0 !important;
+                        box-shadow: none !important;
+                        width: 100% !important;
+                    }
+                    .letter-preview-wrapper .page {
+                        width: 100% !important;
+                        height: auto !important;
+                        min-height: 842pt !important;
+                    }
+                </style>
+                <div class="flex-1 bg-white overflow-x-auto p-0 rounded-b-xl border-t border-gray-100">
+                    <div class="letter-preview-wrapper">
+                        {!! $bodyContent !!}
                     </div>
                 </div>
             </div>
@@ -105,9 +141,6 @@
                 <div class="flex items-center gap-4 mb-8">
                     <div class="relative">
                         <img alt="Student Photo" class="w-20 h-20 rounded-xl object-cover border-2 border-primary/10 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI8U6QdliiTjyZkmQbBg28RYGNyEZiVLatEqMLpzH_ob8gvGl3P0O3s-Qt3Fc_D79jcaahFcbv3qSGezuoYVvawMrNM46hPYZSlOtyaAlPOojd2ZNhDPc1JYxE7y4tEponJE2zSBgJXYCeIo86cW_9J3AKqWvThHpMPKk9_JoTHl67QUOIb6pY3uPxrBpOxsik07pJOMRi5tfE-Y5BWv_wSM8ZGJ0l6pO-W_bb1XcmX1-qIBDqQRuXnyhiZkKKhr43d09ocXNKJ80">
-                        <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-secondary rounded-full border-2 border-white flex items-center justify-center">
-                            <span class="material-symbols-outlined text-white text-[14px]">verified</span>
-                        </div>
                     </div>
                     <div>
                         <p class="text-xl font-bold text-gray-900 leading-tight">Budi Santoso</p>

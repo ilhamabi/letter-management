@@ -31,6 +31,25 @@ Route::get('/lecturer/approval/detail', function(){
     return view('lecturer.approval-detail');
 });
 
+Route::get('/letter/{filename}', function ($filename) {
+    $path = resource_path('views/letter/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    
+    $mimeType = match(pathinfo($filename, PATHINFO_EXTENSION)) {
+        'css' => 'text/css',
+        'png' => 'image/png',
+        'webp' => 'image/webp',
+        'svg' => 'image/svg+xml',
+        'html' => 'text/html',
+        default => 'text/plain',
+    };
+    
+    return response(file_get_contents($path))
+        ->header('Content-Type', $mimeType);
+});
+
 Route::get('/lecturer/approval-history', function(){
     return view('lecturer.approval-history');
 });
