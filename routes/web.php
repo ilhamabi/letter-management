@@ -7,45 +7,77 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
-    $user = auth()->user();
-    if ($user && (str_contains(strtolower($user->email), 'dosen') || str_contains(strtolower($user->email), 'lecturer') || str_contains(strtolower($user->email), 'test'))) {
-        // Default to student but support lecturer redirect if dosen/lecturer is in the email/username.
-        // For 'test@example.com', let's default to student.
-        if (str_contains(strtolower($user->email), 'dosen') || str_contains(strtolower($user->email), 'lecturer')) {
-            return redirect('/lecturer');
-        }
-    }
-    return redirect('/student');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware('auth')
+    ->group(function () {
 
-Route::get('/lecturer', function () {
-    return view('dosen.dashboard');
-});
+        Route::prefix('admin')
+            ->middleware('role:ADMIN')
+            ->group(function () {
 
-Route::get('/lecturer/approval', function(){
-    return view('dosen.approval');
-});
+                Route::view(
+                    '/dashboard',
+                    'admin.dashboard'
+                )->name('admin.dashboard');
+            });
 
-Route::get('/lecturer/approval/detail', function(){
-    return view('dosen.approval-detail');
-});
+        Route::prefix('student')
+            ->middleware('role:STUDENT')
+            ->group(function () {
 
-Route::get('/lecturer/approval-history', function(){
-    return view('dosen.approval-history');
-});
+                Route::view(
+                    '/dashboard',
+                    'student.dashboard'
+                )->name('student.dashboard');
+            });
 
-Route::get('/student', function(){
-    return view('mahasiswa.dashboard');
-});
+        Route::prefix('lecturer')
+            ->middleware('role:LECTURER')
+            ->group(function () {
 
-Route::get('/student/submission', function(){
-    return view('mahasiswa.submission');
-});
+                Route::view(
+                    '/dashboard',
+                    'lecturer.dashboard'
+                )->name('lecturer.dashboard');
+            });
+    });
 
-Route::get('/student/submission-history', function(){
-    return view('mahasiswa.submission-history');
-});
+
+// Route::get('/lecturer', function () {
+//     return view('dosen.dashboard');
+// });
+
+// Route::get('/lecturer/approval', function(){
+//     return view('dosen.approval');
+// });
+
+// Route::get('/lecturer/approval/detail', function(){
+//     return view('dosen.approval-detail');
+// });
+
+// Route::get('/lecturer/approval-history', function(){
+//     return view('dosen.approval-history');
+// });
+
+// Route::get('/lecturer/settings', function(){
+//     return view('dosen.settings');
+// });
+
+
+// Route::get('/student', function(){
+//     return view('mahasiswa.dashboard');
+// });
+
+// Route::get('/student/submission', function(){
+//     return view('mahasiswa.submission');
+// });
+
+// Route::get('/student/submission-history', function(){
+//     return view('mahasiswa.submission-history');
+// });
+
+// Route::get('/student/settings', function(){
+//     return view('mahasiswa.settings');
+// });
 
 
 Route::middleware('auth')->group(function () {
@@ -54,4 +86,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

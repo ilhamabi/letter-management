@@ -18,6 +18,11 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             StudentSeeder::class,
             LecturerSeeder::class,
+            LecturerPositionSeeder::class,
+            StudentLecturerSeeder::class,
+            ApprovalFlowSeeder::class,
+            LetterTypeSeeder::class,
+            LetterTemplateSeeder::class,
         ]);
     }
 }

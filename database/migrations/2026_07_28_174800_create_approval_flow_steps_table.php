@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lecturer_positions', function (Blueprint $table) {
+        Schema::create('approval_flow_steps', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lecturer_id')->constrained()->onDelete('cascade');
-            $table->string('position', 50);
-            $table->boolean('is_active')->default(true);
+            $table->foreignId('approval_flow_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->string('approval_role', 50);
+            $table->string('approver_source', 50);
+            $table->integer('step_order')->unsigned();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lecturer_positions');
+        Schema::dropIfExists('approval_flow_steps');
     }
 };

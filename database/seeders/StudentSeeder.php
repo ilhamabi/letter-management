@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class StudentSeeder extends Seeder
@@ -12,35 +13,17 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
-        # Create students with their corresponding user accounts
         Student::create([
-            'user_id' => 2, // Assuming the user with ID 2 is a student
-            'student_number' => '23.01.0001',
-            'batch_year' => 2023,
-            'semester' => 6,
+            'user_id' => User::where(
+                'username',
+                '20210001'
+            )->first()->id,
+            'student_number' => '20210001',
+            'batch_year' => 2021,
+            'semester' => 8,
             'gpa' => 3.75,
-            'total_credits' => 120,
-            'academic_status' => 'Active',
-        ]);
-
-        Student::create([
-            'user_id' => 3, // Assuming the user with ID 3 is a student
-            'student_number' => '23.01.0002',
-            'batch_year' => 2023,
-            'semester' => 6,
-            'gpa' => 3.90,
-            'total_credits' => 120,
-            'academic_status' => 'Active',
-        ]);
-
-        Student::create([
-            'user_id' => 4, // Assuming the user with ID 4 is a student
-            'student_number' => '23.01.0003',
-            'batch_year' => 2023,
-            'semester' => 6,
-            'gpa' => 3.60,
-            'total_credits' => 120,
-            'academic_status' => 'Active',
+            'total_credits' => 144,
+            'academic_status' => 'ACTIVE',
         ]);
     }
 }

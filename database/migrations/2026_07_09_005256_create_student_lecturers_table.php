@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->foreignId('lecturer_id')->constrained()->onDelete('cascade');
-            $table->string('lecturer_role', 100);
-            $table->boolean('is_active');
+            $table->string('lecturer_role', 50);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
