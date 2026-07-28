@@ -2,6 +2,7 @@
     // Default mock data in case variables aren't passed from controller or view
     $lecturerName = $lecturerName ?? (auth()->check() ? auth()->user()->name : 'Heri Setyawan, M.Kom.');
     $nidn = $nidn ?? '123456789';
+    $lecturerPhoto = $lecturerPhoto ?? 'https://i1.pickpik.com/photos/206/134/327/teacher-lecturer-writer-counselor-626ababd87ee30e9c0eb278ac724ee0a.jpg';
     $roles = $roles ?? [
         ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
         ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
@@ -61,19 +62,19 @@
             <!-- Navigation -->
             <nav class="flex-1 px-4 py-4 space-y-1" data-purpose="navigation">
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->is('lecturer') || request()->is('dashboard-dosen') ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ url('/lecturer') }}">
-                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ (request()->is('lecturer') || request()->is('dashboard-dosen')) ? 'font-variation-settings: \'FILL\' 1;' : '' }}">grid_view</span>
                     <span class="font-label-lg text-label-lg">Dashboard</span>
                 </a>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->is('lecturer/approval*') ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ url('/lecturer/approval') }}">
-                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">description</span>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ (request()->is('lecturer/approval') || request()->is('lecturer/approval/*')) ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ url('/lecturer/approval') }}">
+                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ (request()->is('lecturer/approval') || request()->is('lecturer/approval/*')) ? 'font-variation-settings: \'FILL\' 1;' : '' }}">description</span>
                     <span class="font-label-lg text-label-lg">Persetujuan Dokumen</span>
                 </a>
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->is('lecturer/approval-history*') ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ url('/lecturer/approval-history') }}">
-                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">history</span>
-                    <span class="font-label-lg text-label-lg">Riwayat</span>
+                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->is('lecturer/approval-history*') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">history</span>
+                    <span class="font-label-lg text-label-lg">Riwayat Persetujuan</span>
                 </a>
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->is('lecturer/settings*') ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ url('/lecturer/settings') }}">
-                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center">settings</span>
+                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->is('lecturer/settings*') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">settings</span>
                     <span class="font-label-lg text-label-lg">Pengaturan Akun</span>
                 </a>
             </nav>
@@ -84,7 +85,7 @@
             <div class="flex flex-col gap-4 px-2">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
-                        <img alt="{{ $lecturerName }}" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLsHUqb9lePpAkuZBB4EY_kmGB_qH99xpJTT5LrXNWLswF7ijJNXzre2g_OE6rOGyPrMqZxU9X6brzK_hTo1sSZgL_0r7i97LY53fQ-csLV1mToJvT5FHGmIAXJcriWvbJth3LN2OrfqhLApjsCSVhJMCaJF0xRZUomarXFAF9qu0t_rFc-kxSshL5zzP1vHQ3iD_DWB0D-AXzSO2Waps6HHTcdLC3u4N0pVJHinjsr7GYjga6rt0kf7U34">
+                        <img alt="{{ $lecturerName }}" class="w-full h-full object-cover" src="{{ $lecturerPhoto }}">
                     </div>
                     <div class="flex-1">
                         <p class="text-body-md font-headline-lg text-gray-900 leading-tight font-bold">{{ $lecturerName }}</p>

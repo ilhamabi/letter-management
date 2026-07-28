@@ -170,9 +170,9 @@
     <section class="bg-pure-white rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col w-full">
         <div class="p-6 border-b border-outline-variant flex justify-between items-center">
             <h3 class="font-headline-sm text-headline-sm text-deep-black">Pengajuan yang Berlangsung</h3>
-            <a href="{{ url('/student/submission-history') }}" class="text-primary font-label-md text-label-md hover:underline flex items-center gap-1">
-                Lihat Riwayat Pengajuan
-                <span class="material-symbols-outlined text-sm">chevron_right</span>
+            <a href="{{ url('/student/submission-history') }}" class="group inline-flex items-center gap-1 text-primary font-label-md text-label-md font-semibold">
+                <span class="group-hover:underline">Lihat Riwayat Pengajuan</span>
+                <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-0.5">chevron_right</span>
             </a>
         </div>
         
@@ -208,9 +208,9 @@
                 </div>
                 <h4 class="font-headline-sm text-headline-sm text-deep-black mb-2">Tidak ada pengajuan yang sedang berlangsung</h4>
                 <p class="font-body-md text-body-md text-on-surface-variant mb-6">Semua permintaan dokumen Anda telah selesai diproses atau belum ada pengajuan baru.</p>
-                <a class="text-primary font-label-lg text-label-lg hover:underline flex items-center gap-2" href="{{ url('/student/submission-history') }}">
-                    Lihat Riwayat Pengajuan
-                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                <a class="group inline-flex items-center gap-2 text-primary font-label-lg text-label-lg font-semibold" href="{{ url('/student/submission-history') }}">
+                    <span class="group-hover:underline">Lihat Riwayat Pengajuan</span>
+                    <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-0.5">arrow_forward</span>
                 </a>
             </div>
         @endif

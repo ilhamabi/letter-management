@@ -30,158 +30,158 @@
             [
                 'name' => 'Aditya Saputra Ramadhan',
                 'nim' => '21.11.4589',
-                'type' => 'Surat Keterangan Aktif',
+                'type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
                 'date' => '12 Okt 2023',
                 'roles' => [
-                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
-                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Budi Pratama Kusuma',
                 'nim' => '20.11.3902',
-                'type' => 'Surat Keterangan Lulus',
+                'type' => 'Surat Rekomendasi Pendaftaran Pendadaran',
                 'date' => '10 Okt 2023',
                 'roles' => [
-                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
-                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
-                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
+                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Dewi Anggraini Lestari',
                 'nim' => '21.11.4722',
-                'type' => 'Surat Keterangan Aktif',
+                'type' => 'Surat Rekomendasi Magang',
                 'date' => '09 Okt 2023',
                 'roles' => [
-                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
+                    ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Rizky Fauzi Rahman',
                 'nim' => '21.11.4123',
-                'type' => 'Surat Pengantar Magang',
+                'type' => 'Surat Rekomendasi Magang',
                 'date' => '08 Okt 2023',
                 'roles' => [
-                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
-                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Siti Nurhaliza Putri',
                 'nim' => '21.11.4256',
-                'type' => 'Surat Keterangan Aktif',
+                'type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
                 'date' => '08 Okt 2023',
                 'roles' => [
-                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
-                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
-                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
+                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Ahmad Fauzi',
                 'nim' => '21.11.4301',
-                'type' => 'Surat Keterangan Aktif',
+                'type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
                 'date' => '07 Okt 2023',
                 'roles' => [
-                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Laila Sari',
                 'nim' => '21.11.4302',
-                'type' => 'Surat Keterangan Aktif',
+                'type' => 'Surat Rekomendasi Pendaftaran Pendadaran',
                 'date' => '07 Okt 2023',
                 'roles' => [
-                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Muhammad Rizky',
                 'nim' => '21.11.4303',
-                'type' => 'Surat Pengantar Magang',
+                'type' => 'Surat Rekomendasi Magang',
                 'date' => '06 Okt 2023',
                 'roles' => [
-                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
+                    ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Putri Indah',
                 'nim' => '21.11.4304',
-                'type' => 'Surat Keterangan Aktif',
+                'type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
                 'date' => '06 Okt 2023',
                 'roles' => [
-                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Dimas Prayoga',
                 'nim' => '21.11.4305',
-                'type' => 'Surat Keterangan Lulus',
+                'type' => 'Surat Rekomendasi Pendaftaran Pendadaran',
                 'date' => '05 Okt 2023',
                 'roles' => [
-                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Siska Amelia',
                 'nim' => '21.11.4306',
-                'type' => 'Surat Keterangan Aktif',
+                'type' => 'Surat Rekomendasi Magang',
                 'date' => '05 Okt 2023',
                 'roles' => [
-                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
+                    ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Fajar Ramadhan',
                 'nim' => '21.11.4307',
-                'type' => 'Surat Pengantar Magang',
+                'type' => 'Surat Rekomendasi Magang',
                 'date' => '04 Okt 2023',
                 'roles' => [
-                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Nadia Safira',
                 'nim' => '21.11.4308',
-                'type' => 'Surat Keterangan Aktif',
+                'type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
                 'date' => '04 Okt 2023',
                 'roles' => [
-                    ['name' => 'DOSEN WALI', 'bg' => 'bg-amikom-gold'],
+                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Eko Prasetyo',
                 'nim' => '21.11.4309',
-                'type' => 'Surat Keterangan Lulus',
+                'type' => 'Surat Rekomendasi Pendaftaran Pendadaran',
                 'date' => '03 Okt 2023',
                 'roles' => [
-                    ['name' => 'DOSEN PEMBIMBING', 'bg' => 'bg-amikom-green'],
+                    ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
             [
                 'name' => 'Rina Melati',
                 'nim' => '21.11.4310',
-                'type' => 'Surat Keterangan Aktif',
+                'type' => 'Surat Rekomendasi Magang',
                 'date' => '03 Okt 2023',
                 'roles' => [
-                    ['name' => 'KAPRODI', 'bg' => 'bg-amikom-purple'],
+                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
                 ],
-                'status' => 'PENDING',
+                'status' => 'Menunggu',
             ],
         ];
     }
@@ -192,11 +192,11 @@
 @section('title', 'Dashboard Dosen')
 
 @section('content')
-<div class="space-y-8">
+<div class="space-y-8 font-body-md">
     <!-- Welcome Section -->
     <div class="flex items-center justify-between mb-6">
         <div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">Selamat Datang, {{ $lecturerName }}</h3>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2 font-headline-lg">Selamat Datang, {{ $lecturerName }}</h3>
             <p class="text-gray-600">Berikut adalah ringkasan permintaan persetujuan dokumen mahasiswa saat ini.</p>
         </div>
         <div class="bg-amikom-purple text-white px-4 py-2 rounded-lg flex items-center gap-2">
@@ -220,11 +220,11 @@
             </div>
         </div>
         
-        <!-- Menunggu Persetujuan -->
+        <!-- Menunggu -->
         <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
             <div class="flex justify-between items-start">
                 <div>
-                    <p class="text-sm font-semibold text-gray-500 mb-1">Menunggu Persetujuan</p>
+                    <p class="text-sm font-semibold text-gray-500 mb-1">Menunggu</p>
                     <h4 class="text-amikom-purple text-4xl font-bold">{{ $stats['pending'] }}</h4>
                 </div>
                 <div class="p-3 bg-[#FEF3C7] rounded-lg text-amikom-gold">
@@ -259,9 +259,9 @@
                 <p class="text-sm text-gray-600">Ringkasan pengajuan terbaru yang membutuhkan perhatian Anda.</p>
             </div>
             <div class="flex items-center gap-4">
-                <a class="flex items-center gap-1 text-amikom-purple hover:underline text-sm font-semibold ml-2" href="{{ url('/lecturer/approval') }}">
-                    <span>Lihat Semua Pengajuan</span>
-                    <span class="material-symbols-outlined text-sm">chevron_right</span>
+                <a class="group inline-flex items-center gap-1 text-amikom-purple text-sm font-semibold ml-2" href="{{ url('/lecturer/approval') }}">
+                    <span class="group-hover:underline">Lihat Semua Pengajuan</span>
+                    <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-0.5">chevron_right</span>
                 </a>
             </div>
         </div>
@@ -271,32 +271,32 @@
                 <table class="w-full text-left">
                     <thead class="bg-[#F8F9FA] border-b border-gray-200">
                         <tr>
-                            <th class="px-6 py-4 text-xs font-semibold uppercase text-gray-500 tracking-wider">Nama Mahasiswa</th>
-                            <th class="px-6 py-4 text-xs font-semibold uppercase text-gray-500 tracking-wider">NIM</th>
-                            <th class="px-6 py-4 text-xs font-semibold uppercase text-gray-500 tracking-wider">Jenis Surat</th>
-                            <th class="px-6 py-4 text-xs font-semibold uppercase text-gray-500 tracking-wider">Tanggal Pengajuan</th>
-                            <th class="px-6 py-4 text-xs font-semibold uppercase text-gray-500 tracking-wider">Peran</th>
-                            <th class="px-6 py-4 text-xs font-semibold uppercase text-gray-500 tracking-wider text-center">Status</th>
+                            <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider">Nama Mahasiswa</th>
+                            <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider">NIM</th>
+                            <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider">Jenis Surat</th>
+                            <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider">Tanggal Pengajuan</th>
+                            <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider">Peran</th>
+                            <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider text-center">Status</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200">
+                    <tbody class="bg-white divide-y divide-gray-200 text-body-md font-body-md">
                         @foreach (array_slice($submissions, 0, 5) as $submission)
                             <tr class="transition-colors group cursor-pointer hover:bg-gray-50" onclick="window.location='{{ url('/lecturer/approval/detail') }}'">
-                                <td class="px-6 py-4">
-                                    <span class="font-semibold text-gray-900">{{ $submission['name'] }}</span>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="font-semibold text-gray-900 text-base">{{ $submission['name'] }}</span>
                                 </td>
-                                <td class="px-6 py-4 text-gray-600">{{ $submission['nim'] }}</td>
-                                <td class="px-6 py-4 text-gray-600">{{ $submission['type'] }}</td>
-                                <td class="px-6 py-4 text-gray-600">{{ $submission['date'] }}</td>
+                                <td class="px-6 py-4 text-gray-600 font-normal text-base">{{ $submission['nim'] }}</td>
+                                <td class="px-6 py-4 text-gray-600 font-normal text-base">{{ $submission['type'] }}</td>
+                                <td class="px-6 py-4 text-gray-600 font-normal text-base">{{ $submission['date'] }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex flex-col gap-1 items-start">
                                         @foreach ($submission['roles'] as $role)
-                                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white uppercase tracking-wider {{ $role['bg'] }}">{{ $role['name'] }}</span>
+                                            <span class="px-3 py-1 rounded-full text-xs font-semibold text-white tracking-wider {{ $role['bg'] }}">{{ $role['name'] }}</span>
                                         @endforeach
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-semibold bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] text-xs uppercase">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-semibold bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] text-xs">
                                         {{ $submission['status'] }}
                                     </span>
                                 </td>

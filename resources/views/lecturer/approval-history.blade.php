@@ -30,7 +30,7 @@
             [
                 'name' => 'Siti Aminah',
                 'nim' => '21.11.4092',
-                'type' => 'Pengajuan Cuti Akademik',
+                'type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
                 'date' => '11 Okt 2023',
                 'timestamp' => strtotime('2023-10-11'),
                 'roles' => [
@@ -43,18 +43,18 @@
             [
                 'name' => 'Rizky Aditya',
                 'nim' => '20.12.3321',
-                'type' => 'Surat Keterangan Lulus',
+                'type' => 'Surat Rekomendasi Pendaftaran Pendadaran',
                 'date' => '10 Okt 2023',
                 'timestamp' => strtotime('2023-10-10'),
                 'roles' => [
                     ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
                 ],
-                'status' => 'Sedang Diproses',
+                'status' => 'Diteruskan',
             ],
             [
                 'name' => 'Dian Permatasari',
                 'nim' => '22.11.5110',
-                'type' => 'Surat Rekomendasi Lomba',
+                'type' => 'Surat Rekomendasi Magang',
                 'date' => '08 Okt 2023',
                 'timestamp' => strtotime('2023-10-08'),
                 'roles' => [
@@ -79,88 +79,103 @@
     </div>
 
     <!-- BEGIN: Filters -->
-    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-6" data-purpose="filter-section">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <!-- Row 1: Search & Batch -->
+    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col gap-5 mb-6" data-purpose="filter-section">
+        <!-- Filter Header -->
+        <div class="flex items-center justify-between border-b border-gray-200/80 pb-3">
+            <div class="flex items-center gap-2 text-gray-900 font-semibold text-sm">
+                <span class="material-symbols-outlined text-amikom-purple text-[20px]">filter_list</span>
+                <span>Filter Riwayat Persetujuan</span>
+            </div>
+            <button id="btn-reset-filter" type="button" class="text-xs font-semibold text-amikom-purple hover:text-amikom-purple/80 transition-colors flex items-center gap-1 cursor-pointer">
+                <span class="material-symbols-outlined text-[16px]">restart_alt</span>
+                <span>Reset Filter</span>
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- Row 1: Search, Doc Type, Status -->
             <div>
-                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase font-label-sm" for="searchHistory">Cari Dokumen</label>
+                <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5" for="searchHistory">Cari Mahasiswa</label>
                 <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                         <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                         </svg>
                     </div>
-                    <input class="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-amikom-purple focus:border-amikom-purple sm:text-sm transition-colors" id="searchHistory" placeholder="Cari nama, NIM, atau jenis surat..." type="text">
+                    <input class="block w-full pl-10 pr-3.5 h-11 text-sm border border-gray-300 rounded-lg bg-gray-50/50 placeholder-gray-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amikom-purple/20 focus:border-amikom-purple transition-all" id="searchHistory" placeholder="Nama atau NIM..." type="text">
                 </div>
             </div>
+
             <div>
-                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase font-label-sm" for="batch">Angkatan</label>
+                <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5" for="docType">Jenis Surat</label>
                 <div class="relative">
-                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-amikom-purple focus:border-amikom-purple sm:text-sm rounded-md appearance-none bg-white" id="batch">
-                        <option value="all">Semua Angkatan</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
+                    <select class="block w-full pl-3.5 pr-10 h-11 text-sm border border-gray-300 rounded-lg appearance-none bg-none bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amikom-purple/20 focus:border-amikom-purple cursor-pointer transition-all" id="docType">
+                        <option value="all">Semua Jenis Surat</option>
+                        <option value="non-reguler">Surat Persetujuan Tugas Akhir Jalur Non-Reguler</option>
+                        <option value="magang">Surat Rekomendasi Magang</option>
+                        <option value="pendadaran">Surat Rekomendasi Pendaftaran Pendadaran</option>
                     </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400">expand_more</span>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
+                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <!-- Row 2: Doc Type, Role, Status, Sort -->
+
             <div>
-                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase font-label-sm" for="docType">Jenis Surat</label>
+                <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5" for="status">Status Pengajuan</label>
                 <div class="relative">
-                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-amikom-purple focus:border-amikom-purple sm:text-sm rounded-md appearance-none bg-white" id="docType">
-                        <option value="all">Semua Jenis</option>
-                        <option value="rekomendasi">Surat Rekomendasi</option>
-                        <option value="keterangan">Surat Keterangan</option>
-                        <option value="cuti">Pengajuan Cuti</option>
+                    <select class="block w-full pl-3.5 pr-10 h-11 text-sm border border-gray-300 rounded-lg appearance-none bg-none bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amikom-purple/20 focus:border-amikom-purple cursor-pointer transition-all" id="status">
+                        <option value="all">Semua Status</option>
+                        <option value="disetujui">Disetujui</option>
+                        <option value="ditolak">Ditolak</option>
+                        <option value="diteruskan">Diteruskan</option>
                     </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400">expand_more</span>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
+                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
                     </div>
                 </div>
             </div>
+
+            <!-- Row 2: Role, Batch, Sort -->
             <div>
-                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase font-label-sm" for="role">Peran</label>
+                <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5" for="role">Peran</label>
                 <div class="relative">
-                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-amikom-purple focus:border-amikom-purple sm:text-sm rounded-md appearance-none bg-white" id="role">
+                    <select class="block w-full pl-3.5 pr-10 h-11 text-sm border border-gray-300 rounded-lg appearance-none bg-none bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amikom-purple/20 focus:border-amikom-purple cursor-pointer transition-all" id="role">
                         <option value="all">Semua Peran</option>
                         <option value="kaprodi">Kaprodi</option>
                         <option value="dosen wali">Dosen Wali</option>
                         <option value="dosen pembimbing">Dosen Pembimbing</option>
                     </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400">expand_more</span>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
+                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
                     </div>
                 </div>
             </div>
+
             <div>
-                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase font-label-sm" for="status">Status</label>
+                <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5" for="batch">Angkatan</label>
                 <div class="relative">
-                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-amikom-purple focus:border-amikom-purple sm:text-sm rounded-md appearance-none bg-white" id="status">
-                        <option value="all">Semua</option>
-                        <option value="disetujui">Disetujui</option>
-                        <option value="ditolak">Ditolak</option>
-                        <option value="sedang diproses">Sedang Diproses</option>
+                    <select class="block w-full pl-3.5 pr-10 h-11 text-sm border border-gray-300 rounded-lg appearance-none bg-none bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amikom-purple/20 focus:border-amikom-purple cursor-pointer transition-all" id="batch">
+                        <option value="all">Semua Angkatan</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
                     </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400">expand_more</span>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
+                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
                     </div>
                 </div>
             </div>
+
             <div>
-                <label class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5 uppercase font-label-sm" for="sort">Urutan</label>
+                <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5" for="sort">Urutan</label>
                 <div class="relative">
-                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-amikom-purple focus:border-amikom-purple sm:text-sm rounded-md appearance-none bg-white font-headline-md" id="sort">
-                        <option value="newest">Terbaru</option>
-                        <option value="oldest">Terlama</option>
+                    <select class="block w-full pl-3.5 pr-10 h-11 text-sm border border-gray-300 rounded-lg appearance-none bg-none bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amikom-purple/20 focus:border-amikom-purple cursor-pointer transition-all" id="sort">
+                        <option value="newest" selected>Terbaru (Newest First)</option>
+                        <option value="oldest">Terlama (Oldest First)</option>
                     </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400">expand_more</span>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
+                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
                     </div>
                 </div>
             </div>
@@ -171,15 +186,15 @@
     <!-- BEGIN: Data Table -->
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden" data-purpose="data-table">
         <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
-            <table class="min-w-full divide-y divide-gray-200 text-sm">
-                <thead class="bg-[#F8F9FA] sticky top-0 z-10 text-base font-title-lg">
+            <table class="w-full text-left divide-y divide-gray-200">
+                <thead class="bg-[#F8F9FA] border-b border-gray-200 sticky top-0 z-10">
                     <tr>
-                        <th class="px-6 py-4 text-left text-gray-600 tracking-wider uppercase w-1/4" scope="col">Nama Mahasiswa</th>
-                        <th class="px-6 py-4 text-left text-gray-600 tracking-wider uppercase w-32" scope="col">NIM</th>
-                        <th class="px-6 py-4 text-left text-gray-600 tracking-wider uppercase w-1/4" scope="col">Jenis Surat</th>
-                        <th class="px-6 py-4 text-left text-gray-600 tracking-wider uppercase w-40" scope="col">Tanggal Pengajuan</th>
-                        <th class="px-6 py-4 text-left text-gray-600 tracking-wider uppercase w-1/5" scope="col">Peran</th>
-                        <th class="px-6 py-4 text-center text-gray-600 tracking-wider uppercase w-24" scope="col">Status</th>
+                        <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider" scope="col">Nama Mahasiswa</th>
+                        <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider" scope="col">NIM</th>
+                        <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider" scope="col">Jenis Surat</th>
+                        <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider" scope="col">Tanggal Pengajuan</th>
+                        <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider" scope="col">Peran</th>
+                        <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider text-center" scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200 text-body-md font-body-md">
@@ -202,30 +217,26 @@
                             data-roles="{{ implode(',', $roleNames) }}"
                             data-status="{{ strtolower($sub['status']) }}"
                             data-date="{{ $sub['timestamp'] }}">
-                            <td class="whitespace-nowrap px-3 py-4">
-                                <div class="flex items-center">
-                                    <div class="ml-3">
-                                        <p class="text-gray-900 font-medium text-base">{{ $sub['name'] }}</p>
-                                    </div>
-                                </div>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="font-semibold text-gray-900 text-base">{{ $sub['name'] }}</span>
                             </td>
-                            <td class="px-6 whitespace-nowrap text-gray-600 py-4">{{ $sub['nim'] }}</td>
-                            <td class="px-6 text-gray-600 py-4">{{ $sub['type'] }}</td>
-                            <td class="px-6 whitespace-nowrap text-gray-600 py-4">{{ $sub['date'] }}</td>
-                            <td class="px-6 whitespace-nowrap py-4">
-                                <div class="flex flex-col gap-1.5">
+                            <td class="px-6 py-4 whitespace-nowrap text-gray-600 font-normal text-base">{{ $sub['nim'] }}</td>
+                            <td class="px-6 py-4 text-gray-600 font-normal text-base">{{ $sub['type'] }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-gray-600 font-normal text-base">{{ $sub['date'] }}</td>
+                            <td class="px-6 py-4">
+                                <div class="flex flex-col gap-1 items-start">
                                     @foreach ($sub['roles'] as $r)
-                                        <span class="inline-flex items-center w-fit px-2.5 py-0.5 rounded-full font-semibold {{ $r['bg'] }} text-white text-xs">{{ $r['name'] }}</span>
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold text-white tracking-wider {{ $r['bg'] }}">{{ $r['name'] }}</span>
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="px-6 whitespace-nowrap py-4 text-center">
+                            <td class="px-6 py-4 text-center">
                                 @if (strtoupper($sub['status']) === 'DISETUJUI')
                                     <span class="inline-flex items-center px-3 py-1 rounded-full font-bold bg-[#DCFCE7] text-[#166534] border border-[#166534]/10 text-xs tracking-wider">Disetujui</span>
                                 @elseif (strtoupper($sub['status']) === 'DITOLAK')
                                     <span class="inline-flex items-center px-3 py-1 rounded-full font-bold bg-[#FEE2E2] text-[#991B1B] border border-[#991B1B]/10 text-xs tracking-wider">Ditolak</span>
-                                @elseif (strtoupper($sub['status']) === 'SEDANG DIPROSES' || strtoupper($sub['status']) === 'PENDING')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-bold bg-[#FFEDD5] text-[#9A3412] border border-[#9A3412]/10 text-xs tracking-wider">Sedang Diproses</span>
+                                @elseif (strtoupper($sub['status']) === 'DITERUSKAN' || strtoupper($sub['status']) === 'SEDANG DIPROSES' || strtoupper($sub['status']) === 'PENDING')
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-bold bg-[#FFEDD5] text-[#9A3412] border border-[#9A3412]/10 text-xs tracking-wider">Diteruskan</span>
                                 @else
                                     <span class="inline-flex items-center px-3 py-1 rounded-full font-bold bg-gray-100 text-gray-800 border border-gray-200 text-xs tracking-wider">{{ $sub['status'] }}</span>
                                 @endif
@@ -288,7 +299,7 @@
         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-surface-container">
             <div class="flex items-center gap-3">
                 <h3 class="text-lg font-bold text-amikom-purple font-title-lg">Detail Alur Persetujuan</h3>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FFEDD5] text-[#9A3412] border border-[#9A3412]/10" id="modal-status-badge">SEDANG DIPROSES</span>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FFEDD5] text-[#9A3412] border border-[#9A3412]/10" id="modal-status-badge">DITERUSKAN</span>
             </div>
             <button class="p-1 hover:bg-gray-200 rounded-full transition-colors" id="close-modal-btn">
                 <span class="material-symbols-outlined text-gray-500">close</span>
@@ -407,8 +418,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const rowRoles = row.dataset.roles;
             const rowStatus = row.dataset.status;
 
-            // 1. Search Query
-            const matchesQuery = !query || name.includes(query) || nim.includes(query) || type.includes(query);
+            // 1. Search Query (Mahasiswa: Nama atau NIM)
+            const matchesQuery = !query || name.includes(query) || nim.includes(query);
 
             // 2. Angkatan/Batch
             const matchesBatch = batch === 'all' || rowBatch === batch;
@@ -421,7 +432,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 5. Status
             const matchesStatus = status === 'all' || rowStatus === status ||
-                                  (status === 'sedang diproses' && rowStatus === 'sedang diproses');
+                                  (status === 'diteruskan' && (rowStatus === 'diteruskan' || rowStatus === 'sedang diproses'));
 
             if (matchesQuery && matchesBatch && matchesDocType && matchesRole && matchesStatus) {
                 row.style.display = '';
@@ -469,6 +480,19 @@ document.addEventListener('DOMContentLoaded', function() {
     if (statusSelect) statusSelect.addEventListener('change', filterAndSort);
     if (sortSelect) sortSelect.addEventListener('change', filterAndSort);
 
+    const resetBtn = document.getElementById('btn-reset-filter');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function() {
+            if (searchInput) searchInput.value = '';
+            if (batchSelect) batchSelect.value = 'all';
+            if (docTypeSelect) docTypeSelect.value = 'all';
+            if (roleSelect) roleSelect.value = 'all';
+            if (statusSelect) statusSelect.value = 'all';
+            if (sortSelect) sortSelect.value = 'newest';
+            filterAndSort();
+        });
+    }
+
     // Initial run
     filterAndSort();
 
@@ -485,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     rows.forEach(row => {
         row.addEventListener('click', () => {
-            const name = row.querySelector('td:nth-child(1) p').innerText;
+            const name = row.querySelector('td:nth-child(1) span').innerText;
             const nim = row.querySelector('td:nth-child(2)').innerText;
             const doc = row.querySelector('td:nth-child(3)').innerText;
             const statusElement = row.querySelector('td:nth-child(6) span');
@@ -545,8 +569,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 step3Time.innerText = 'Dibatalkan';
                 step3Time.className = 'font-medium text-xs text-gray-400';
                 step3Desc.innerText = 'Tahap ini tidak dilanjutkan.';
-            } else if (statusText === 'SEDANG DIPROSES') {
-                badge.innerText = 'SEDANG DIPROSES';
+            } else if (statusText === 'DITERUSKAN' || statusText === 'SEDANG DIPROSES') {
+                badge.innerText = 'DITERUSKAN';
                 badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FFEDD5] text-[#9A3412] border border-[#9A3412]/10';
                 
                 rejectionSection.classList.add('hidden');

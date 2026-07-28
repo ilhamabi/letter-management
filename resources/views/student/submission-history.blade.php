@@ -229,7 +229,7 @@
             <div class="p-6 border-b border-outline-variant flex justify-between items-center">
                 <div class="flex flex-col">
                     <h3 class="font-headline-sm text-headline-sm text-deep-black">Status Pengajuan</h3>
-                    <p class="text-body-sm text-on-surface-variant" id="modal-title">Surat Keterangan Aktif Kuliah</p>
+                    <p class="text-body-sm text-on-surface-variant" id="modal-title">Surat Persetujuan Tugas Akhir Jalur Non-Reguler</p>
                 </div>
                 <button class="p-2 hover:bg-surface-container rounded-full transition-colors" onclick="closeModal()">
                     <span class="material-symbols-outlined">close</span>

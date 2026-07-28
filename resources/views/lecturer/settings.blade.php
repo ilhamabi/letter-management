@@ -2,6 +2,7 @@
     // Default / Mock data so the settings page works out of the box even without controller variables
     $lecturerName = $lecturerName ?? 'Heri Setyawan, M.Kom.';
     $nidn = $nidn ?? '123456789';
+    $lecturerPhoto = $lecturerPhoto ?? 'https://i1.pickpik.com/photos/206/134/327/teacher-lecturer-writer-counselor-626ababd87ee30e9c0eb278ac724ee0a.jpg';
     $roles = $roles ?? [
         ['name' => 'Kaprodi', 'bg' => 'bg-primary'],
         ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
@@ -28,11 +29,8 @@
         <!-- Left Column: Profile Card -->
         <div class="lg:col-span-1 flex flex-col gap-6">
             <div class="bg-white border border-gray-200 rounded-xl p-6 flex flex-col items-center text-center gap-4 shadow-sm">
-                <div class="relative group cursor-pointer">
-                    <img alt="{{ $lecturerName }}" class="w-32 h-32 rounded-xl object-cover border border-gray-200 shadow-sm" src="https://lh3.googleusercontent.com/aida/AP1WRLtbZi7_O5yCa33qPpomRGUvdxOhNGHeX4tBG3fVhw7eoDjoUTK1UHlsS26Sz4eKDZYaXRn18sDVQhcl1wsvwfOAwbgkgutKSUZMS2I_Y4yZTwtDiIV0bsawBh1E3Qjm8ppnttz114l_C-u64-rlU63z5BYSPaterX5RfVszRTaRRKll9FTzei8JcbG2Tf0QlQabkaQJaspl7jHqIwa3z8digSlnofpvdT8EVSOVx8hAgNdbo4uPL2USoHk">
-                    <div class="absolute inset-0 bg-gray-900/50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="material-symbols-outlined text-white">photo_camera</span>
-                    </div>
+                <div class="relative">
+                    <img alt="{{ $lecturerName }}" class="w-32 h-32 rounded-xl object-cover border border-gray-200 shadow-sm" src="{{ $lecturerPhoto }}">
                 </div>
                 <div>
                     <h4 class="text-lg font-bold text-gray-900 font-headline-md">{{ $lecturerName }}</h4>
