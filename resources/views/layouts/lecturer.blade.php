@@ -61,20 +61,20 @@
             
             <!-- Navigation -->
             <nav class="flex-1 px-4 py-4 space-y-1" data-purpose="navigation">
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->is('lecturer') || request()->is('dashboard-dosen') ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ url('/lecturer') }}">
-                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ (request()->is('lecturer') || request()->is('dashboard-dosen')) ? 'font-variation-settings: \'FILL\' 1;' : '' }}">grid_view</span>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('lecturer.dashboard') || request()->is('lecturer/dashboard') ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ route('lecturer.dashboard') }}">
+                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ (request()->routeIs('lecturer.dashboard') || request()->is('lecturer/dashboard')) ? 'font-variation-settings: \'FILL\' 1;' : '' }}">grid_view</span>
                     <span class="font-label-lg text-label-lg">Dashboard</span>
                 </a>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ (request()->is('lecturer/approval') || request()->is('lecturer/approval/*')) ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ url('/lecturer/approval') }}">
-                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ (request()->is('lecturer/approval') || request()->is('lecturer/approval/*')) ? 'font-variation-settings: \'FILL\' 1;' : '' }}">description</span>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ (request()->routeIs('lecturer.approval*') || request()->is('lecturer/approval*')) ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ route('lecturer.approval') }}">
+                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ (request()->routeIs('lecturer.approval*') || request()->is('lecturer/approval*')) ? 'font-variation-settings: \'FILL\' 1;' : '' }}">description</span>
                     <span class="font-label-lg text-label-lg">Persetujuan Dokumen</span>
                 </a>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->is('lecturer/approval-history*') ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ url('/lecturer/approval-history') }}">
-                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->is('lecturer/approval-history*') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">history</span>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('lecturer.approval-history*') || request()->is('lecturer/approval-history*') ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ route('lecturer.approval-history') }}">
+                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->routeIs('lecturer.approval-history*') || request()->is('lecturer/approval-history*') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">history</span>
                     <span class="font-label-lg text-label-lg">Riwayat Persetujuan</span>
                 </a>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->is('lecturer/settings*') ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ url('/lecturer/settings') }}">
-                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->is('lecturer/settings*') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">settings</span>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('lecturer.settings*') || request()->is('lecturer/settings*') ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ route('lecturer.settings') }}">
+                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->routeIs('lecturer.settings*') || request()->is('lecturer/settings*') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">settings</span>
                     <span class="font-label-lg text-label-lg">Pengaturan Akun</span>
                 </a>
             </nav>

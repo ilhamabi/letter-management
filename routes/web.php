@@ -10,61 +10,25 @@ Route::get('/', function () {
 Route::middleware('auth')
     ->group(function () {
 
-Route::get('/lecturer', function () {
-    return view('lecturer.dashboard');
-});
+        Route::get('/letter/{filename}', function ($filename) {
+            $path = resource_path('views/letter/' . $filename);
+            if (!file_exists($path)) {
+                abort(404);
+            }
 
-Route::get('/lecturer/approval', function(){
-    return view('lecturer.approval');
-});
+            $mimeType = match (pathinfo($filename, PATHINFO_EXTENSION)) {
+                'css' => 'text/css',
+                'png' => 'image/png',
+                'webp' => 'image/webp',
+                'svg' => 'image/svg+xml',
+                'html' => 'text/html',
+                default => 'text/plain',
+            };
 
-Route::get('/lecturer/approval/detail', function(){
-    return view('lecturer.approval-detail');
-});
+            return response(file_get_contents($path))
+                ->header('Content-Type', $mimeType);
+        });
 
-Route::get('/letter/{filename}', function ($filename) {
-    $path = resource_path('views/letter/' . $filename);
-    if (!file_exists($path)) {
-        abort(404);
-    }
-    
-    $mimeType = match(pathinfo($filename, PATHINFO_EXTENSION)) {
-        'css' => 'text/css',
-        'png' => 'image/png',
-        'webp' => 'image/webp',
-        'svg' => 'image/svg+xml',
-        'html' => 'text/html',
-        default => 'text/plain',
-    };
-    
-    return response(file_get_contents($path))
-        ->header('Content-Type', $mimeType);
-});
-
-Route::get('/lecturer/approval-history', function(){
-    return view('lecturer.approval-history');
-});
-
-Route::get('/lecturer/settings', function(){
-    return view('lecturer.settings');
-});
-
-
-Route::get('/student', function(){
-    return view('student.dashboard');
-});
-
-Route::get('/student/submission', function(){
-    return view('student.submission');
-});
-
-Route::get('/student/submission-history', function(){
-    return view('student.submission-history');
-});
-
-Route::get('/student/settings', function(){
-    return view('student.settings');
-});
         Route::prefix('admin')
             ->middleware('role:ADMIN')
             ->group(function () {
@@ -79,60 +43,23 @@ Route::get('/student/settings', function(){
             ->middleware('role:STUDENT')
             ->group(function () {
 
-                Route::view(
-                    '/dashboard',
-                    'student.dashboard'
-                )->name('student.dashboard');
+                Route::view('/dashboard', 'student.dashboard')->name('student.dashboard');
+                Route::view('/submission', 'student.submission')->name('student.submission');
+                Route::view('/submission-history', 'student.submission-history')->name('student.submission-history');
+                Route::view('/settings', 'student.settings')->name('student.settings');
             });
 
         Route::prefix('lecturer')
             ->middleware('role:LECTURER')
             ->group(function () {
 
-                Route::view(
-                    '/dashboard',
-                    'lecturer.dashboard'
-                )->name('lecturer.dashboard');
+                Route::view('/dashboard', 'lecturer.dashboard')->name('lecturer.dashboard');
+                Route::view('/approval', 'lecturer.approval')->name('lecturer.approval');
+                Route::view('/approval/detail', 'lecturer.approval-detail')->name('lecturer.approval-detail');
+                Route::view('/approval-history', 'lecturer.approval-history')->name('lecturer.approval-history');
+                Route::view('/settings', 'lecturer.settings')->name('lecturer.settings');
             });
     });
-
-
-// Route::get('/lecturer', function () {
-//     return view('dosen.dashboard');
-// });
-
-// Route::get('/lecturer/approval', function(){
-//     return view('dosen.approval');
-// });
-
-// Route::get('/lecturer/approval/detail', function(){
-//     return view('dosen.approval-detail');
-// });
-
-// Route::get('/lecturer/approval-history', function(){
-//     return view('dosen.approval-history');
-// });
-
-// Route::get('/lecturer/settings', function(){
-//     return view('dosen.settings');
-// });
-
-
-// Route::get('/student', function(){
-//     return view('mahasiswa.dashboard');
-// });
-
-// Route::get('/student/submission', function(){
-//     return view('mahasiswa.submission');
-// });
-
-// Route::get('/student/submission-history', function(){
-//     return view('mahasiswa.submission-history');
-// });
-
-// Route::get('/student/settings', function(){
-//     return view('mahasiswa.settings');
-// });
 
 
 Route::middleware('auth')->group(function () {
@@ -142,3 +69,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+

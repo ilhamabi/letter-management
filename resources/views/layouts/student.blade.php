@@ -38,20 +38,20 @@
     </div>
     
     <nav class="flex-1 px-4 py-4 space-y-1" data-purpose="navigation">
-        <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->is('student') ? 'bg-primary text-white font-bold relative' : 'text-on-surface-variant hover:bg-surface-container' }}" href="{{ url('/student') }}">
-            <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->is('student') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">grid_view</span>
+        <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('student.dashboard') || request()->is('student/dashboard') ? 'bg-primary text-white font-bold relative' : 'text-on-surface-variant hover:bg-surface-container' }}" href="{{ route('student.dashboard') }}">
+            <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->routeIs('student.dashboard') || request()->is('student/dashboard') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">grid_view</span>
             <span class="font-label-lg text-label-lg">Dashboard</span>
         </a>
-        <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->is('student/submission') ? 'bg-primary text-white font-bold relative' : 'text-on-surface-variant hover:bg-surface-container' }}" href="{{ url('/student/submission') }}">
-            <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->is('student/submission') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">add_circle</span>
+        <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('student.submission') || request()->is('student/submission') ? 'bg-primary text-white font-bold relative' : 'text-on-surface-variant hover:bg-surface-container' }}" href="{{ route('student.submission') }}">
+            <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->routeIs('student.submission') || request()->is('student/submission') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">add_circle</span>
             <span class="font-label-lg text-label-lg">Buat Baru</span>
         </a>
-        <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->is('student/submission-history') ? 'bg-primary text-white font-bold relative' : 'text-on-surface-variant hover:bg-surface-container' }}" href="{{ url('/student/submission-history') }}">
-            <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->is('student/submission-history') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">history</span>
+        <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('student.submission-history') || request()->is('student/submission-history') ? 'bg-primary text-white font-bold relative' : 'text-on-surface-variant hover:bg-surface-container' }}" href="{{ route('student.submission-history') }}">
+            <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->routeIs('student.submission-history') || request()->is('student/submission-history') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">history</span>
             <span class="font-label-lg text-label-lg">Riwayat Pengajuan</span>
         </a>
-        <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->is('student/settings') ? 'bg-primary text-white font-bold relative' : 'text-on-surface-variant hover:bg-surface-container' }}" href="{{ url('/student/settings') }}">
-            <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->is('student/settings') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">settings</span>
+        <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('student.settings') || request()->is('student/settings') ? 'bg-primary text-white font-bold relative' : 'text-on-surface-variant hover:bg-surface-container' }}" href="{{ route('student.settings') }}">
+            <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ request()->routeIs('student.settings') || request()->is('student/settings') ? 'font-variation-settings: \'FILL\' 1;' : '' }}">settings</span>
             <span class="font-label-lg text-label-lg">Pengaturan Akun</span>
         </a>
     </nav>
