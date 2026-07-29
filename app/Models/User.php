@@ -32,6 +32,21 @@ class User extends Authenticatable
         ];
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->role === UserRole::ADMIN;
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->role === UserRole::STUDENT;
+    }
+
+    public function isLecturer(): bool
+    {
+        return $this->role === UserRole::LECTURER;
+    }
+
     public function student()
     {
         return $this->hasOne(Student::class);

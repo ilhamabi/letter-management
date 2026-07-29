@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lecturer_positions', function (Blueprint $table) {
+        Schema::create('letter_templates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lecturer_id')->constrained()->onDelete('cascade');
-            $table->string('position', 50);
+            $table->foreignId('letter_type_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->text('body_content');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lecturer_positions');
+        Schema::dropIfExists('letter_templates');
     }
 };

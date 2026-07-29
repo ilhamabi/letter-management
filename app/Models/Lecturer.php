@@ -21,4 +21,14 @@ class Lecturer extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function positions()
+    {
+        return $this->hasMany(LecturerPosition::class);
+    }
+
+    public function studentLecturers()
+    {
+        return $this->hasMany(StudentLecturer::class);
+    }
 }
