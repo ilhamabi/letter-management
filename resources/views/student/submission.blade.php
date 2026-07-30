@@ -169,10 +169,9 @@
     </div>
 
     <!-- Confirmation Modal -->
-    <div class="fixed inset-0 z-[100] hidden" id="confirmation-modal">
+    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden" id="confirmation-modal">
         <div class="absolute inset-0 bg-deep-black/60 backdrop-blur-sm animate-fade-in" id="modal-backdrop"></div>
-        <div class="absolute inset-0 flex items-center justify-center p-4">
-            <div class="bg-pure-white w-full max-w-md rounded-xl shadow-xl overflow-hidden transform animate-scale-up border border-outline-variant">
+        <div class="relative z-10 bg-pure-white w-full max-w-md rounded-xl shadow-xl overflow-hidden transform animate-scale-up border border-outline-variant my-auto mx-auto">
                 <div class="p-8">
                     <div class="flex items-center gap-4 mb-5">
                         <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
@@ -198,7 +197,6 @@
                 </div>
             </div>
         </div>
-    </div>
 @endsection
 
 @push('scripts')

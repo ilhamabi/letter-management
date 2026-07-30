@@ -130,40 +130,29 @@
         </div>
     </section>
     
-    <!-- Quick Stats -->
+    <!-- Quick Stats Components -->
     <section class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-        <!-- Pending -->
-        <div class="bg-pure-white p-6 rounded-xl border border-outline-variant flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow">
-            <div class="p-3 bg-primary-fixed rounded-lg text-primary">
-                <span class="material-symbols-outlined text-[28px]" data-icon="pending_actions">pending_actions</span>
-            </div>
-            <div>
-                <p class="font-label-md text-label-md text-on-surface-variant mb-1">Menunggu</p>
-                <p class="font-display-lg text-display-lg text-deep-black">{{ $stats['pending'] }}</p>
-            </div>
-        </div>
-        
-        <!-- Approved -->
-        <div class="bg-pure-white p-6 rounded-xl border border-outline-variant flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow">
-            <div class="p-3 rounded-lg bg-green-100 text-green-700">
-                <span class="material-symbols-outlined text-[28px]" data-icon="check_circle">check_circle</span>
-            </div>
-            <div>
-                <p class="font-label-md text-label-md text-on-surface-variant mb-1">Disetujui</p>
-                <p class="font-display-lg text-display-lg text-deep-black">{{ $stats['approved'] }}</p>
-            </div>
-        </div>
-        
-        <!-- Rejected -->
-        <div class="bg-pure-white p-6 rounded-xl border border-outline-variant flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow">
-            <div class="p-3 bg-error-container rounded-lg text-error">
-                <span class="material-symbols-outlined text-[28px]" data-icon="cancel">cancel</span>
-            </div>
-            <div>
-                <p class="font-label-md text-label-md text-on-surface-variant mb-1">Ditolak / Perlu Tindakan</p>
-                <p class="font-display-lg text-display-lg text-deep-black">{{ $stats['rejected'] }}</p>
-            </div>
-        </div>
+        <x-stat-card 
+            icon="pending_actions" 
+            iconBg="bg-primary-fixed" 
+            iconColor="text-primary" 
+            title="Menunggu" 
+            :value="$stats['pending']" 
+        />
+        <x-stat-card 
+            icon="check_circle" 
+            iconBg="bg-green-100" 
+            iconColor="text-green-700" 
+            title="Disetujui" 
+            :value="$stats['approved']" 
+        />
+        <x-stat-card 
+            icon="cancel" 
+            iconBg="bg-error-container" 
+            iconColor="text-error" 
+            title="Ditolak / Perlu Tindakan" 
+            :value="$stats['rejected']" 
+        />
     </section>
     
     <!-- Recent Requests Table -->
@@ -192,9 +181,7 @@
                                 <td class="py-5 px-6 font-semibold text-deep-black">{{ $sub['type'] }}</td>
                                 <td class="py-5 px-6 text-on-surface-variant">{{ $sub['date'] }}</td>
                                 <td class="py-5 px-6 text-center">
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-surface-container text-on-surface-variant border border-outline-variant flex items-center justify-center gap-1.5 w-fit mx-auto">
-                                        {{ $sub['status'] }}
-                                    </span>
+                                    <x-status-badge :status="$sub['status']" size="sm" />
                                 </td>
                             </tr>
                         @endforeach
@@ -216,86 +203,78 @@
         @endif
     </section>
 
-    <!-- Modal Overlay -->
-    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="status-modal">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="document.getElementById('status-modal').classList.add('hidden')"></div>
-        <div class="relative bg-pure-white w-full max-w-lg mx-4 rounded-xl shadow-xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
-            <div class="p-6 border-b border-outline-variant flex justify-between items-center">
-                <div class="flex flex-col">
-                    <h3 class="font-headline-sm text-headline-sm text-deep-black">Status Pengajuan</h3>
-                    <p class="text-body-sm text-on-surface-variant" id="modal-doc-name">Verifikasi Pendaftaran</p>
-                    <span class="mt-2 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#fef3c7] text-[#92400e] border border-[#fcd400] flex items-center justify-center gap-1.5 w-fit" id="modal-status-badge">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#92400e] animate-pulse"></span>
-                        <span id="modal-status-text">SEDANG DIPROSES</span>
-                    </span>
-                </div>
-                <button class="p-2 hover:bg-surface-container rounded-full transition-colors" onclick="document.getElementById('status-modal').classList.add('hidden')">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
+    <!-- Modal Component -->
+    <x-modal id="status-modal" title="Status Pengajuan" maxWidth="max-w-lg">
+        <x-slot:subtitle>
+            <span id="modal-doc-name">Verifikasi Pendaftaran</span>
+        </x-slot:subtitle>
+
+        <div class="mb-4">
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#fef3c7] text-[#92400e] border border-[#fcd400] flex items-center justify-center gap-1.5 w-fit" id="modal-status-badge">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#92400e] animate-pulse"></span>
+                <span id="modal-status-text">SEDANG DIPROSES</span>
+            </span>
+        </div>
+
+        <!-- Status Timeline -->
+        <div class="relative pl-8 space-y-6 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant" id="timeline-container">
+            <!-- Timeline items will be populated dynamically -->
+        </div>
+
+        <hr class="border-outline-variant">
+
+        <!-- Details Section -->
+        <div class="space-y-6">
+            <div>
+                <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold mb-1">KEPERLUAN</p>
+                <p class="font-label-lg text-label-lg text-deep-black font-bold" id="modal-purpose">Syarat Beasiswa</p>
             </div>
-            
-            <div class="p-6 space-y-6 overflow-y-auto max-h-[60vh]">
-                <!-- Status Timeline -->
-                <div class="relative pl-8 space-y-6 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant" id="timeline-container">
-                    <!-- Timeline items will be populated dynamically -->
-                </div>
 
-                <hr class="border-outline-variant">
-
-                <!-- Details Section -->
-                <div class="space-y-6">
-                    <div>
-                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold mb-1">KEPERLUAN</p>
-                        <p class="font-label-lg text-label-lg text-deep-black font-bold" id="modal-purpose">Syarat Beasiswa</p>
+            <div>
+                <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold mb-2">DOSEN DITUJU</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant">
+                        <p class="text-body-sm text-on-surface-variant font-semibold mb-1">Dosen Wali</p>
+                        <p class="text-body-sm font-bold text-deep-black" id="modal-lecturer">Heri Setyawan, M.Kom.</p>
                     </div>
-
-                    <div>
-                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold mb-2">DOSEN DITUJU</p>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant">
-                                <p class="text-body-sm text-on-surface-variant font-semibold mb-1">Dosen Wali</p>
-                                <p class="text-body-sm font-bold text-deep-black" id="modal-lecturer">Heri Setyawan, M.Kom.</p>
-                            </div>
-                            <div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant">
-                                <p class="text-body-sm text-on-surface-variant font-semibold mb-1">Kaprodi</p>
-                                <p class="text-body-sm font-bold text-deep-black" id="modal-kaprodi">Andi Afandi, M.T.</p>
-                            </div>
-                        </div>
+                    <div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant">
+                        <p class="text-body-sm text-on-surface-variant font-semibold mb-1">Kaprodi</p>
+                        <p class="text-body-sm font-bold text-deep-black" id="modal-kaprodi">Andi Afandi, M.T.</p>
                     </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold mb-1">NIM</p>
-                            <p class="font-label-lg text-label-lg text-deep-black font-bold" id="modal-nim">{{ $nim }}</p>
-                        </div>
-                        <div>
-                            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold mb-1">PROGRAM STUDI</p>
-                            <p class="font-label-lg text-label-lg text-deep-black font-bold" id="modal-prodi">{{ $prodi }}</p>
-                        </div>
-                    </div>
-
-                    <div>
-                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold mb-2">LAMPIRAN</p>
-                        <div class="grid grid-cols-2 gap-4" id="attachments-container">
-                            <!-- Attachments will be populated dynamically -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SLA Info Box -->
-                <div class="bg-primary-fixed/10 p-4 rounded-lg border border-primary-container/10 flex gap-3">
-                    <span class="material-symbols-outlined text-primary">info</span>
-                    <p class="text-body-sm text-on-surface-variant">Proses verifikasi biasanya memakan waktu 1-2 hari kerja. Jika belum ada pembaruan, Anda dapat menghubungi dosen terkait.</p>
                 </div>
             </div>
-            
-            <div class="p-6 bg-surface-gray border-t border-outline-variant flex justify-end gap-3">
-                <button class="px-8 py-2 bg-primary text-white font-label-md rounded-lg hover:shadow-md transition-shadow" onclick="document.getElementById('status-modal').classList.add('hidden')">
-                    Tutup
-                </button>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold mb-1">NIM</p>
+                    <p class="font-label-lg text-label-lg text-deep-black font-bold" id="modal-nim">{{ $nim }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold mb-1">PROGRAM STUDI</p>
+                    <p class="font-label-lg text-label-lg text-deep-black font-bold" id="modal-prodi">{{ $prodi }}</p>
+                </div>
+            </div>
+
+            <div>
+                <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold mb-2">LAMPIRAN</p>
+                <div class="grid grid-cols-2 gap-4" id="attachments-container">
+                    <!-- Attachments will be populated dynamically -->
+                </div>
             </div>
         </div>
-    </div>
+
+        <!-- SLA Info Box -->
+        <div class="bg-primary-fixed/10 p-4 rounded-lg border border-primary-container/10 flex gap-3">
+            <span class="material-symbols-outlined text-primary">info</span>
+            <p class="text-body-sm text-on-surface-variant">Proses verifikasi biasanya memakan waktu 1-2 hari kerja. Jika belum ada pembaruan, Anda dapat menghubungi dosen terkait.</p>
+        </div>
+
+        <x-slot:footer>
+            <button class="px-8 py-2 bg-primary text-white font-label-md rounded-lg hover:shadow-md transition-shadow" onclick="document.getElementById('status-modal').classList.add('hidden')">
+                Tutup
+            </button>
+        </x-slot:footer>
+    </x-modal>
 @endsection
 
 @push('scripts')

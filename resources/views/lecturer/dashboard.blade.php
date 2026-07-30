@@ -251,7 +251,7 @@
         </div>
     </div>
 
-    <!-- Main Data Table Container (Dynamic State) -->
+    <!-- Main Data Table Container -->
     <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden" data-purpose="data-table">
         <div class="p-6 border-b border-gray-200 flex items-center justify-between">
             <div class="flex flex-col">
@@ -296,9 +296,7 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-semibold bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] text-xs">
-                                        {{ $submission['status'] }}
-                                    </span>
+                                    <x-status-badge :status="$submission['status']" size="sm" />
                                 </td>
                             </tr>
                         @endforeach

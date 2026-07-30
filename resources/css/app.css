@@ -4,126 +4,22 @@
 @tailwind components;
 @tailwind utilities;
 
-@theme {
-  /* System Settings */
-  --variant-dark: class;
-
-  /* Custom Colors */
-  --color-error-container: #ffdad6;
-  --color-secondary-fixed-dim: #e9c400;
-  --color-surface-container-lowest: #ffffff;
-  --color-on-surface: #1b1c1c;
-  --color-secondary-container: #fcd400;
-  --color-on-primary: #ffffff;
-  --color-on-secondary-fixed: #221b00;
-  --color-surface: #fbf9f9;
-  --color-surface-bright: #fbf9f9;
-  --color-on-secondary: #ffffff;
-  --color-primary-container: #59207b;
-  --color-inverse-surface: #303031;
-  --color-outline: #7e7481;
-  --color-tertiary: #332500;
-  --color-surface-container-low: #f5f3f3;
-  --color-on-secondary-fixed-variant: #544600;
-  --color-on-tertiary-container: #c0a461;
-  --color-on-tertiary-fixed-variant: #584409;
-  --color-surface-gray: #F7F7F7;
-  --color-background: #fbf9f9;
-  --color-on-error: #ffffff;
-  --color-on-primary-container: #cc8ff0;
-  --color-tertiary-fixed: #ffdf96;
-  --color-surface-container: #efeded;
-  --color-surface-dim: #dbdad9;
-  --color-tertiary-fixed-dim: #e1c37d;
-  --color-secondary: #705d00;
-  --color-surface-tint: #7e45a0;
-  --color-surface-container-highest: #e3e2e2;
-  --color-deep-black: #1A1A1A;
-  --color-on-background: #1b1c1c;
-  --color-inverse-on-surface: #f2f0f0;
-  --color-on-primary-fixed: #30004b;
-  --color-tertiary-container: #4d3a00;
-  --color-on-secondary-container: #6e5c00;
-  --color-on-surface-variant: #4d4450;
-  --color-on-primary-fixed-variant: #642c86;
-  --color-primary: #410063;
-  --color-outline-variant: #cfc2d1;
-  --color-on-tertiary: #ffffff;
-  --color-error: #ba1a1a;
-  --color-secondary-fixed: #ffe16d;
-  --color-on-error-container: #93000a;
-  --color-inverse-primary: #e5b4ff;
-  --color-pure-white: #FFFFFF;
-  --color-on-tertiary-fixed: #251a00;
-  --color-primary-fixed-dim: #e5b4ff;
-  --color-surface-container-high: #e9e8e7;
-  --color-primary-fixed: #f5d9ff;
-  --color-surface-variant: #e3e2e2;
-
-  /* Custom Border Radius */
-  --radius-default: 0.125rem;
-  --radius-lg: 0.25rem;
-  --radius-xl: 0.5rem;
-  --radius-full: 0.75rem;
-
-  /* Custom Spacing */
-  --spacing-gutter: 24px;
-  --spacing-container-max: 1280px;
-  --spacing-margin-desktop: 48px;
-  --spacing-margin-mobile: 16px;
-  --spacing-base: 8px;
-  --spacing-sidebar-width: 280px;
-  --spacing-unit: 8px;
-  --spacing-stack-lg: 32px;
-  --spacing-stack-sm: 8px;
-  --spacing-container-padding: 32px;
-  --spacing-stack-md: 16px;
-
-  /* Custom Font Families */
-  --font-body-md: "Public Sans";
-  --font-headline-lg-mobile: "Montserrat";
-  --font-body-sm: "Public Sans";
-  --font-title-lg: "Montserrat";
-  --font-headline-md: "Montserrat";
-  --font-headline-lg: "Montserrat";
-  --font-label-lg: "Public Sans";
-  --font-body-lg: "Public Sans";
-  --font-label-sm: "Public Sans";
-  --font-display-lg: "Montserrat";
-  --font-headline-sm: "Montserrat";
-  --font-label-md: "Public Sans";
-
-  /* Custom Font Sizes & Line Heights */
-  --text-body-md: 16px; --text-body-md--line-height: 24px; --text-body-md--font-weight: 400;
-  --text-headline-lg-mobile: 24px; --text-headline-lg-mobile--line-height: 32px; --text-headline-lg-mobile--font-weight: 600;
-  --text-body-sm: 14px; --text-body-sm--line-height: 20px; --text-body-sm--font-weight: 400;
-  --text-title-lg: 20px; --text-title-lg--line-height: 28px; --text-title-lg--font-weight: 600;
-  --text-headline-md: 24px; --text-headline-md--line-height: 32px; --text-headline-md--font-weight: 600;
-  --text-headline-lg: 32px; --text-headline-lg--line-height: 40px; --text-headline-lg--font-weight: 600;
-  --text-label-lg: 14px; --text-label-lg--line-height: 20px; --text-label-lg--letter-spacing: 0.01em; --text-label-lg--font-weight: 600;
-  --text-body-lg: 18px; --text-body-lg--line-height: 28px; --text-body-lg--font-weight: 400;
-  --text-label-sm: 12px; --text-label-sm--line-height: 16px; --text-label-sm--letter-spacing: 0.04em; --text-label-sm--font-weight: 500;
-  --text-display-lg: 48px; --text-display-lg--line-height: 56px; --text-display-lg--letter-spacing: -0.02em; --text-display-lg--font-weight: 700;
-  --text-headline-sm: 20px; --text-headline-sm--line-height: 28px; --text-headline-sm--font-weight: 600;
-  --text-label-md: 14px; --text-label-md--line-height: 16px; --text-label-md--letter-spacing: 0.05em; --text-label-md--font-weight: 600;
-}
-
 :root {
     color-scheme: light;
 }
 
 /* Global Reset Defaults */
 body {
-    font-family: 'Inter', 'Public Sans', sans-serif;
+    font-family: 'Public Sans', 'Inter', sans-serif;
     background-color: #FAFAFA;
-    color: #333333;
+    color: #1b1c1c;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
 }
 
-/* --- FIX: Hide Browser Native Password Eye Reveal Icons --- */
+/* Hide Browser Native Password & Autofill Reveal Icons */
 input::-ms-reveal,
 input::-ms-clear {
     display: none !important;
@@ -136,16 +32,18 @@ input::-webkit-credentials-auto-fill-button {
     right: 0;
 }
 
-/* Font Assignments Mapping to Custom Classes */
+/* Font Assignments Helper Classes */
 .font-display-lg,
 .font-headline-lg,
 .font-headline-lg-mobile,
 .font-headline-md,
+.font-headline-sm,
 .font-title-lg {
     font-family: 'Montserrat', sans-serif;
 }
 
 .font-label-lg,
+.font-label-md,
 .font-label-sm,
 .font-body-lg,
 .font-body-md,
@@ -153,7 +51,7 @@ input::-webkit-credentials-auto-fill-button {
     font-family: 'Public Sans', sans-serif;
 }
 
-/* Custom Base Utilities fallback styling maps */
+/* Custom Color Utility Fallbacks */
 .text-amikom-purple { color: #431E6D; }
 .bg-amikom-purple { background-color: #431E6D; }
 .bg-amikom-purple-light { background-color: #F3E8FF; }
@@ -162,24 +60,17 @@ input::-webkit-credentials-auto-fill-button {
 .bg-amikom-gold { background-color: #E28800; }
 .bg-amikom-green { background-color: #0E7452; }
 
-/* Custom Text and Utility fallbacks mapped to your template variables */
-.text-primary { color: #431E6D; } /* Match your primary Amikom corporate theme */
-.focus\:border-primary:focus { border-color: #431E6D !important; }
-.focus\:ring-primary:focus { --tw-ring-color: #431E6D !important; }
+.text-primary { color: #410063; }
+.focus\:border-primary:focus { border-color: #410063 !important; }
+.focus\:ring-primary:focus { --tw-ring-color: #410063 !important; }
 .bg-pure-white { background-color: #FFFFFF; }
 .text-on-surface { color: #1b1c1c; }
 .text-on-surface-variant { color: #4d4450; }
 .text-outline { color: #7e7481; }
-.border-outline\/30 { border-color: rgba(126, 116, 129, 0.3); }
+.border-outline-variant { border-color: #cfc2d1; }
 .text-error { color: #ba1a1a; }
 .text-on-primary { color: #ffffff; }
 .hover\:bg-primary-container:hover { background-color: #59207b; }
-
-/* Font size styling overrides helper classes */
-.text-headline-md { font-size: 24px; line-height: 32px; font-weight: 600; }
-.text-body-sm { font-size: 14px; line-height: 20px; font-weight: 400; }
-.text-body-md { font-size: 16px; line-height: 24px; font-weight: 400; }
-.text-label-lg { font-size: 14px; line-height: 20px; font-weight: 600; letter-spacing: 0.01em; }
 
 /* Material Symbols Engine Configuration */
 .material-symbols-outlined {
@@ -199,8 +90,8 @@ input::-webkit-credentials-auto-fill-button {
 
 /* Custom Scrollbar Styles */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -209,18 +100,14 @@ input::-webkit-credentials-auto-fill-button {
 
 ::-webkit-scrollbar-thumb {
     background: #c1c1c1;
-    border-radius: 4px;
+    border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
 }
 
-/* Dynamic Animation Utilities */
-#success-toast {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
+/* Keyframe Animations */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }

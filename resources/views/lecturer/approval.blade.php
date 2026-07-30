@@ -332,15 +332,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                @if (strtoupper($sub['status']) === 'PENDING' || $sub['status'] === 'Menunggu Persetujuan' || $sub['status'] === 'Perlu Persetujuan' || $sub['status'] === 'Menunggu')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-semibold bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] text-xs">Menunggu</span>
-                                @elseif (strtoupper($sub['status']) === 'VERIFIED' || $sub['status'] === 'Disetujui')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-semibold bg-green-100 text-green-800 border border-green-200 text-xs">Disetujui</span>
-                                @elseif (strtoupper($sub['status']) === 'REJECTED' || $sub['status'] === 'Ditolak')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-semibold bg-red-100 text-red-800 border border-red-200 text-xs">Ditolak</span>
-                                @else
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full font-semibold bg-gray-100 text-gray-800 border border-gray-200 text-xs">{{ $sub['status'] }}</span>
-                                @endif
+                                <x-status-badge :status="$sub['status']" size="sm" />
                             </td>
                         </tr>
                     @empty

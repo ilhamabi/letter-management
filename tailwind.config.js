@@ -12,6 +12,10 @@ export default {
     theme: {
         extend: {
             colors: {
+                "amikom-purple": "#431E6D",
+                "amikom-purple-light": "#F3E8FF",
+                "amikom-gold": "#E28800",
+                "amikom-green": "#0E7452",
                 "surface-tint": "#7e45a0",
                 "tertiary-fixed": "#ffdf96",
                 "on-error": "#ffffff",
@@ -63,12 +67,6 @@ export default {
                 "primary-fixed": "#f5d9ff",
                 "inverse-primary": "#e5b4ff"
             },
-            borderRadius: {
-                "DEFAULT": "0.125rem",
-                "lg": "0.25rem",
-                "xl": "0.5rem",
-                "full": "0.75rem"
-            },
             spacing: {
                 "gutter": "24px",
                 "margin-desktop": "48px",
@@ -83,19 +81,19 @@ export default {
                 "stack-md": "16px"
             },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-                "body-sm": ["Public Sans"],
-                "label-lg": ["Public Sans"],
-                "label-sm": ["Public Sans"],
-                "display-lg": ["Montserrat"],
-                "body-md": ["Public Sans"],
-                "headline-lg-mobile": ["Montserrat"],
-                "body-lg": ["Public Sans"],
-                "headline-lg": ["Montserrat"],
-                "title-lg": ["Montserrat"],
-                "headline-md": ["Montserrat"],
-                "headline-sm": ["Montserrat"],
-                "label-md": ["Public Sans"]
+                sans: ['Public Sans', 'Inter', ...defaultTheme.fontFamily.sans],
+                "body-sm": ["Public Sans", "sans-serif"],
+                "label-lg": ["Public Sans", "sans-serif"],
+                "label-sm": ["Public Sans", "sans-serif"],
+                "display-lg": ["Montserrat", "sans-serif"],
+                "body-md": ["Public Sans", "sans-serif"],
+                "headline-lg-mobile": ["Montserrat", "sans-serif"],
+                "body-lg": ["Public Sans", "sans-serif"],
+                "headline-lg": ["Montserrat", "sans-serif"],
+                "title-lg": ["Montserrat", "sans-serif"],
+                "headline-md": ["Montserrat", "sans-serif"],
+                "headline-sm": ["Montserrat", "sans-serif"],
+                "label-md": ["Public Sans", "sans-serif"]
             },
             fontSize: {
                 "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],

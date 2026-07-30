@@ -190,13 +190,7 @@
                             <td class="px-6 py-5 font-semibold text-deep-black">{{ $item['type'] }}</td>
                             <td class="px-6 py-5 text-on-surface-variant">{{ $item['date'] }}</td>
                             <td class="px-6 py-5 text-center">
-                                @if ($item['status'] === 'Disetujui')
-                                    <span class="px-3 py-1 bg-green-100 text-green-700 border border-green-200 text-[11px] rounded-full font-semibold tracking-wider">Disetujui</span>
-                                @elseif ($item['status'] === 'Ditolak')
-                                    <span class="px-3 py-1 bg-error-container text-error border border-error/20 text-[11px] rounded-full font-semibold tracking-wider">Ditolak</span>
-                                @else
-                                    <span class="px-3 py-1 bg-surface-container text-on-surface-variant border border-outline-variant text-[11px] rounded-full font-semibold tracking-wider">Sedang Diproses</span>
-                                @endif
+                                <x-status-badge :status="$item['status']" size="sm" />
                             </td>
                         </tr>
                     @endforeach
