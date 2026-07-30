@@ -391,90 +391,9 @@
 </div>
 
 <script>
-    function toggleModal(id, show) {
-        const modal = document.getElementById(id);
-        if (show) {
-            modal.classList.remove('hidden');
-            if (id === 'reject-modal') {
-                // Trigger handleRoleToggle on initially selected elements to expand the fields correctly
-                const checkboxes = modal.querySelectorAll('.role-checkbox');
-                checkboxes.forEach(cb => {
-                    const roleId = cb.getAttribute('onchange').match(/'([^']+)'/)[1];
-                    handleRoleToggle(roleId);
-                });
-            }
-            updateConfirmButtonState();
-            updateApproveButtonState();
-        } else {
-            modal.classList.add('hidden');
-        }
-    }
-
-    function handleRoleToggle(roleId) {
-        const group = document.getElementById(`group-${roleId}`);
-        const fields = document.getElementById(`fields-${roleId}`);
-        if (!group || !fields) return;
-        const checkbox = group.querySelector('.role-checkbox');
-
-        if (checkbox.checked) {
-            group.classList.add('border-error');
-            group.classList.remove('border-gray-200');
-            fields.classList.remove('hidden');
-        } else {
-            group.classList.remove('border-error');
-            group.classList.add('border-gray-200');
-            fields.classList.add('hidden');
-        }
-        updateConfirmButtonState();
-    }
-
-    function updateConfirmButtonState() {
-        const checkboxes = document.querySelectorAll('.role-checkbox');
-        const confirmBtn = document.getElementById('confirm-reject-btn');
-        if (!confirmBtn) return;
-        const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
-        confirmBtn.disabled = !anyChecked;
-    }
-
-    function confirmRejection() {
-        toggleModal('reject-modal', false);
-        showSuccessToast('Dokumen ditolak');
-    }
-
-    function updateApproveButtonState() {
-        const checkboxes = document.querySelectorAll('.approve-role-checkbox');
-        const confirmBtn = document.getElementById('confirm-approve-btn');
-        if (!confirmBtn) return;
-        const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
-        confirmBtn.disabled = !anyChecked;
-    }
-
-    function confirmApproval() {
-        toggleModal('approve-modal', false);
-        showSuccessToast('Dokumen berhasil disetujui!');
-    }
-
-    function showSuccessToast(message) {
-        const toast = document.getElementById('success-toast');
-        if (!toast) return;
-        
-        if (message) {
-            toast.querySelector('.font-bold').textContent = message;
-        }
-
-        toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-        toast.classList.add('opacity-100', 'translate-y-0');
-        
-        setTimeout(() => {
-            toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
-            toast.classList.remove('opacity-100', 'translate-y-0');
-        }, 3000);
-    }
-
-    // Initialize button state
     document.addEventListener('DOMContentLoaded', () => {
-        updateConfirmButtonState();
-        updateApproveButtonState();
+        if (window.updateConfirmButtonState) window.updateConfirmButtonState();
+        if (window.updateApproveButtonState) window.updateApproveButtonState();
     });
 </script>
 @endsection

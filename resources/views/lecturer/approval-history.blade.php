@@ -291,7 +291,7 @@
         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-surface-container">
             <div class="flex items-center gap-3">
                 <h3 class="text-lg font-bold text-amikom-purple font-title-lg">Detail Alur Persetujuan</h3>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FFEDD5] text-[#9A3412] border border-[#9A3412]/10" id="modal-status-badge">DITERUSKAN</span>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-gray-100 text-gray-700 border border-gray-200" id="modal-status-badge">DITERUSKAN</span>
             </div>
             <button class="p-1 hover:bg-gray-200 rounded-full transition-colors" id="close-modal-btn">
                 <span class="material-symbols-outlined text-gray-500">close</span>

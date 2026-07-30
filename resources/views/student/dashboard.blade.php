@@ -210,7 +210,7 @@
         </x-slot:subtitle>
 
         <div class="mb-4">
-            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#fef3c7] text-[#92400e] border border-[#fcd400] flex items-center justify-center gap-1.5 w-fit" id="modal-status-badge">
+            <span class="px-3 py-1.5 rounded-full text-sm font-semibold bg-gray-100 text-gray-700 border border-gray-200 flex items-center justify-center gap-1.5 w-fit" id="modal-status-badge">
                 <span class="w-1.5 h-1.5 rounded-full bg-[#92400e] animate-pulse"></span>
                 <span id="modal-status-text">SEDANG DIPROSES</span>
             </span>

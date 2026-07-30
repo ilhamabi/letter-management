@@ -102,8 +102,8 @@
         
         <div class="border-t border-outline-variant bg-surface-container-low/30">
             <div class="flex items-center gap-4 px-6 py-4">
-                <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center shrink-0">
-                    <img alt="{{ $name }}" class="w-12 h-12 rounded-full object-cover shrink-0" src="{{ $photo }}">
+                <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200 shrink-0">
+                    <img alt="{{ $name }}" class="w-full h-full object-cover" src="{{ $photo }}">
                 </div>
                 <div class="overflow-hidden">
                     <p class="font-label-md text-body-md text-on-surface truncate font-semibold">{{ $name }}</p>

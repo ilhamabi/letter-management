@@ -7,7 +7,7 @@
     $normalized = strtolower(trim($status));
     
     $badgeClasses = 'inline-flex items-center rounded-full font-semibold border tracking-wider transition-colors';
-    $sizeClasses = $size === 'sm' ? 'px-2.5 py-0.5 text-[10px]' : 'px-3 py-1 text-xs';
+    $sizeClasses = $size === 'sm' ? 'px-3 py-1 text-xs' : 'px-3.5 py-1.5 text-sm';
 
     if (in_array($normalized, ['disetujui', 'approved', 'verified', 'completed', 'selesai'])) {
         $colorClasses = 'bg-green-100 text-green-800 border-green-200';
@@ -20,8 +20,8 @@
         $label = 'Perlu Revisi';
     } else {
         // Pending / Menunggu / Proses
-        $colorClasses = 'bg-purple-100 text-purple-800 border-purple-200';
-        $label = (in_array($normalized, ['menunggu', 'pending']) ? 'Menunggu Persetujuan' : ucwords($status));
+        $colorClasses = 'bg-gray-100 text-gray-700 border-gray-200';
+        $label = in_array($normalized, ['menunggu', 'pending', 'menunggu persetujuan', 'sedang diproses', 'proses']) ? 'Menunggu' : ucwords($status);
     }
 @endphp
 
