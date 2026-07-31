@@ -31,7 +31,7 @@
     </style>
 </head>
 
-<body class="bg-surface-gray min-h-screen flex items-center justify-center font-body-md text-on-surface">
+<body class="bg-surface-gray min-h-screen flex items-center justify-center text-on-surface">
     <main
         class="w-full max-w-[480px] bg-pure-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.08)] flex flex-col overflow-hidden">
         <!-- Centered Login Form -->
@@ -42,9 +42,8 @@
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPwgxwir4KI6SoWZNdKJxltvkHVQx_0luCzc3fgrPNb_X4Ugn8bIR04eM4VknpmU8CNX15KjM5BQZIo6_Q20X8KTTlxSS8LPfWRJ-4wGXXn6i4oDaFrLzCHISooOJ58JPBMI-q49ow1OriJyfl0yqIyzg8RhbAeQoJg_Lx_z-qdpFkLDJBMNBk-cPspF6SuwY4-YUXTMsgvZflrxB3f48PLjVVKCr8ZjmXfQs7bO8R8LWqncJv61LKMj5lFXVD8BfqlWTFW8GCnno">
             </div>
             <div class="mb-8 text-center">
-                <h2 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang</h2>
-                <p class="font-body-sm text-body-sm text-on-surface-variant">Silakan masuk ke akun Anda untuk
-                    melanjutkan.</p>
+                <h2 class="text-2xl font-bold text-primary mb-2">Selamat Datang</h2>
+                <p class="text-sm text-on-surface-variant">Silakan masuk ke akun Anda untuk melanjutkan.</p>
             </div>
 
             @if (session('status'))
@@ -58,14 +57,13 @@
 
                 <!-- Username / Email Field -->
                 <div>
-                    <label class="block font-label-lg text-label-lg text-on-surface mb-2" for="username">NIK /
-                        NIM</label>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-2" for="username">NIK / NIM</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline">
                             <span class="material-symbols-outlined text-[20px]">person</span>
                         </span>
                         <input
-                            class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline/30 bg-pure-white text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
+                            class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline/30 bg-pure-white text-on-surface text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
                             id="username" name="username" value="{{ old('username') }}"
                             placeholder="Masukkan NIK atau NIM" required type="text" autofocus
                             autocomplete="username">
@@ -77,14 +75,13 @@
 
                 <!-- Password Field -->
                 <div>
-                    <label class="block font-label-lg text-label-lg text-on-surface mb-2"
-                        for="password">Password</label>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-2" for="password">Password</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline">
                             <span class="material-symbols-outlined text-[20px]">lock</span>
                         </span>
                         <input
-                            class="w-full pl-10 pr-10 py-3 rounded-lg border border-outline/30 bg-pure-white text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
+                            class="w-full pl-10 pr-10 py-3 rounded-lg border border-outline/30 bg-pure-white text-on-surface text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
                             id="password" name="password" placeholder="Masukkan Password" required type="password"
                             autocomplete="current-password">
                         <button
@@ -101,7 +98,7 @@
 
                 <!-- Submit Button -->
                 <button
-                    class="w-full bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6"
+                    class="w-full bg-primary hover:bg-primary-container text-on-primary font-semibold text-sm py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6 shadow-sm"
                     type="submit">
                     Login
                     <span class="material-symbols-outlined text-[18px]">arrow_forward</span>

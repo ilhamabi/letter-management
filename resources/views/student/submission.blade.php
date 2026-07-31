@@ -11,9 +11,9 @@
 @endphp
 
 @section('content')
-    <header>
-        <h3 class="font-headline-lg text-[32px] text-on-surface font-bold mb-3">Buat Permintaan Baru</h3>
-        <p class="font-body-md text-on-surface-variant max-w-3xl leading-relaxed">
+    <header class="mb-6">
+        <h2 class="text-2xl md:text-3xl font-bold text-on-surface mb-2">Buat Permintaan Baru</h2>
+        <p class="text-sm md:text-base text-on-surface-variant max-w-3xl leading-relaxed">
             Silakan lengkapi formulir di bawah ini untuk mengajukan permintaan dokumen akademik. Pastikan data yang Anda masukkan sudah benar sebelum mengirimkan.
         </p>
     </header>
@@ -24,9 +24,9 @@
                 <form class="space-y-8" id="request-form">
                     @csrf
                     <div class="space-y-2">
-                        <label class="block font-label-lg text-on-surface mb-1" for="jenis_surat">Jenis Surat</label>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="jenis_surat">Jenis Surat</label>
                         <div class="relative">
-                            <select class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface font-body-md" id="jenis_surat">
+                            <select class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface text-sm" id="jenis_surat">
                                 <option disabled="" selected="" value="">Pilih jenis surat...</option>
                                 <option value="persetujuan_ta_non_reguler">Surat Persetujuan Tugas Akhir Jalur Non-Reguler</option>
                                 <option value="rekomendasi_magang">Surat Rekomendasi Magang</option>
@@ -35,14 +35,14 @@
                         </div>
                     </div>
                     <div class="space-y-2">
-                        <label class="block font-label-lg text-on-surface mb-1" for="keperluan">Keperluan</label>
-                        <textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface font-body-md resize-none" id="keperluan" placeholder="Contoh: Pengajuan Beasiswa PPA, Persyaratan Magang di PT. Telkom..." rows="3"></textarea>
-                        <p class="text-[12px] text-on-surface-variant">Jelaskan secara singkat tujuan penggunaan dokumen ini.</p>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="keperluan">Keperluan</label>
+                        <textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface text-sm resize-none" id="keperluan" placeholder="Contoh: Pengajuan Beasiswa PPA, Persyaratan Magang di PT. Telkom..." rows="3"></textarea>
+                        <p class="text-xs text-on-surface-variant">Jelaskan secara singkat tujuan penggunaan dokumen ini.</p>
                     </div>
                     <div class="space-y-4">
                         <div>
-                            <label class="block font-label-lg text-on-surface mb-1">Lampiran Pendukung</label>
-                            <p class="text-[12px] text-on-surface-variant mb-3">Unggah dokumen pendukung (KTM, Transkrip, atau Bukti Bayar) dalam format PDF (Maks. 2MB)</p>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1">Lampiran Pendukung</label>
+                            <p class="text-xs text-on-surface-variant mb-3">Unggah dokumen pendukung (KTM, Transkrip, atau Bukti Bayar) dalam format PDF (Maks. 2MB)</p>
                         </div>
                         
                         <!-- Hidden PDF Input (Multiple) -->
@@ -54,10 +54,10 @@
                                 <span class="material-symbols-outlined text-[28px]">upload_file</span>
                             </div>
                             <div class="text-center">
-                                <p class="font-medium text-on-surface">Tarik dan lepas berkas di sini</p>
+                                <p class="font-medium text-on-surface text-sm">Tarik dan lepas berkas di sini</p>
                                 <p class="text-xs text-on-surface-variant mt-1">atau</p>
                             </div>
-                            <button id="btn-select-file" class="px-6 py-2 bg-pure-white border border-outline-variant rounded-lg text-primary font-label-md hover:bg-primary hover:text-on-primary transition-all" type="button">Pilih Berkas</button>
+                            <button id="btn-select-file" class="px-5 py-2 bg-pure-white border border-outline-variant rounded-lg text-primary text-sm font-semibold hover:bg-primary hover:text-on-primary transition-all" type="button">Pilih Berkas</button>
                         </div>
 
                         <!-- Error Message Alert -->
@@ -70,7 +70,7 @@
                         <div class="space-y-2" id="file-list-container"></div>
                     </div>
                     <div class="pt-6 border-t border-outline-variant">
-                        <button class="w-full bg-primary text-on-primary font-label-lg py-4 px-6 rounded-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-md shadow-primary/10 flex items-center justify-center gap-2" id="submit-request-btn" type="button">
+                        <button class="w-full bg-primary text-on-primary text-base font-semibold py-3.5 px-6 rounded-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-md shadow-primary/10 flex items-center justify-center gap-2" id="submit-request-btn" type="button">
                             <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'wght' 600;">send</span>
                             Ajukan Permintaan
                         </button>

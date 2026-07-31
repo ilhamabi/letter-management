@@ -14,7 +14,7 @@
             'id' => 1,
             'type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
             'date' => '14 Okt 2023, 09:12',
-            'status' => 'Sedang Diproses',
+            'status' => 'Disetujui',
             'purpose' => 'Pengajuan Tugas Akhir Non-Reguler',
             'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
             'reason' => '',
@@ -23,8 +23,8 @@
             ],
             'timeline' => [
                 ['title' => 'Pengajuan Terkirim', 'time' => '14 Okt 2023, 09:12 WIB', 'status' => 'completed'],
-                ['title' => 'Persetujuan Dosen Wali', 'time' => 'Sedang diproses oleh Heri Setyawan, M.Kom.', 'status' => 'active'],
-                ['title' => 'Verifikasi Program Studi', 'time' => 'Akan datang', 'status' => 'upcoming']
+                ['title' => 'Persetujuan Dosen Wali', 'time' => 'Diverifikasi oleh Dr. Heri Setyawan, M.Kom.', 'status' => 'completed'],
+                ['title' => 'Disetujui Kaprodi', 'time' => 'Disetujui oleh Dr. Barka Satya, M.Kom.', 'status' => 'completed']
             ]
         ],
         [
@@ -158,7 +158,6 @@
                 <div class="relative">
                     <select id="filter-status" class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-lg pl-4 pr-10 h-11 text-body-sm font-body-sm text-on-surface cursor-pointer transition-all">
                         <option value="">Semua Status</option>
-                        <option value="sedang diproses">Sedang Diproses</option>
                         <option value="disetujui">Disetujui</option>
                         <option value="ditolak">Ditolak</option>
                     </select>
@@ -171,29 +170,37 @@
     <section class="bg-pure-white rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col">
         <div class="overflow-x-auto w-full min-w-full">
             <table class="w-full text-left border-collapse">
-                <thead class="bg-surface-container-low">
+                <thead class="bg-surface-container-low/70 border-b border-outline-variant">
                     <tr>
-                        <th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-medium">No</th>
-                        <th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-medium">Jenis Surat</th>
-                        <th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-medium">Tgl. Pengajuan</th>
-                        <th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-medium text-center">Status</th>
+                        <th class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-wider text-center w-16">No</th>
+                        <th class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-wider">Jenis Surat</th>
+                        <th class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-wider">Tgl. Pengajuan</th>
+                        <th class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-wider text-center">Status</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-outline-variant font-body-sm text-on-surface" id="submission-table-body">
+                <tbody class="divide-y divide-outline-variant/60 font-body-sm text-on-surface" id="submission-table-body">
                     @foreach ($submissions as $index => $item)
-                        <tr class="submission-row hover:bg-surface-container-low transition-colors duration-200 cursor-pointer" 
+                        <tr class="submission-row hover:bg-surface-container-low/50 transition-colors duration-200 cursor-pointer" 
                             data-type="{{ strtolower($item['type']) }}" 
                             data-status="{{ strtolower($item['status']) }}" 
                             data-date="{{ $item['date'] }}"
                             onclick="openDetailModal('{{ addslashes($item['type']) }}', '{{ $item['date'] }}', '{{ $item['status'] }}', '{{ addslashes($item['reason'] ?? '') }}')">
-                            <td class="px-6 py-5">{{ $index + 1 }}</td>
-                            <td class="px-6 py-5 font-semibold text-deep-black">{{ $item['type'] }}</td>
-                            <td class="px-6 py-5 text-on-surface-variant">{{ $item['date'] }}</td>
-                            <td class="px-6 py-5 text-center">
+                            <td class="px-6 py-4 text-center text-on-surface-variant font-medium">{{ $index + 1 }}</td>
+                            <td class="px-6 py-4 font-semibold text-deep-black">{{ $item['type'] }}</td>
+                            <td class="px-6 py-4 text-on-surface-variant">{{ $item['date'] }}</td>
+                            <td class="px-6 py-4 text-center">
                                 <x-status-badge :status="$item['status']" size="sm" />
                             </td>
                         </tr>
                     @endforeach
+                    <tr id="no-results-row" class="hidden">
+                        <td colspan="4" class="py-12 text-center text-on-surface-variant font-medium">
+                            <div class="flex flex-col items-center justify-center space-y-2">
+                                <span class="material-symbols-outlined text-3xl text-outline">search_off</span>
+                                <p>Tidak ada riwayat pengajuan yang sesuai dengan filter.</p>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -468,6 +475,7 @@
         const selectedStatus = filterStatus ? filterStatus.value.toLowerCase() : '';
         const startDateVal = startDateInput && startDateInput.value ? parseISOInputDate(startDateInput.value) : null;
         const endDateVal = endDateInput && endDateInput.value ? parseISOInputDate(endDateInput.value) : null;
+        let visibleCount = 0;
 
         rows.forEach(row => {
             const type = row.getAttribute('data-type').toLowerCase();
@@ -500,8 +508,14 @@
                 }
             }
 
+            if (show) visibleCount++;
             row.style.display = show ? '' : 'none';
         });
+
+        const noResultsRow = document.getElementById('no-results-row');
+        if (noResultsRow) {
+            noResultsRow.style.display = (visibleCount === 0 && rows.length > 0) ? '' : 'none';
+        }
     }
 
     function parseIndonesianDate(dateStr) {

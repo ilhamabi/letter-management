@@ -287,15 +287,15 @@
             <table class="w-full text-left">
                 <thead class="bg-[#F8F9FA] border-b border-gray-200 sticky top-0 z-10">
                     <tr>
-                        <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider">Nama Mahasiswa</th>
-                        <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider">NIM</th>
-                        <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider">Jenis Surat</th>
-                        <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider">Tanggal Pengajuan</th>
-                        <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider">Peran</th>
-                        <th class="px-6 py-4 text-sm font-semibold uppercase text-gray-500 tracking-wider text-center">Status</th>
+                        <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Nama Mahasiswa</th>
+                        <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">NIM</th>
+                        <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Jenis Surat</th>
+                        <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Tanggal Pengajuan</th>
+                        <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Peran</th>
+                        <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider text-center">Status</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200 text-body-md font-body-md">
+                <tbody class="bg-white divide-y divide-gray-200 text-sm">
                     @forelse ($submissions as $sub)
                         @php
                             // Extract batch from NIM: e.g. 21.11.4589 -> 2021
@@ -319,11 +319,11 @@
                             data-date="{{ $timestamp }}"
                             onclick="window.location='{{ url('/lecturer/approval/detail') }}'">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="font-semibold text-gray-900 text-base">{{ $sub['name'] }}</span>
+                                <span class="font-semibold text-gray-900 text-sm">{{ $sub['name'] }}</span>
                             </td>
-                            <td class="px-6 py-4 text-gray-600 font-normal text-base">{{ $sub['nim'] }}</td>
-                            <td class="px-6 py-4 text-gray-600 font-normal text-base">{{ $sub['type'] }}</td>
-                            <td class="px-6 py-4 text-gray-600 font-normal text-base">{{ $sub['date'] }}</td>
+                            <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $sub['nim'] }}</td>
+                            <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $sub['type'] }}</td>
+                            <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $sub['date'] }}</td>
                             <td class="px-6 py-4">
                                 <div class="flex flex-col gap-1 items-start">
                                     @foreach ($sub['roles'] as $r)

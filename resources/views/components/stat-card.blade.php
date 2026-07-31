@@ -11,7 +11,7 @@
         <span class="material-symbols-outlined text-[28px]">{{ $icon }}</span>
     </div>
     <div>
-        <p class="font-label-md text-label-md text-on-surface-variant mb-1">{{ $title }}</p>
-        <p class="font-display-lg text-display-lg text-deep-black font-bold">{{ $value }}</p>
+        <p class="text-sm font-medium text-on-surface-variant mb-0.5">{{ $title }}</p>
+        <p class="text-3xl font-bold tracking-tight text-deep-black">{{ $value }}</p>
     </div>
 </div>

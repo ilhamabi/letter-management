@@ -158,8 +158,8 @@
     <!-- Recent Requests Table -->
     <section class="bg-pure-white rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col w-full">
         <div class="p-6 border-b border-outline-variant flex justify-between items-center">
-            <h3 class="font-headline-sm text-headline-sm text-deep-black">Pengajuan yang Berlangsung</h3>
-            <a href="{{ url('/student/submission-history') }}" class="group inline-flex items-center gap-1 text-primary font-label-md text-label-md font-semibold">
+            <h3 class="text-lg font-bold text-deep-black">Pengajuan yang Berlangsung</h3>
+            <a href="{{ url('/student/submission-history') }}" class="group inline-flex items-center gap-1 text-primary text-sm font-semibold">
                 <span class="group-hover:underline">Lihat Riwayat Pengajuan</span>
                 <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-0.5">chevron_right</span>
             </a>
@@ -168,19 +168,19 @@
         @if (count($submissions) > 0)
             <div class="overflow-x-auto w-full">
                 <table class="w-full text-left border-collapse">
-                    <thead class="bg-surface-container-low">
+                    <thead class="bg-surface-container-low/70 border-b border-outline-variant">
                         <tr>
-                            <th class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant py-4 px-6 font-medium">Jenis Surat</th>
-                            <th class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant py-4 px-6 font-medium">Tanggal Pengajuan</th>
-                            <th class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant py-4 px-6 font-medium text-center">Status</th>
+                            <th class="text-xs font-bold uppercase tracking-wider text-on-surface-variant py-4 px-6">Jenis Surat</th>
+                            <th class="text-xs font-bold uppercase tracking-wider text-on-surface-variant py-4 px-6">Tanggal Pengajuan</th>
+                            <th class="text-xs font-bold uppercase tracking-wider text-on-surface-variant py-4 px-6 text-center">Status</th>
                         </tr>
                     </thead>
-                    <tbody class="font-body-sm text-body-sm text-on-surface divide-y divide-outline-variant">
+                    <tbody class="text-sm text-on-surface divide-y divide-outline-variant">
                         @foreach ($submissions as $sub)
-                            <tr class="hover:bg-surface-container-low transition-colors duration-200 cursor-pointer" onclick="openStatusModal({{ json_encode($sub) }})">
-                                <td class="py-5 px-6 font-semibold text-deep-black">{{ $sub['type'] }}</td>
-                                <td class="py-5 px-6 text-on-surface-variant">{{ $sub['date'] }}</td>
-                                <td class="py-5 px-6 text-center">
+                            <tr class="hover:bg-surface-container-low/50 transition-colors duration-200 cursor-pointer" onclick="openStatusModal({{ json_encode($sub) }})">
+                                <td class="py-4 px-6 font-semibold text-deep-black">{{ $sub['type'] }}</td>
+                                <td class="py-4 px-6 text-on-surface-variant">{{ $sub['date'] }}</td>
+                                <td class="py-4 px-6 text-center">
                                     <x-status-badge :status="$sub['status']" size="sm" />
                                 </td>
                             </tr>
@@ -193,9 +193,9 @@
                 <div class="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center text-on-surface-variant mb-4">
                     <span class="material-symbols-outlined text-4xl">description</span>
                 </div>
-                <h4 class="font-headline-sm text-headline-sm text-deep-black mb-2">Tidak ada pengajuan yang sedang berlangsung</h4>
-                <p class="font-body-md text-body-md text-on-surface-variant mb-6">Semua permintaan dokumen Anda telah selesai diproses atau belum ada pengajuan baru.</p>
-                <a class="group inline-flex items-center gap-2 text-primary font-label-lg text-label-lg font-semibold" href="{{ url('/student/submission-history') }}">
+                <h4 class="text-lg font-bold text-deep-black mb-2">Tidak ada pengajuan yang sedang berlangsung</h4>
+                <p class="text-sm text-on-surface-variant mb-6">Semua permintaan dokumen Anda telah selesai diproses atau belum ada pengajuan baru.</p>
+                <a class="group inline-flex items-center gap-2 text-primary text-sm font-semibold" href="{{ url('/student/submission-history') }}">
                     <span class="group-hover:underline">Lihat Riwayat Pengajuan</span>
                     <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-0.5">arrow_forward</span>
                 </a>
