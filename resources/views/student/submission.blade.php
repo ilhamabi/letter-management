@@ -124,7 +124,7 @@
                             </div>
                         </div>
                         <div class="pt-4 border-t border-secondary/10">
-                            <p class="text-[10px] text-on-secondary-container/70 font-bold tracking-wider mb-3">Dosen Wali</p>
+                            <p class="text-xs text-on-secondary-container/80 font-bold uppercase tracking-wider mb-2">Dosen Wali</p>
                             <div class="flex items-start gap-3">
                                 <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
                                     <span class="material-symbols-outlined text-[20px]">person_4</span>
@@ -136,7 +136,7 @@
                                 </div>
                             </div>
                             <div class="pt-4 border-t border-secondary/10 mt-4">
-                                <p class="text-[10px] text-on-secondary-container/70 font-bold tracking-wider mb-3">Ketua Program Studi</p>
+                                <p class="text-xs text-on-secondary-container/80 font-bold uppercase tracking-wider mb-2">Ketua Program Studi</p>
                                 <div class="flex items-start gap-3">
                                     <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
                                         <span class="material-symbols-outlined text-[20px]">person_3</span>
@@ -149,7 +149,7 @@
                                 </div>
                             </div>
                             <div class="pt-4 border-t border-secondary/10 mt-4">
-                                <p class="text-[10px] text-on-secondary-container/70 font-bold tracking-wider mb-3">Dosen Pembimbing</p>
+                                <p class="text-xs text-on-secondary-container/80 font-bold uppercase tracking-wider mb-2">Dosen Pembimbing</p>
                                 <div class="flex items-start gap-3">
                                     <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
                                         <span class="material-symbols-outlined text-[20px]">person_2</span>

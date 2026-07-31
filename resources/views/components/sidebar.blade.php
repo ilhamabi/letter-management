@@ -101,13 +101,13 @@
         </nav>
         
         <div class="border-t border-outline-variant bg-surface-container-low/30">
-            <div class="flex items-center gap-4 px-6 py-4">
-                <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200 shrink-0">
-                    <img alt="{{ $name }}" class="w-full h-full object-cover" src="{{ $photo }}">
+            <div class="flex items-center gap-3 px-4 py-3">
+                <div class="w-11 h-11 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200 shrink-0">
+                    <img alt="{{ $name }}" class="w-full h-full object-cover shrink-0" src="{{ $photo }}">
                 </div>
-                <div class="overflow-hidden">
-                    <p class="font-label-md text-body-md text-on-surface truncate font-semibold">{{ $name }}</p>
-                    <p class="font-label-sm text-xs text-on-surface-variant">{{ $subtext }}</p>
+                <div class="flex-1 min-w-0 overflow-hidden">
+                    <p class="font-label-md text-sm text-on-surface truncate font-semibold" title="{{ $name }}">{{ $name }}</p>
+                    <p class="font-label-sm text-xs text-on-surface-variant truncate" title="{{ $subtext }}">{{ $subtext }}</p>
                 </div>
             </div>
         </div>
@@ -146,14 +146,14 @@
         </div>
 
         <!-- User Profile -->
-        <div class="p-6 border-t border-gray-200 bg-white" data-purpose="user-profile">
-            <div class="flex flex-col gap-4 px-2">
+        <div class="p-4 border-t border-gray-200 bg-white" data-purpose="user-profile">
+            <div class="flex flex-col gap-2.5">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
-                        <img alt="{{ $name }}" class="w-full h-full object-cover" src="{{ $photo }}">
+                    <div class="w-11 h-11 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200 shrink-0">
+                        <img alt="{{ $name }}" class="w-full h-full object-cover shrink-0" src="{{ $photo }}">
                     </div>
-                    <div class="flex-1">
-                        <p class="text-body-md font-headline-lg text-gray-900 leading-tight font-bold">{{ $name }}</p>
+                    <div class="flex-1 min-w-0 overflow-hidden">
+                        <p class="text-sm font-headline-lg text-gray-900 leading-tight font-bold truncate" title="{{ $name }}">{{ $name }}</p>
                         <p class="text-xs text-gray-500 truncate mt-0.5">{{ $subtext }}</p>
                     </div>
                 </div>
@@ -161,7 +161,7 @@
                 @if(!empty($roleBadges))
                     <div class="flex flex-wrap gap-1.5">
                         @foreach ($roleBadges as $rb)
-                            <span class="text-[10px] font-semibold text-white uppercase tracking-wider px-2.5 py-1 rounded-full {{ $rb['bg'] }}">{{ $rb['name'] }}</span>
+                            <span class="text-[10px] font-semibold text-white uppercase tracking-wider px-2.5 py-0.5 rounded-full {{ $rb['bg'] }}">{{ $rb['name'] }}</span>
                         @endforeach
                     </div>
                 @endif
