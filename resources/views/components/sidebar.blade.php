@@ -1,5 +1,5 @@
 @props([
-    'role' => 'student', // 'student' or 'lecturer'
+    'role' => 'student', // 'student', 'lecturer', or 'admin'
     'userName' => null,
     'userSubtext' => null,
     'userPhoto' => null,
@@ -36,6 +36,35 @@
                 'route' => 'student.settings',
                 'path' => 'student/settings',
                 'icon' => 'settings'
+            ]
+        ];
+    } elseif ($role === 'admin') {
+        $name = $userName ?? (auth()->check() ? auth()->user()->name : 'Admin');
+        $subtext = $userSubtext ?? 'Administrator';
+        $photo = $userPhoto ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuBMizNsImUsAhQ1K0MobwV_I-xE5GJAje3rmApO43UMzs2HSAmf2BVZXm3AyvXCbW0TyVQiGNpGGQH_7zZhKQzgE-socR3g9BJVABx_IEBfzntAvOyZtgMO_tlj8GVxuL_2qNWxXtDetUKHpaysIf0n3dKfPG1eIM9EYmkaKrSEPDLsi_Yib9xlm8vTGmzkww7ib2CoLQf1OUEl8CMPS6G-eIKzYMC5EPlK5uOkKYOSDPufDRy7TRMg';
+        $roleBadges = [];
+
+        $navItems = [
+            [
+                'label' => 'Dashboard',
+                'route' => 'admin.dashboard',
+                'path' => 'admin/dashboard',
+                'icon' => 'dashboard',
+                'active' => request()->routeIs('admin.dashboard*') || request()->is('admin/dashboard*'),
+            ],
+            [
+                'label' => 'Manajemen Surat',
+                'route' => Route::has('admin.letters') ? 'admin.letters' : 'admin.dashboard',
+                'path' => 'admin/letters',
+                'icon' => 'description',
+                'active' => request()->routeIs('admin.letters*') || request()->is('admin/letters*'),
+            ],
+            [
+                'label' => 'Pengaturan Akun',
+                'route' => Route::has('admin.settings') ? 'admin.settings' : 'admin.dashboard',
+                'path' => 'admin/settings',
+                'icon' => 'settings',
+                'active' => request()->routeIs('admin.settings*') || request()->is('admin/settings*'),
             ]
         ];
     } else {

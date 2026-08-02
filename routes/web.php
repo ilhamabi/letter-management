@@ -37,6 +37,21 @@ Route::middleware('auth')
                     '/dashboard',
                     'admin.dashboard'
                 )->name('admin.dashboard');
+
+                Route::view(
+                    '/letters',
+                    'admin.letters'
+                )->name('admin.letters');
+
+                Route::view(
+                    '/letters/edit',
+                    'admin.letters-edit'
+                )->name('admin.letters.edit');
+
+                Route::view(
+                    '/settings',
+                    'admin.settings'
+                )->name('admin.settings');
             });
 
         Route::prefix('student')

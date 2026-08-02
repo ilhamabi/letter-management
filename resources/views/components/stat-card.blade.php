@@ -1,17 +1,17 @@
 @props([
     'icon' => 'folder',
-    'iconBg' => 'bg-primary-container',
-    'iconColor' => 'text-primary',
+    'iconBg' => 'bg-blue-50',
+    'iconColor' => 'text-blue-600',
     'title' => '',
     'value' => '0',
 ])
 
-<div {{ $attributes->merge(['class' => 'bg-pure-white p-6 rounded-xl border border-outline-variant flex items-center gap-5 shadow-sm hover:shadow-md transition-shadow']) }}>
-    <div class="p-3 rounded-lg {{ $iconBg }} {{ $iconColor }} flex items-center justify-center shrink-0">
-        <span class="material-symbols-outlined text-[28px]">{{ $icon }}</span>
-    </div>
+<div {{ $attributes->merge(['class' => 'bg-white border border-gray-200 p-6 rounded-xl flex items-start justify-between shadow-sm hover:shadow-md transition-shadow']) }}>
     <div>
-        <p class="text-sm font-medium text-on-surface-variant mb-0.5">{{ $title }}</p>
-        <p class="text-3xl font-bold tracking-tight text-deep-black">{{ $value }}</p>
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{{ $title }}</p>
+        <h3 class="text-3xl font-bold text-gray-900 m-0">{{ $value }}</h3>
+    </div>
+    <div class="w-12 h-12 rounded-full {{ $iconBg }} flex items-center justify-center {{ $iconColor }} shrink-0">
+        <span class="material-symbols-outlined text-2xl">{{ $icon }}</span>
     </div>
 </div>

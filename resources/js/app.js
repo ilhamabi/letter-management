@@ -9,6 +9,7 @@ import {
     confirmRejection,
     confirmApproval
 } from './features/approval-detail';
+import { initLetterEditor } from './features/letter-editor';
 
 // Initialize Alpine.js
 window.Alpine = Alpine;
@@ -27,3 +28,6 @@ window.updateConfirmButtonState = updateConfirmButtonState;
 window.updateApproveButtonState = updateApproveButtonState;
 window.confirmRejection = confirmRejection;
 window.confirmApproval = confirmApproval;
+
+// Expose Letter Editor Feature Method
+window.initLetterEditor = initLetterEditor;

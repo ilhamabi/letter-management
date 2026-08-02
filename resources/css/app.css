@@ -120,3 +120,39 @@ input::-webkit-credentials-auto-fill-button {
 
 .animate-fade-in { animation: fadeIn 0.2s ease-out; }
 .animate-scale-up { animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* Component Styles Layer */
+@layer components {
+    /* Letter Template Variables Badge Pill */
+    .placeholder-pill {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 12px;
+        background-color: #F3E8FF;
+        color: #431E6D;
+        font-size: 12px;
+        margin: 0 2px;
+        font-weight: 600;
+        border: 1px solid #E9D5FF;
+    }
+
+    /* Role Badge Colors */
+    .role-kaprodi { background-color: #D97706; color: #ffffff; }
+    .role-dosen-wali { background-color: #0D9488; color: #ffffff; }
+    .role-dosen-pembimbing { background-color: #7E22CE; color: #ffffff; }
+    .role-dekan { background-color: #0F172A; color: #ffffff; }
+
+    /* TinyMCE Editor Theme Integration */
+    .tox-tinymce {
+        border-radius: 0.5rem !important;
+        border-color: #E5E7EB !important;
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+    }
+
+    .tox .tox-toolbar, 
+    .tox .tox-toolbar__overflow, 
+    .tox .tox-toolbar__primary {
+        background-color: #F9FAFB !important;
+        border-bottom: 1px solid #E5E7EB !important;
+    }
+}
