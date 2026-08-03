@@ -36,7 +36,7 @@
         <div class="relative bg-white w-full max-w-md rounded-xl shadow-xl overflow-hidden z-10 my-auto">
             <!-- Modal Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-amikom-purple m-0">Ubah Alur Persetujuan</h3>
+                <h3 class="text-lg font-bold text-amikom-purple m-0 font-title-lg">Ubah Alur Persetujuan</h3>
                 <button class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100" onclick="document.getElementById('{{ $id }}').classList.add('hidden')" type="button">
                     <x-icon name="close" class="w-5 h-5" />
                 </button>
@@ -45,17 +45,17 @@
             <!-- Modal Body -->
             <div class="p-6 space-y-6">
                 <div class="space-y-4">
-                    <h4 class="text-xs font-bold text-gray-700 uppercase tracking-wider m-0">Pilih Alur Persetujuan</h4>
+                    <h4 class="text-xs font-bold text-gray-700 uppercase tracking-wider m-0 font-label-sm">Pilih Alur Persetujuan</h4>
                     
                     <!-- Filter Peran Dropdown -->
                     <div class="relative">
                         <button 
                             @click="filterOpen = !filterOpen" 
-                            class="w-full flex items-center justify-between px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 hover:border-amikom-purple transition-all focus:ring-2 focus:ring-amikom-purple/20" 
+                            class="w-full flex items-center justify-between px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 hover:border-amikom-purple transition-all focus:ring-2 focus:ring-amikom-purple/20 font-label-md" 
                             type="button">
                             <div class="flex items-center gap-2">
                                 <x-icon name="filter_list" class="w-4 h-4 text-gray-400" />
-                                <span class="font-medium">Filter Peran</span>
+                                <span class="font-bold">Filter Peran</span>
                             </div>
                             <x-icon name="expand_more" class="w-4 h-4 text-gray-400 transition-transform duration-200" x-bind:class="filterOpen ? 'rotate-180' : ''" />
                         </button>
@@ -70,15 +70,15 @@
                             <div class="p-2 space-y-1">
                                 <label class="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded cursor-pointer transition-colors select-none">
                                     <input type="checkbox" x-model="rolesFilter.wali" class="rounded border-gray-300 text-amikom-purple focus:ring-amikom-purple">
-                                    <span class="text-sm text-gray-700 font-medium">Dosen Wali</span>
+                                    <span class="text-sm text-gray-700 font-semibold font-body-sm">Dosen Wali</span>
                                 </label>
                                 <label class="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded cursor-pointer transition-colors select-none">
                                     <input type="checkbox" x-model="rolesFilter.kaprodi" class="rounded border-gray-300 text-amikom-purple focus:ring-amikom-purple">
-                                    <span class="text-sm text-gray-700 font-medium">Kaprodi</span>
+                                    <span class="text-sm text-gray-700 font-semibold font-body-sm">Kaprodi</span>
                                 </label>
                                 <label class="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded cursor-pointer transition-colors select-none">
                                     <input type="checkbox" x-model="rolesFilter.pembimbing" class="rounded border-gray-300 text-amikom-purple focus:ring-amikom-purple">
-                                    <span class="text-sm text-gray-700 font-medium">Dosen Pembimbing</span>
+                                    <span class="text-sm text-gray-700 font-semibold font-body-sm">Dosen Pembimbing</span>
                                 </label>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
                                             <div class="flex items-center gap-2">
                                                 <span 
                                                     x-bind:class="selectedFlow === flow.id ? 'text-gray-900 font-bold' : 'text-gray-600 font-medium'"
-                                                    class="text-xs" 
+                                                    class="text-xs font-label-sm" 
                                                     x-text="step"></span>
                                                 <span x-show="idx < flow.steps.length - 1">
                                                     <x-icon name="arrow_forward" class="w-3.5 h-3.5 text-gray-400 inline" />
@@ -121,10 +121,10 @@
 
             <!-- Modal Footer -->
             <div class="px-6 py-4 bg-gray-50 flex justify-end gap-3 border-t border-gray-100">
-                <button class="px-6 py-2 rounded-md text-sm font-bold text-gray-600 hover:bg-gray-100 transition-colors border border-gray-300" onclick="document.getElementById('{{ $id }}').classList.add('hidden')" type="button">
+                <button class="px-6 py-2 rounded-md text-sm font-bold text-gray-600 hover:bg-gray-100 transition-colors border border-gray-300 font-label-md" onclick="document.getElementById('{{ $id }}').classList.add('hidden')" type="button">
                     Batal
                 </button>
-                <button class="px-6 py-2 rounded-md text-sm font-bold bg-amikom-purple text-white hover:opacity-90 active:scale-95 transition-all shadow-md" @click="applyWorkflow()" type="button">
+                <button class="px-6 py-2 rounded-md text-sm font-bold bg-amikom-purple text-white hover:opacity-90 active:scale-95 transition-all shadow-md font-label-md" @click="applyWorkflow()" type="button">
                     Ubah Alur
                 </button>
             </div>

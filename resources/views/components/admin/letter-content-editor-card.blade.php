@@ -11,17 +11,17 @@
                 <x-icon name="edit_document" class="w-6 h-6 text-amikom-purple" />
             </div>
             <div>
-                <h3 class="text-lg font-bold text-gray-900 m-0">Konfigurasi Template Isi Surat</h3>
+                <h3 class="text-lg font-bold text-gray-900 m-0 font-title-lg">Konfigurasi Template Isi Surat</h3>
                 <!-- <p class="text-xs text-gray-500 m-0">Sesuaikan format dokumen dan variabel dinamis surat resmi</p> -->
             </div>
         </div>
         <div class="relative group cursor-help">
-            <div class="flex items-center gap-2 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs font-medium text-gray-600 hover:bg-white transition-colors">
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs font-medium text-gray-600 hover:bg-white transition-colors font-label-sm">
                 <x-icon name="help" class="w-4 h-4" />
                 Panduan Placeholder
             </div>
-            <div class="absolute right-0 bottom-full mb-2 hidden group-hover:block w-72 bg-gray-900 text-white text-[11px] p-4 rounded-xl shadow-xl z-10">
-                <p class="font-bold mb-2 text-amikom-gold">Cara Menggunakan Placeholder:</p>
+            <div class="absolute right-0 bottom-full mb-2 hidden group-hover:block w-72 bg-gray-900 text-white text-[11px] p-4 rounded-xl shadow-xl z-10 font-body-sm">
+                <p class="font-bold mb-2 text-amikom-gold font-label-sm">Cara Menggunakan Placeholder:</p>
                 <ul class="space-y-1.5 opacity-90 pl-0">
                     <li>1. Gunakan tombol <span class="text-amikom-gold">+ Variable Surat</span> di toolbar TinyMCE</li>
                     <li>2. Atau pilih dari dropdown di bawah</li>
@@ -34,11 +34,11 @@
     <!-- TinyMCE Container & Quick Helper Toolbar -->
     <div class="border border-gray-200 rounded-lg overflow-hidden flex flex-col gap-3 p-3 bg-gray-50/50">
         <div class="bg-white border border-gray-200 p-2.5 rounded-md flex justify-between items-center flex-wrap gap-2 shadow-sm">
-            <span class="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
+            <span class="text-xs font-semibold text-gray-700 flex items-center gap-1.5 font-label-sm">
                 <x-icon name="extension" class="w-4 h-4 text-amikom-purple" />
                 Sisipkan Variable Surat Cepat:
             </span>
-            <select id="{{ $selectId }}" class="text-xs font-bold bg-white border border-gray-300 px-3 py-2 rounded-md outline-none text-amikom-purple cursor-pointer hover:border-amikom-purple transition-all focus:ring-2 focus:ring-amikom-purple/20 shadow-sm">
+            <select id="{{ $selectId }}" class="text-xs font-bold bg-white border border-gray-300 px-3 py-2 rounded-md outline-none text-amikom-purple cursor-pointer hover:border-amikom-purple transition-all focus:ring-2 focus:ring-amikom-purple/20 shadow-sm font-label-sm">
                 <option disabled selected>+ SISIPKAN PLACEHOLDER</option>
                 <optgroup class="text-[10px] text-gray-400 bg-gray-50" label="DATA MAHASISWA">
                     <option value="@{{Nama Mahasiswa}}">@{{Nama Mahasiswa}} : Nama lengkap mahasiswa</option>
