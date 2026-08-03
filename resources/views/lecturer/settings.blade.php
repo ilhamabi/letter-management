@@ -81,7 +81,9 @@
                         <label class="text-xs font-bold uppercase tracking-wider text-gray-500" for="current-password">Kata Sandi Saat Ini</label>
                         <div class="relative">
                             <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm bg-white" id="current-password" placeholder="••••••••" type="password">
-                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm cursor-pointer hover:text-primary transition-colors" onclick="const input = this.previousElementSibling; if (input.type === 'password') { input.type = 'text'; this.textContent = 'visibility'; } else { input.type = 'password'; this.textContent = 'visibility_off'; }">visibility_off</span>
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-primary transition-colors flex items-center" onclick="const input = this.previousElementSibling; const isPwd = input.type === 'password'; input.type = isPwd ? 'text' : 'password'; this.innerHTML = isPwd ? `<svg class='w-4 h-4' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'/><circle cx='12' cy='12' r='3'/></svg>` : `<svg class='w-4 h-4' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24'/><line x1='1' y1='1' x2='23' y2='23'/></svg>`;">
+                                <x-icon name="visibility_off" class="w-4 h-4" />
+                            </span>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

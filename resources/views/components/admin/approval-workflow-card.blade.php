@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div x-show="index < currentSteps.length - 1" class="flex items-center justify-center px-1">
-                    <span class="material-symbols-outlined text-amikom-purple font-bold animate-pulse">arrow_forward</span>
+                    <x-icon name="arrow_forward" class="w-5 h-5 text-amikom-purple font-bold animate-pulse" />
                 </div>
             </div>
         </template>

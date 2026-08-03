@@ -200,7 +200,7 @@
             <p class="text-gray-600">Berikut adalah ringkasan permintaan persetujuan dokumen mahasiswa saat ini.</p>
         </div>
         <div class="bg-amikom-purple text-white px-4 py-2 rounded-lg flex items-center gap-2">
-            <span class="material-symbols-outlined text-sm">calendar_today</span>
+            <x-icon name="calendar_today" class="w-4 h-4" />
             <span class="text-sm font-medium">{{ Carbon\Carbon::now('Asia/Jakarta')->locale('id')->isoFormat('D MMMM Y') }}</span>
         </div>
     </div>
@@ -215,7 +215,7 @@
                     <h4 class="text-gray-900 text-4xl font-bold">{{ $stats['total'] }}</h4>
                 </div>
                 <div class="p-3 bg-amikom-purple-light rounded-lg text-amikom-purple">
-                    <span class="material-symbols-outlined" data-icon="folder_shared">folder_shared</span>
+                    <x-icon name="folder_shared" class="w-6 h-6" />
                 </div>
             </div>
         </div>
@@ -228,7 +228,7 @@
                     <h4 class="text-amikom-purple text-4xl font-bold">{{ $stats['pending'] }}</h4>
                 </div>
                 <div class="p-3 bg-[#FEF3C7] rounded-lg text-amikom-gold">
-                    <span class="material-symbols-outlined" data-icon="pending_actions">pending_actions</span>
+                    <x-icon name="pending_actions" class="w-6 h-6" />
                 </div>
             </div>
             <p class="mt-4 text-xs text-gray-500 italic">Membutuhkan tindakan segera</p>
@@ -242,7 +242,7 @@
                     <h4 class="text-gray-900 text-4xl font-bold">{{ $stats['verified'] }}</h4>
                 </div>
                 <div class="p-3 bg-[#D1FAE5] rounded-lg text-amikom-green">
-                    <span class="material-symbols-outlined" data-icon="verified">verified</span>
+                    <x-icon name="verified" class="w-6 h-6" />
                 </div>
             </div>
             <div class="mt-4 w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
@@ -261,7 +261,7 @@
             <div class="flex items-center gap-4">
                 <a class="group inline-flex items-center gap-1 text-amikom-purple text-sm font-semibold ml-2" href="{{ url('/lecturer/approval') }}">
                     <span class="group-hover:underline">Lihat Semua Pengajuan</span>
-                    <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-0.5">chevron_right</span>
+                    <x-icon name="chevron_right" class="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
             </div>
         </div>
@@ -307,7 +307,7 @@
             <!-- Empty State UI -->
             <div class="flex flex-col items-center justify-center py-20 px-6 text-center">
                 <div class="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mb-4 text-gray-400">
-                    <span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1, 'wght' 200, 'GRAD' 0, 'opsz' 48;">task</span>
+                    <x-icon name="task" class="w-12 h-12 text-gray-400" />
                 </div>
                 <h4 class="text-xl font-bold text-gray-900 mb-2">Tidak ada pengajuan pending</h4>
                 <p class="text-gray-600 text-sm max-w-md">

@@ -42,9 +42,7 @@
                         </td>
                         <td class="px-6 py-4 text-right">
                             <x-status-badge :status="$type['status'] ?? 'Aktif'" size="sm" class="font-label-sm">
-                                <span class="material-symbols-outlined text-[14px] mr-1">
-                                    {{ $isInactive ? 'cancel' : 'check_circle' }}
-                                </span>
+                                <x-icon :name="$isInactive ? 'cancel' : 'check_circle'" class="w-3.5 h-3.5 inline mr-1" />
                                 {{ $type['status'] ?? 'Aktif' }}
                             </x-status-badge>
                         </td>

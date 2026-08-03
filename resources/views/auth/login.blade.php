@@ -12,23 +12,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Public+Sans:wght@400;500;600&amp;display=swap"
         rel="stylesheet">
-    <!-- Material Symbols -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet">
     <!-- Tailwind CSS (Vite) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-
-        .bg-pattern {
-            background-color: #410063;
-            background-image: radial-gradient(#59207b 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-    </style>
 </head>
 
 <body class="bg-surface-gray min-h-screen flex items-center justify-center text-on-surface">
@@ -59,8 +44,8 @@
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-2" for="username">NIK / NIM</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline">
-                            <span class="material-symbols-outlined text-[20px]">person</span>
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline pointer-events-none">
+                            <x-icon name="person" class="w-5 h-5" />
                         </span>
                         <input
                             class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline/30 bg-pure-white text-on-surface text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
@@ -77,8 +62,8 @@
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-2" for="password">Password</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline">
-                            <span class="material-symbols-outlined text-[20px]">lock</span>
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline pointer-events-none">
+                            <x-icon name="lock" class="w-5 h-5" />
                         </span>
                         <input
                             class="w-full pl-10 pr-10 py-3 rounded-lg border border-outline/30 bg-pure-white text-on-surface text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
@@ -86,9 +71,10 @@
                             autocomplete="current-password">
                         <button
                             class="absolute inset-y-0 right-0 flex items-center pr-3 text-outline hover:text-primary transition-colors"
-                            onclick="togglePassword()" type="button">
-                            <span class="material-symbols-outlined text-[20px]"
-                                id="visibility-icon">visibility_off</span>
+                            onclick="togglePassword()" type="button" aria-label="Toggle password visibility">
+                            <span id="visibility-icon" class="flex items-center justify-center">
+                                <x-icon name="visibility_off" class="w-5 h-5" />
+                            </span>
                         </button>
                     </div>
                     @if ($errors->has('password'))
@@ -101,7 +87,7 @@
                     class="w-full bg-primary hover:bg-primary-container text-on-primary font-semibold text-sm py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6 shadow-sm"
                     type="submit">
                     Login
-                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    <x-icon name="arrow_forward" class="w-4 h-4" />
                 </button>
             </form>
         </div>
@@ -109,14 +95,14 @@
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
-            const icon = document.getElementById('visibility-icon');
+            const iconContainer = document.getElementById('visibility-icon');
 
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                icon.textContent = 'visibility';
+                iconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
             } else {
                 passwordInput.type = 'password';
-                icon.textContent = 'visibility_off';
+                iconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
             }
         }
     </script>

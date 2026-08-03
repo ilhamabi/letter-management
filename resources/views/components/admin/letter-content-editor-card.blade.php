@@ -8,7 +8,7 @@
     <div class="flex justify-between items-center mb-6">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-amikom-purple/10 flex items-center justify-center">
-                <span class="material-symbols-outlined text-amikom-purple">edit_document</span>
+                <x-icon name="edit_document" class="w-6 h-6 text-amikom-purple" />
             </div>
             <div>
                 <h3 class="text-lg font-bold text-gray-900 m-0">Konfigurasi Template Isi Surat</h3>
@@ -17,7 +17,7 @@
         </div>
         <div class="relative group cursor-help">
             <div class="flex items-center gap-2 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-xs font-medium text-gray-600 hover:bg-white transition-colors">
-                <span class="material-symbols-outlined text-sm">help</span>
+                <x-icon name="help" class="w-4 h-4" />
                 Panduan Placeholder
             </div>
             <div class="absolute right-0 bottom-full mb-2 hidden group-hover:block w-72 bg-gray-900 text-white text-[11px] p-4 rounded-xl shadow-xl z-10">
@@ -35,7 +35,7 @@
     <div class="border border-gray-200 rounded-lg overflow-hidden flex flex-col gap-3 p-3 bg-gray-50/50">
         <div class="bg-white border border-gray-200 p-2.5 rounded-md flex justify-between items-center flex-wrap gap-2 shadow-sm">
             <span class="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-base text-amikom-purple">extension</span>
+                <x-icon name="extension" class="w-4 h-4 text-amikom-purple" />
                 Sisipkan Variable Surat Cepat:
             </span>
             <select id="{{ $selectId }}" class="text-xs font-bold bg-white border border-gray-300 px-3 py-2 rounded-md outline-none text-amikom-purple cursor-pointer hover:border-amikom-purple transition-all focus:ring-2 focus:ring-amikom-purple/20 shadow-sm">

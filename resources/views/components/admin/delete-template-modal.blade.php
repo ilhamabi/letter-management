@@ -8,7 +8,7 @@
         <div class="relative bg-white w-full max-w-md rounded-xl shadow-xl overflow-hidden z-10">
             <div class="p-6 text-center">
                 <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span class="material-symbols-outlined text-red-600 text-3xl">warning</span>
+                    <x-icon name="warning" class="w-8 h-8 text-red-600" />
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-2">Hapus Template Surat?</h3>
                 <p class="text-sm text-gray-500 leading-relaxed m-0">Tindakan ini tidak dapat dibatalkan. Mahasiswa tidak akan bisa lagi mengajukan surat menggunakan template ini.</p>

@@ -26,7 +26,7 @@
                 <div class="relative group cursor-pointer">
                     <img class="w-32 h-32 rounded-xl object-cover border border-gray-200 shadow-sm" src="{{ $adminPhoto }}" alt="{{ $adminName }}">
                     <div class="absolute inset-0 bg-gray-900/50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="material-symbols-outlined text-white">photo_camera</span>
+                        <x-icon name="photo_camera" class="w-6 h-6 text-white" />
                     </div>
                 </div>
                 <div>
@@ -68,18 +68,20 @@
                     <div class="flex flex-col gap-1.5">
                         <label class="text-sm font-medium text-gray-700">Kata Sandi Saat Ini</label>
                         <div class="relative">
-                            <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amikom-purple focus:ring-1 focus:ring-amikom-purple text-sm bg-white" type="password" value="" placeholder="••••••••">
-                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm cursor-pointer hover:text-gray-700">visibility_off</span>
+                            <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amikom-purple focus:ring-1 focus:ring-amikom-purple text-sm bg-white" id="current-password" type="password" placeholder="••••••••">
+                            <span class="toggle-password-icon absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-700 flex items-center">
+                                <x-icon name="visibility_off" class="w-4 h-4" />
+                            </span>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="flex flex-col gap-1.5">
                             <label class="text-sm font-medium text-gray-700">Kata Sandi Baru</label>
-                            <input class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amikom-purple focus:ring-1 focus:ring-amikom-purple text-sm bg-white" type="password">
+                            <input class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amikom-purple focus:ring-1 focus:ring-amikom-purple text-sm bg-white" id="new-password" type="password">
                         </div>
                         <div class="flex flex-col gap-1.5">
                             <label class="text-sm font-medium text-gray-700">Konfirmasi Kata Sandi Baru</label>
-                            <input class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amikom-purple focus:ring-1 focus:ring-amikom-purple text-sm bg-white" type="password">
+                            <input class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-amikom-purple focus:ring-1 focus:ring-amikom-purple text-sm bg-white" id="confirm-password" type="password">
                         </div>
                     </div>
                     <div class="flex justify-end pt-4">
@@ -94,20 +96,19 @@
 @push('scripts')
 <script>
     (function() {
-      const toggleIcons = document.querySelectorAll('.material-symbols-outlined.absolute.right-3');
+      const toggleIcons = document.querySelectorAll('.toggle-password-icon');
+      const eyeSvg = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+      const eyeOffSvg = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+
       toggleIcons.forEach(icon => {
         icon.addEventListener('click', function() {
           const container = this.closest('.relative');
           const input = container.querySelector('input');
-          const display = container.querySelector('p');
           
           if (input) {
             const isPassword = input.getAttribute('type') === 'password';
             input.setAttribute('type', isPassword ? 'text' : 'password');
-            this.textContent = isPassword ? 'visibility' : 'visibility_off';
-          } else if (display) {
-            const isOff = this.textContent === 'visibility_off';
-            this.textContent = isOff ? 'visibility' : 'visibility_off';
+            this.innerHTML = isPassword ? eyeSvg : eyeOffSvg;
           }
         });
       });

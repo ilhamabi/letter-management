@@ -51,7 +51,7 @@
                         <!-- Drag and Drop Zone -->
                         <div id="drop-zone" class="border-2 border-dashed border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center gap-3 bg-surface-container-low/30 hover:bg-surface-container-low transition-colors cursor-pointer group">
                             <div class="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                                <span class="material-symbols-outlined text-[28px]">upload_file</span>
+                                <x-icon name="upload_file" class="w-7 h-7" />
                             </div>
                             <div class="text-center">
                                 <p class="font-medium text-on-surface text-sm">Tarik dan lepas berkas di sini</p>
@@ -62,7 +62,7 @@
 
                         <!-- Error Message Alert -->
                         <div id="file-error-msg" class="hidden p-3 bg-error-container/40 border border-error/30 rounded-lg text-error text-xs flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm">error</span>
+                            <x-icon name="error" class="w-4 h-4 shrink-0" />
                             <span id="file-error-text">Hanya berkas format PDF yang diperbolehkan!</span>
                         </div>
 
@@ -71,7 +71,7 @@
                     </div>
                     <div class="pt-6 border-t border-outline-variant">
                         <button class="w-full bg-primary text-on-primary text-base font-semibold py-3.5 px-6 rounded-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-md shadow-primary/10 flex items-center justify-center gap-2" id="submit-request-btn" type="button">
-                            <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'wght' 600;">send</span>
+                            <x-icon name="send" class="w-5 h-5" />
                             Ajukan Permintaan
                         </button>
                     </div>
@@ -82,16 +82,16 @@
         <div class="lg:col-span-4 space-y-6">
             <div class="bg-primary-container text-on-primary-container p-6 rounded-xl border border-primary/10">
                 <h4 class="font-title-lg text-[18px] font-bold mb-4 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">info</span>
+                    <x-icon name="info" class="w-6 h-6" />
                     Informasi Penting
                 </h4>
                 <ul class="space-y-4 text-[13px] leading-relaxed">
                     <li class="flex gap-3">
-                        <span class="material-symbols-outlined text-[18px] shrink-0 text-primary-container-on">timer</span>
+                        <x-icon name="timer" class="w-4 h-4 shrink-0 text-primary-container-on mt-0.5" />
                         <span class="">Proses pengerjaan dokumen membutuhkan waktu 1<strong>-2 hari kerja</strong>.</span>
                     </li>
                     <li class="flex gap-3">
-                        <span class="material-symbols-outlined text-[18px] shrink-0 text-primary-container-on">download</span>
+                        <x-icon name="download" class="w-4 h-4 shrink-0 text-primary-container-on mt-0.5" />
                         <span class="">Dokumen digital dapat diunduh langsung setelah status <strong>"Disetujui"</strong>.</span>
                     </li>
                 </ul>
@@ -106,7 +106,7 @@
                     <div class="space-y-4">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full bg-pure-white flex items-center justify-center text-secondary shadow-sm">
-                                <span class="material-symbols-outlined text-[24px]">school</span>
+                                <x-icon name="school" class="w-6 h-6" />
                             </div>
                             <div>
                                 <p class="text-[12px] text-on-secondary-container/70 font-medium">Status Akademik</p>
@@ -127,7 +127,7 @@
                             <p class="text-xs text-on-secondary-container/80 font-bold uppercase tracking-wider mb-2">Dosen Wali</p>
                             <div class="flex items-start gap-3">
                                 <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
-                                    <span class="material-symbols-outlined text-[20px]">person_4</span>
+                                    <x-icon name="person" class="w-5 h-5" />
                                 </div>
                                 <div>
                                     <p class="font-semibold text-on-secondary-container text-[14px]">Heri Setyawan, M.Kom.</p>
@@ -139,7 +139,7 @@
                                 <p class="text-xs text-on-secondary-container/80 font-bold uppercase tracking-wider mb-2">Ketua Program Studi</p>
                                 <div class="flex items-start gap-3">
                                     <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
-                                        <span class="material-symbols-outlined text-[20px]">person_3</span>
+                                        <x-icon name="person" class="w-5 h-5" />
                                     </div>
                                     <div>
                                         <p class="font-semibold text-on-secondary-container text-[14px]">Dr. Andi Wijaya, M.T.</p>
@@ -152,7 +152,7 @@
                                 <p class="text-xs text-on-secondary-container/80 font-bold uppercase tracking-wider mb-2">Dosen Pembimbing</p>
                                 <div class="flex items-start gap-3">
                                     <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
-                                        <span class="material-symbols-outlined text-[20px]">person_2</span>
+                                        <x-icon name="person" class="w-5 h-5" />
                                     </div>
                                     <div>
                                         <p class="font-semibold text-on-secondary-container text-[14px]">Siti Aminah, S.Kom., M.Cs.</p>
@@ -175,7 +175,7 @@
                 <div class="p-8">
                     <div class="flex items-center gap-4 mb-5">
                         <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
-                            <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'wght' 500;">help</span>
+                            <x-icon name="help" class="w-7 h-7" />
                         </div>
                         <div>
                             <h3 class="font-headline-md text-[20px] font-bold text-on-surface leading-tight">Konfirmasi Pengajuan</h3>
@@ -191,7 +191,7 @@
                         </button>
                         <button class="flex-1 order-1 sm:order-2 py-3.5 px-4 rounded-xl bg-primary text-on-primary font-label-lg hover:brightness-110 active:scale-[0.98] transition-all shadow-md shadow-primary/20 flex items-center justify-center gap-2" id="confirm-submit-btn">
                             <span>Ya, Ajukan</span>
-                            <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                            <x-icon name="check_circle" class="w-4 h-4" />
                         </button>
                     </div>
                 </div>
@@ -222,10 +222,10 @@
     backdrop.addEventListener('click', () => toggleModal(false));
     
     confirmBtn.addEventListener('click', () => {
-        confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span><span>Memproses...</span>';
+        confirmBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg><span>Memproses...</span>';
         setTimeout(() => {
             toggleModal(false);
-            confirmBtn.innerHTML = '<span>Ya, Ajukan</span><span class="material-symbols-outlined text-[18px]">check_circle</span>';
+            confirmBtn.innerHTML = '<span>Ya, Ajukan</span><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
             alert('Permintaan Anda telah berhasil dikirim!');
         }, 1500);
     });
@@ -265,7 +265,7 @@
                 <div class="flex items-center justify-between p-3 bg-surface-container-lowest border border-outline-variant rounded-lg animate-fade-in">
                     <div class="flex items-center gap-3 overflow-hidden">
                         <div class="w-10 h-10 rounded bg-error/10 flex items-center justify-center text-error shrink-0">
-                            <span class="material-symbols-outlined">picture_as_pdf</span>
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H9"/><path d="M9 13v6"/></svg>
                         </div>
                         <div class="overflow-hidden">
                             <p class="text-sm font-medium text-on-surface truncate">${file.name}</p>
@@ -273,7 +273,7 @@
                         </div>
                     </div>
                     <button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-error transition-colors shrink-0" type="button" onclick="deleteSelectedFile(${index})">
-                        <span class="material-symbols-outlined text-[20px]">delete</span>
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
                     </button>
                 </div>
             `;

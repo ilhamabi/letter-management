@@ -123,7 +123,7 @@
                     $isActive = $item['active'] ?? (request()->routeIs($item['route']) || request()->is($item['path']));
                 @endphp
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ $isActive ? 'bg-primary text-white font-bold relative' : 'text-on-surface-variant hover:bg-surface-container' }}" href="{{ route($item['route']) }}">
-                    <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ $isActive ? 'font-variation-settings: \'FILL\' 1;' : '' }}">{{ $item['icon'] }}</span>
+                    <x-icon :name="$item['icon']" class="w-6 h-6 shrink-0" />
                     <span class="font-label-lg text-label-lg">{{ $item['label'] }}</span>
                 </a>
             @endforeach
@@ -167,7 +167,7 @@
                         $isActive = $item['active'] ?? (request()->routeIs($item['route']) || request()->is($item['path']));
                     @endphp
                     <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ $isActive ? 'bg-amikom-purple text-white font-bold' : 'text-gray-600 hover:bg-gray-100' }}" href="{{ route($item['route']) }}">
-                        <span class="material-symbols-outlined w-6 h-6 flex items-center justify-center" style="{{ $isActive ? 'font-variation-settings: \'FILL\' 1;' : '' }}">{{ $item['icon'] }}</span>
+                        <x-icon :name="$item['icon']" class="w-6 h-6 shrink-0" />
                         <span class="font-label-lg text-label-lg">{{ $item['label'] }}</span>
                     </a>
                 @endforeach

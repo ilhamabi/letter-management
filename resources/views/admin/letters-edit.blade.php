@@ -19,20 +19,33 @@
     <!-- Page Navigation Header -->
     <div class="flex items-center justify-between pb-4 border-b border-gray-200 mb-6">
         <div class="flex items-center gap-4">
-            <a href="{{ route('admin.letters') }}" class="flex items-center justify-center w-9 h-9 rounded-lg hover:bg-gray-200/60 text-gray-500 hover:text-amikom-purple transition-colors">
-                <span class="material-symbols-outlined text-xl">arrow_back</span>
-            </a>
-            <div>
-                <h1 class="text-xl font-bold text-amikom-purple m-0">Edit Template Surat</h1>
-                <p class="text-xs text-gray-500 m-0">Konfigurasi dan sesuaikan format template surat resmi</p>
+        <a href="{{ route('admin.letters') }}" class="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors" title="Kembali ke Daftar Surat">
+            <x-icon name="arrow_back" class="w-5 h-5" />
+        </a>
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-bold text-gray-900 font-headline-lg m-0">{{ $letter['name'] }}</h1>
+                <x-status-badge :status="$letter['status']" size="sm" />
             </div>
+            <p class="text-sm text-gray-600 mt-1 font-body-sm">Kode: <span class="font-mono text-gray-800 font-semibold">{{ $letter['code'] }}</span> • Diedit terakhir: {{ $letter['updated_at'] }}</p>
         </div>
     </div>
+
+    @if ($errors->any())
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center gap-2">
+            <x-icon name="info" class="w-5 h-5" />
+            <div>
+                @foreach ($errors->all() as $error)
+                    <p class="text-sm">{{ $error }}</p>
+                @endforeach
+            </div>
+        </div>
+    @endif
 
     <div class="max-w-5xl mx-auto space-y-8">
         <!-- Status Banner -->
         <div class="w-full bg-amikom-purple text-white p-4 rounded-xl flex items-center gap-3 text-sm font-medium shadow-sm">
-            <span class="material-symbols-outlined">info</span>
+            <x-icon name="info" class="w-5 h-5" />
             <span>Mengedit template: {{ $templateBanner }}</span>
         </div>
 

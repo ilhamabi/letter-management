@@ -109,11 +109,11 @@
     <section class="bg-pure-white p-6 rounded-xl border border-outline-variant shadow-sm flex flex-col gap-4">
         <div class="flex items-center justify-between border-b border-outline-variant/60 pb-3">
             <div class="flex items-center gap-2 text-on-surface font-semibold text-sm">
-                <span class="material-symbols-outlined text-primary text-[20px]">filter_list</span>
+                <x-icon name="filter_list" class="w-5 h-5 text-primary" />
                 <span>Filter Pengajuan</span>
             </div>
             <button id="btn-reset-filter" type="button" class="text-xs font-semibold text-primary hover:text-primary-container transition-colors flex items-center gap-1 cursor-pointer">
-                <span class="material-symbols-outlined text-[16px]">restart_alt</span>
+                <x-icon name="restart_alt" class="w-4 h-4" />
                 <span>Reset Filter</span>
             </button>
         </div>
@@ -127,14 +127,14 @@
                     <div class="relative flex-1 cursor-pointer" onclick="try{document.getElementById('filter-start-date').showPicker()}catch(e){}">
                         <input id="filter-start-date-display" type="text" placeholder="dd/mm/yy" readonly class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-lg pl-4 pr-10 h-11 text-body-sm font-body-sm text-on-surface transition-all cursor-pointer">
                         <input id="filter-start-date" type="date" class="sr-only">
-                        <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[18px]">calendar_today</span>
+                        <x-icon name="calendar_today" class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" />
                     </div>
                     <span class="text-on-surface-variant font-medium text-sm">-</span>
                     <!-- End Date -->
                     <div class="relative flex-1 cursor-pointer" onclick="try{document.getElementById('filter-end-date').showPicker()}catch(e){}">
                         <input id="filter-end-date-display" type="text" placeholder="dd/mm/yy" readonly class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-lg pl-4 pr-10 h-11 text-body-sm font-body-sm text-on-surface transition-all cursor-pointer">
                         <input id="filter-end-date" type="date" class="sr-only">
-                        <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[18px]">calendar_today</span>
+                        <x-icon name="calendar_today" class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" />
                     </div>
                 </div>
             </div>
@@ -196,7 +196,7 @@
                     <tr id="no-results-row" class="hidden">
                         <td colspan="4" class="py-12 text-center text-on-surface-variant font-medium">
                             <div class="flex flex-col items-center justify-center space-y-2">
-                                <span class="material-symbols-outlined text-3xl text-outline">search_off</span>
+                                <x-icon name="search_off" class="w-8 h-8 text-outline" />
                                 <p>Tidak ada riwayat pengajuan yang sesuai dengan filter.</p>
                             </div>
                         </td>
@@ -210,13 +210,13 @@
             <p class="text-body-sm text-on-surface-variant font-medium">Menampilkan 1-5 dari 24 pengajuan</p>
             <div class="flex gap-2">
                 <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant bg-pure-white text-on-surface-variant hover:border-primary hover:text-primary transition-all">
-                    <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+                    <x-icon name="chevron_left" class="w-5 h-5" />
                 </button>
                 <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold">1</button>
                 <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant bg-pure-white text-on-surface-variant hover:border-primary hover:text-primary transition-all">2</button>
                 <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant bg-pure-white text-on-surface-variant hover:border-primary hover:text-primary transition-all">3</button>
                 <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant bg-pure-white text-on-surface-variant hover:border-primary hover:text-primary transition-all">
-                    <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+                    <x-icon name="chevron_right" class="w-5 h-5" />
                 </button>
             </div>
         </div>
@@ -233,7 +233,7 @@
                     <p class="text-body-sm text-on-surface-variant" id="modal-title">Surat Persetujuan Tugas Akhir Jalur Non-Reguler</p>
                 </div>
                 <button class="p-2 hover:bg-surface-container rounded-full transition-colors" onclick="closeModal()">
-                    <span class="material-symbols-outlined">close</span>
+                    <x-icon name="close" class="w-5 h-5" />
                 </button>
             </div>
             
@@ -245,7 +245,7 @@
             <!-- Modal Footer -->
             <div class="p-6 bg-surface-gray border-t border-outline-variant flex justify-end gap-3" id="modal-footer">
                 <button class="px-6 py-2 border border-primary text-primary font-label-md rounded-lg hover:bg-primary-fixed/20 transition-colors flex items-center gap-2" id="download-btn">
-                    <span class="material-symbols-outlined text-sm">download</span>
+                    <x-icon name="download" class="w-4 h-4" />
                     Unduh Dokumen
                 </button>
                 <button class="px-6 py-2 bg-primary text-white font-label-md rounded-lg hover:shadow-md transition-shadow" onclick="closeModal()">Tutup</button>
@@ -265,12 +265,20 @@
         let slaHTML = '';
         const downloadBtn = document.getElementById('download-btn');
 
+        const checkSvg = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+        const closeSvg = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+        const infoSvg = `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+        const warningSvg = `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+        const syncSvg = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>`;
+        const clockSvg = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+        const pdfSvg = `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H9"/><path d="M9 13v6"/></svg>`;
+
         if (status === 'Disetujui') {
             timelineHTML = `
                 <div class="relative pl-8 space-y-8 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant">
                     <div class="relative">
                         <div class="absolute -left-8 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center z-10">
-                            <span class="material-symbols-outlined text-sm">check</span>
+                            ${checkSvg}
                         </div>
                         <div>
                             <p class="font-label-lg text-label-lg text-deep-black">Pengajuan Terkirim</p>
@@ -279,7 +287,7 @@
                     </div>
                     <div class="relative">
                         <div class="absolute -left-8 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center z-10">
-                            <span class="material-symbols-outlined text-sm">check</span>
+                            ${checkSvg}
                         </div>
                         <div>
                             <p class="font-label-lg text-label-lg text-deep-black">Persetujuan Dosen Wali</p>
@@ -288,7 +296,7 @@
                     </div>
                      <div class="relative">
                         <div class="absolute -left-8 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center z-10">
-                            <span class="material-symbols-outlined text-sm">check</span>
+                            ${checkSvg}
                         </div>
                         <div>
                             <p class="font-label-lg text-label-lg text-deep-black">Disetujui Kaprodi</p>
@@ -313,14 +321,14 @@
                     </div>
                 </div>
             `;
-            slaHTML = `<div class="bg-green-100 p-4 rounded-lg border border-green-200 flex gap-3"><span class="material-symbols-outlined text-green-700">info</span><p class="text-body-sm text-green-700">Pengajuan Anda telah disetujui. Dokumen dapat diunduh.</p></div>`;
+            slaHTML = `<div class="bg-green-100 p-4 rounded-lg border border-green-200 flex gap-3">${infoSvg}<p class="text-body-sm text-green-700">Pengajuan Anda telah disetujui. Dokumen dapat diunduh.</p></div>`;
             if (downloadBtn) downloadBtn.classList.remove('hidden');
         } else if (status === 'Ditolak') {
             timelineHTML = `
                 <div class="relative pl-8 space-y-8 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant">
                     <div class="relative">
                         <div class="absolute -left-8 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center z-10">
-                            <span class="material-symbols-outlined text-sm">check</span>
+                            ${checkSvg}
                         </div>
                         <div>
                             <p class="font-label-lg text-label-lg text-deep-black">Pengajuan Terkirim</p>
@@ -329,7 +337,7 @@
                     </div>
                     <div class="relative">
                         <div class="absolute -left-8 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center z-10">
-                            <span class="material-symbols-outlined text-sm">check</span>
+                            ${checkSvg}
                         </div>
                         <div>
                             <p class="font-label-lg text-label-lg text-deep-black">Persetujuan Dosen Wali</p>
@@ -338,7 +346,7 @@
                     </div>
                     <div class="relative">
                         <div class="absolute -left-8 w-6 h-6 rounded-full bg-error-container text-error flex items-center justify-center z-10">
-                            <span class="material-symbols-outlined text-sm">close</span>
+                            ${closeSvg}
                         </div>
                         <div>
                             <p class="font-label-lg text-label-lg text-error">Verifikasi Program Studi Ditolak</p>
@@ -369,7 +377,7 @@
                     ` : ''}
                 </div>
             `;
-            slaHTML = `<div class="bg-error-container/20 p-4 rounded-lg border border-error/20 flex gap-3"><span class="material-symbols-outlined text-error">warning</span><p class="text-body-sm text-on-surface-variant">Pengajuan Anda ditolak. Silakan perbaiki data sesuai alasan penolakan dan buat pengajuan baru.</p></div>`;
+            slaHTML = `<div class="bg-error-container/20 p-4 rounded-lg border border-error/20 flex gap-3">${warningSvg}<p class="text-body-sm text-on-surface-variant">Pengajuan Anda ditolak. Silakan perbaiki data sesuai alasan penolakan dan buat pengajuan baru.</p></div>`;
             if (downloadBtn) downloadBtn.classList.add('hidden');
         } else {
             // Sedang Diproses
@@ -377,7 +385,7 @@
                 <div class="relative pl-8 space-y-8 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant">
                     <div class="relative">
                         <div class="absolute -left-8 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center z-10">
-                            <span class="material-symbols-outlined text-sm">check</span>
+                            ${checkSvg}
                         </div>
                         <div>
                             <p class="font-label-lg text-label-lg text-deep-black">Pengajuan Terkirim</p>
@@ -386,7 +394,7 @@
                     </div>
                     <div class="relative">
                         <div class="absolute -left-8 w-6 h-6 rounded-full bg-secondary-container text-secondary flex items-center justify-center z-10">
-                            <span class="material-symbols-outlined text-sm font-bold">sync</span>
+                            ${syncSvg}
                         </div>
                         <div>
                             <p class="font-label-lg text-label-lg text-deep-black">Persetujuan Dosen Wali</p>
@@ -395,7 +403,7 @@
                     </div>
                     <div class="relative">
                         <div class="absolute -left-8 w-6 h-6 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center z-10">
-                            <span class="material-symbols-outlined text-sm">schedule</span>
+                            ${clockSvg}
                         </div>
                         <div>
                             <p class="font-label-lg text-label-lg text-on-surface-variant">Verifikasi Program Studi</p>
@@ -420,7 +428,7 @@
                     </div>
                 </div>
             `;
-            slaHTML = `<div class="bg-primary-fixed/30 p-4 rounded-lg border border-primary/10 flex gap-3"><span class="material-symbols-outlined text-primary">info</span><p class="text-body-sm text-on-surface-variant">Proses verifikasi biasanya memakan waktu 1-2 hari kerja. Jika belum ada pembaruan, Anda dapat menghubungi bagian Akademik.</p></div>`;
+            slaHTML = `<div class="bg-primary-fixed/30 p-4 rounded-lg border border-primary/10 flex gap-3">${infoSvg}<p class="text-body-sm text-on-surface-variant">Proses verifikasi biasanya memakan waktu 1-2 hari kerja. Jika belum ada pembaruan, Anda dapat menghubungi bagian Akademik.</p></div>`;
             if (downloadBtn) downloadBtn.classList.add('hidden');
         }
 
@@ -433,7 +441,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="flex items-center gap-3 p-3 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors cursor-pointer group">
                         <div class="w-10 h-10 bg-error-container/20 rounded flex items-center justify-center text-error">
-                            <span class="material-symbols-outlined">picture_as_pdf</span>
+                            ${pdfSvg}
                         </div>
                         <div class="overflow-hidden">
                             <p class="text-label-sm text-deep-black truncate font-semibold">Dokumen_1.pdf</p>

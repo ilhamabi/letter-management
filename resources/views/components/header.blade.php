@@ -36,7 +36,7 @@
         <div class="flex items-center">
             <!-- Hamburger Button for Mobile -->
             <button @click="sidebarOpen = true" class="md:hidden mr-4 text-gray-600 hover:text-gray-900 focus:outline-none">
-                <span class="material-symbols-outlined text-2xl flex items-center justify-center">menu</span>
+                <x-icon name="menu" class="w-6 h-6" />
             </button>
             <h2 class="text-xl font-semibold text-amikom-purple">{{ $title }}</h2>
         </div>

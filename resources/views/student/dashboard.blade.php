@@ -161,7 +161,7 @@
             <h3 class="text-lg font-bold text-deep-black">Pengajuan yang Berlangsung</h3>
             <a href="{{ url('/student/submission-history') }}" class="group inline-flex items-center gap-1 text-primary text-sm font-semibold">
                 <span class="group-hover:underline">Lihat Riwayat Pengajuan</span>
-                <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-0.5">chevron_right</span>
+                <x-icon name="chevron_right" class="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </a>
         </div>
         
@@ -191,13 +191,13 @@
         @else
             <div class="flex flex-col items-center justify-center py-12 px-6 text-center">
                 <div class="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center text-on-surface-variant mb-4">
-                    <span class="material-symbols-outlined text-4xl">description</span>
+                    <x-icon name="description" class="w-9 h-9" />
                 </div>
                 <h4 class="text-lg font-bold text-deep-black mb-2">Tidak ada pengajuan yang sedang berlangsung</h4>
                 <p class="text-sm text-on-surface-variant mb-6">Semua permintaan dokumen Anda telah selesai diproses atau belum ada pengajuan baru.</p>
                 <a class="group inline-flex items-center gap-2 text-primary text-sm font-semibold" href="{{ url('/student/submission-history') }}">
                     <span class="group-hover:underline">Lihat Riwayat Pengajuan</span>
-                    <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-0.5">arrow_forward</span>
+                    <x-icon name="arrow_forward" class="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
             </div>
         @endif
@@ -265,7 +265,7 @@
 
         <!-- SLA Info Box -->
         <div class="bg-primary-fixed/10 p-4 rounded-lg border border-primary-container/10 flex gap-3">
-            <span class="material-symbols-outlined text-primary">info</span>
+            <x-icon name="info" class="w-5 h-5 text-primary shrink-0" />
             <p class="text-body-sm text-on-surface-variant">Proses verifikasi biasanya memakan waktu 1-2 hari kerja. Jika belum ada pembaruan, Anda dapat menghubungi dosen terkait.</p>
         </div>
 
@@ -291,27 +291,27 @@
         if (data.timeline && data.timeline.length > 0) {
             data.timeline.forEach((step) => {
                 let iconBgClass = '';
-                let iconText = '';
+                let iconSvg = '';
                 let pulseClass = '';
                 let textClass = 'text-deep-black';
                 
                 if (step.status === 'completed') {
                     iconBgClass = 'bg-green-100 text-green-700';
-                    iconText = 'check';
+                    iconSvg = '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
                 } else if (step.status === 'active') {
                     iconBgClass = 'bg-[#fef3c7] text-[#92400e] border border-[#fcd400]';
-                    iconText = 'hourglass_empty';
+                    iconSvg = '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
                     pulseClass = 'animate-pulse';
                 } else {
                     iconBgClass = 'bg-surface-container text-on-surface-variant';
-                    iconText = 'schedule';
+                    iconSvg = '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
                     textClass = 'text-on-surface-variant';
                 }
                 
                 const stepHtml = `
                     <div class="relative font-body-sm">
                         <div class="absolute -left-8 w-6 h-6 rounded-full ${iconBgClass} flex items-center justify-center z-10 ${pulseClass}">
-                            <span class="material-symbols-outlined text-sm">${iconText}</span>
+                            ${iconSvg}
                         </div>
                         <div>
                             <p class="font-label-lg text-label-lg ${textClass}">${step.title}</p>
@@ -337,8 +337,8 @@
             data.attachments.forEach(file => {
                 const fileHtml = `
                     <div class="flex items-center gap-3 p-3 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors cursor-pointer group">
-                        <div class="w-10 h-10 bg-error-container/20 rounded flex items-center justify-center text-error">
-                            <span class="material-symbols-outlined">picture_as_pdf</span>
+                        <div class="w-10 h-10 bg-error-container/20 rounded flex items-center justify-center text-error shrink-0">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H9"/><path d="M9 13v6"/></svg>
                         </div>
                         <div class="overflow-hidden font-body-sm">
                             <p class="text-label-sm text-deep-black truncate font-semibold">${file.name}</p>

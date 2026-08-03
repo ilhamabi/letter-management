@@ -38,7 +38,7 @@
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                 <h3 class="text-lg font-bold text-amikom-purple m-0">Ubah Alur Persetujuan</h3>
                 <button class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100" onclick="document.getElementById('{{ $id }}').classList.add('hidden')" type="button">
-                    <span class="material-symbols-outlined text-xl">close</span>
+                    <x-icon name="close" class="w-5 h-5" />
                 </button>
             </div>
 
@@ -54,10 +54,10 @@
                             class="w-full flex items-center justify-between px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 hover:border-amikom-purple transition-all focus:ring-2 focus:ring-amikom-purple/20" 
                             type="button">
                             <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-gray-400 text-lg">filter_list</span>
+                                <x-icon name="filter_list" class="w-4 h-4 text-gray-400" />
                                 <span class="font-medium">Filter Peran</span>
                             </div>
-                            <span class="material-symbols-outlined text-gray-400 transition-transform duration-200" :class="filterOpen ? 'rotate-180' : ''">expand_more</span>
+                            <x-icon name="expand_more" class="w-4 h-4 text-gray-400 transition-transform duration-200" :class="filterOpen ? 'rotate-180' : ''" />
                         </button>
 
                         <!-- Filter Dropdown Menu -->
@@ -102,12 +102,16 @@
                                                     :class="selectedFlow === flow.id ? 'text-gray-900 font-bold' : 'text-gray-600 font-medium'"
                                                     class="text-xs" 
                                                     x-text="step"></span>
-                                                <span x-show="idx < flow.steps.length - 1" class="material-symbols-outlined text-gray-400 text-sm">arrow_forward</span>
+                                                <span x-show="idx < flow.steps.length - 1">
+                                                    <x-icon name="arrow_forward" class="w-3.5 h-3.5 text-gray-400 inline" />
+                                                </span>
                                             </div>
                                         </template>
                                     </div>
                                 </div>
-                                <span x-show="selectedFlow === flow.id" class="material-symbols-outlined text-amikom-purple font-bold">check_circle</span>
+                                <span x-show="selectedFlow === flow.id">
+                                    <x-icon name="check_circle" class="w-5 h-5 text-amikom-purple" />
+                                </span>
                                 <div x-show="selectedFlow !== flow.id" class="w-6"></div>
                             </button>
                         </template>

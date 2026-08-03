@@ -83,11 +83,11 @@
         <!-- Filter Header -->
         <div class="flex items-center justify-between border-b border-gray-200/80 pb-3">
             <div class="flex items-center gap-2 text-gray-900 font-semibold text-sm">
-                <span class="material-symbols-outlined text-amikom-purple text-[20px]">filter_list</span>
+                <x-icon name="filter_list" class="w-5 h-5 text-amikom-purple" />
                 <span>Filter Riwayat Persetujuan</span>
             </div>
             <button id="btn-reset-filter" type="button" class="text-xs font-semibold text-amikom-purple hover:text-amikom-purple/80 transition-colors flex items-center gap-1 cursor-pointer">
-                <span class="material-symbols-outlined text-[16px]">restart_alt</span>
+                <x-icon name="restart_alt" class="w-4 h-4" />
                 <span>Reset Filter</span>
             </button>
         </div>
@@ -116,7 +116,7 @@
                         <option value="pendadaran">Surat Rekomendasi Pendaftaran Pendadaran</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
+                        <x-icon name="expand_more" class="w-4 h-4 text-gray-400" />
                     </div>
                 </div>
             </div>
@@ -131,7 +131,7 @@
                         <option value="diteruskan">Diteruskan</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
+                        <x-icon name="expand_more" class="w-4 h-4 text-gray-400" />
                     </div>
                 </div>
             </div>
@@ -147,7 +147,7 @@
                         <option value="dosen pembimbing">Dosen Pembimbing</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
+                        <x-icon name="expand_more" class="w-4 h-4 text-gray-400" />
                     </div>
                 </div>
             </div>
@@ -162,7 +162,7 @@
                         <option value="2021">2021</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
+                        <x-icon name="expand_more" class="w-4 h-4 text-gray-400" />
                     </div>
                 </div>
             </div>
@@ -175,7 +175,7 @@
                         <option value="oldest">Terlama (Oldest First)</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
+                        <x-icon name="expand_more" class="w-4 h-4 text-gray-400" />
                     </div>
                 </div>
             </div>
@@ -238,7 +238,7 @@
                         <tr>
                             <td class="py-20 text-center" colspan="6">
                                 <div class="flex flex-col items-center justify-center gap-4">
-                                    <span class="material-symbols-outlined text-gray-300 text-6xl" style="font-size: 64px;">history_toggle_off</span>
+                                    <x-icon name="history_toggle_off" class="w-16 h-16 text-gray-300" />
                                     <div>
                                         <p class="text-lg font-semibold text-gray-900">Belum ada riwayat persetujuan</p>
                                         <p class="text-gray-500">Semua dokumen yang telah Anda proses akan muncul di sini.</p>
@@ -252,7 +252,7 @@
                         <td class="py-20 text-center" colspan="6">
                             <div class="flex flex-col items-center justify-center space-y-4">
                                 <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-2">
-                                    <span class="material-symbols-outlined text-gray-400" style="font-size: 48px;">search_off</span>
+                                    <x-icon name="search_off" class="w-12 h-12 text-gray-400" />
                                 </div>
                                 <h3 class="text-xl font-bold text-gray-900">Tidak Ada Hasil Ditemukan</h3>
                                 <p class="text-gray-500 max-w-md mx-auto">Coba sesuaikan filter atau kata kunci pencarian Anda.</p>
@@ -269,14 +269,14 @@
             </div>
             <div class="flex gap-2">
                 <button class="w-8 h-8 flex items-center justify-center rounded border border-gray-300 bg-white text-gray-400 hover:bg-gray-50 disabled:opacity-50" disabled>
-                    <span class="material-symbols-outlined text-sm">chevron_left</span>
+                    <x-icon name="chevron_left" class="w-4 h-4" />
                 </button>
                 <button class="w-8 h-8 flex items-center justify-center rounded bg-amikom-purple text-white font-bold text-xs">1</button>
                 <button class="w-8 h-8 flex items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs">2</button>
                 <button class="w-8 h-8 flex items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs">3</button>
                 <span class="w-8 h-8 flex items-center justify-center text-gray-400 text-xs">...</span>
                 <button class="w-8 h-8 flex items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50">
-                    <span class="material-symbols-outlined text-sm">chevron_right</span>
+                    <x-icon name="chevron_right" class="w-4 h-4" />
                 </button>
             </div>
         </div>
@@ -294,7 +294,7 @@
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-gray-100 text-gray-700 border border-gray-200" id="modal-status-badge">DITERUSKAN</span>
             </div>
             <button class="p-1 hover:bg-gray-200 rounded-full transition-colors" id="close-modal-btn">
-                <span class="material-symbols-outlined text-gray-500">close</span>
+                <x-icon name="close" class="w-5 h-5 text-gray-500" />
             </button>
         </div>
         <!-- Modal Body -->
@@ -326,7 +326,7 @@
                 <!-- Step 1 -->
                 <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
                     <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
-                        <span class="material-symbols-outlined text-sm">check_circle</span>
+                        <x-icon name="check_circle" class="w-4 h-4" />
                     </div>
                     <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
                         <div class="flex items-center justify-between space-x-2 mb-1">
@@ -339,7 +339,7 @@
                 <!-- Step 2 -->
                 <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" id="step-2">
                     <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2" id="step-2-icon">
-                        <span class="material-symbols-outlined text-sm">check_circle</span>
+                        <x-icon name="check_circle" class="w-4 h-4" />
                     </div>
                     <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
                         <div class="flex items-center justify-between space-x-2 mb-1">
@@ -352,7 +352,7 @@
                 <!-- Step 3 -->
                 <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" id="step-3">
                     <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-purple text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 animate-pulse" id="step-3-icon">
-                        <span class="material-symbols-outlined text-sm">sync</span>
+                        <x-icon name="sync" class="w-4 h-4" />
                     </div>
                     <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
                         <div class="flex items-center justify-between space-x-2 mb-1">
@@ -522,6 +522,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const step3Time = document.getElementById('step-3-time');
             const step3Desc = document.getElementById('step-3-desc');
 
+            const checkIcon = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+            const cancelIcon = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+            const hourglassIcon = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+            const syncIcon = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>`;
+            const pendingIcon = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+
             if (statusText === 'DISETUJUI') {
                 badge.innerText = 'DISETUJUI';
                 badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#DCFCE7] text-[#166534] border border-[#166534]/10';
@@ -530,14 +536,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Step 2
                 step2Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
-                step2Icon.innerHTML = '<span class="material-symbols-outlined text-sm">check_circle</span>';
+                step2Icon.innerHTML = checkIcon;
                 step2Time.innerText = 'Selesai';
                 step2Time.className = 'font-medium text-xs text-amikom-green';
                 step2Desc.innerText = 'Telah diverifikasi oleh Dosen Wali.';
 
                 // Step 3
                 step3Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
-                step3Icon.innerHTML = '<span class="material-symbols-outlined text-sm">check_circle</span>';
+                step3Icon.innerHTML = checkIcon;
                 step3Time.innerText = 'Selesai';
                 step3Time.className = 'font-medium text-xs text-amikom-green';
                 step3Desc.innerText = 'Telah disetujui oleh Kepala Program Studi.';
@@ -550,14 +556,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Step 2
                 step2Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-red-600 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
-                step2Icon.innerHTML = '<span class="material-symbols-outlined text-sm">cancel</span>';
+                step2Icon.innerHTML = cancelIcon;
                 step2Time.innerText = 'Ditolak';
                 step2Time.className = 'font-medium text-xs text-red-600';
                 step2Desc.innerText = 'Ditolak oleh Dosen Wali.';
 
                 // Step 3
                 step3Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-gray-200 text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
-                step3Icon.innerHTML = '<span class="material-symbols-outlined text-sm">hourglass_empty</span>';
+                step3Icon.innerHTML = hourglassIcon;
                 step3Time.innerText = 'Dibatalkan';
                 step3Time.className = 'font-medium text-xs text-gray-400';
                 step3Desc.innerText = 'Tahap ini tidak dilanjutkan.';
@@ -569,14 +575,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Step 2
                 step2Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
-                step2Icon.innerHTML = '<span class="material-symbols-outlined text-sm">check_circle</span>';
+                step2Icon.innerHTML = checkIcon;
                 step2Time.innerText = 'Selesai';
                 step2Time.className = 'font-medium text-xs text-amikom-green';
                 step2Desc.innerText = 'Telah diverifikasi oleh Dosen Wali.';
 
                 // Step 3
                 step3Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-purple text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 animate-pulse';
-                step3Icon.innerHTML = '<span class="material-symbols-outlined text-sm">sync</span>';
+                step3Icon.innerHTML = syncIcon;
                 step3Time.innerText = 'Menunggu';
                 step3Time.className = 'font-medium text-xs text-amikom-purple';
                 step3Desc.innerText = 'Sedang dalam tahap verifikasi oleh Program Studi.';
@@ -586,13 +592,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 rejectionSection.classList.add('hidden');
                 
                 step2Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-gold text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
-                step2Icon.innerHTML = '<span class="material-symbols-outlined text-sm">pending</span>';
+                step2Icon.innerHTML = pendingIcon;
                 step2Time.innerText = 'Menunggu';
                 step2Time.className = 'font-medium text-xs text-amikom-gold';
                 step2Desc.innerText = 'Menunggu verifikasi dari Dosen Wali terkait.';
 
                 step3Icon.className = 'flex items-center justify-center w-10 h-10 rounded-full border border-white bg-gray-200 text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2';
-                step3Icon.innerHTML = '<span class="material-symbols-outlined text-sm">hourglass_empty</span>';
+                step3Icon.innerHTML = hourglassIcon;
                 step3Time.innerText = 'Belum Dimulai';
                 step3Time.className = 'font-medium text-xs text-gray-400';
                 step3Desc.innerText = 'Tahap akhir persetujuan oleh Kepala Program Studi.';

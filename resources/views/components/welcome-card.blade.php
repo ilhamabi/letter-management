@@ -11,7 +11,7 @@
     </div>
     @if($showDate)
         <div class="bg-amikom-purple text-white px-4 py-2.5 rounded-lg flex items-center gap-2 shrink-0 shadow-xs self-start md:self-auto">
-            <span class="material-symbols-outlined text-sm">calendar_today</span>
+            <x-icon name="calendar_today" class="w-4 h-4" />
             <span class="text-sm font-medium">{{ \Carbon\Carbon::now('Asia/Jakarta')->locale('id')->isoFormat('D MMMM Y') }}</span>
         </div>
     @endif

@@ -19,7 +19,7 @@
                 @endif
             </div>
             <button class="text-on-surface-variant hover:text-deep-black p-2 rounded-full hover:bg-surface-container transition-colors" onclick="document.getElementById('{{ $id }}').classList.add('hidden')">
-                <span class="material-symbols-outlined flex items-center justify-center">close</span>
+                <x-icon name="close" class="w-5 h-5" />
             </button>
         </div>
 

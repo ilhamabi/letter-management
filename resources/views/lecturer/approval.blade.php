@@ -192,11 +192,11 @@
         <!-- Filter Header -->
         <div class="flex items-center justify-between border-b border-gray-200/80 pb-3">
             <div class="flex items-center gap-2 text-gray-900 font-semibold text-sm">
-                <span class="material-symbols-outlined text-amikom-purple text-[20px]">filter_list</span>
+                <x-icon name="filter_list" class="w-5 h-5 text-amikom-purple" />
                 <span>Filter Pengajuan</span>
             </div>
             <button id="btn-reset-filter" type="button" class="text-xs font-semibold text-amikom-purple hover:text-amikom-purple/80 transition-colors flex items-center gap-1 cursor-pointer">
-                <span class="material-symbols-outlined text-[16px]">restart_alt</span>
+                <x-icon name="restart_alt" class="w-4 h-4" />
                 <span>Reset Filter</span>
             </button>
         </div>
@@ -226,7 +226,7 @@
                         <option value="dosen pembimbing">Dosen Pembimbing</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
+                        <x-icon name="expand_more" class="w-4 h-4 text-gray-400" />
                     </div>
                 </div>
             </div>
@@ -242,7 +242,7 @@
                         <option value="pendadaran">Surat Rekomendasi Pendaftaran Pendadaran</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
+                        <x-icon name="expand_more" class="w-4 h-4 text-gray-400" />
                     </div>
                 </div>
             </div>
@@ -259,7 +259,7 @@
                         <option value="2020">2020</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
+                        <x-icon name="expand_more" class="w-4 h-4 text-gray-400" />
                     </div>
                 </div>
             </div>
@@ -273,7 +273,7 @@
                         <option value="oldest">Terlama (Oldest First)</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-                        <span class="material-symbols-outlined text-gray-400 text-[18px]">expand_more</span>
+                        <x-icon name="expand_more" class="w-4 h-4 text-gray-400" />
                     </div>
                 </div>
             </div>
@@ -336,25 +336,27 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td class="py-20 text-center" colspan="6">
-                                <div class="flex flex-col items-center justify-center space-y-4">
-                                    <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-2">
-                                        <span class="material-symbols-outlined text-gray-400" style="font-size: 48px;">task_alt</span>
+                        <tr id="emptyPendingRow">
+                            <td colspan="7" class="px-6 py-16 text-center">
+                                <div class="flex flex-col items-center justify-center max-w-sm mx-auto">
+                                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                        <x-icon name="task_alt" class="w-12 h-12 text-gray-400" />
                                     </div>
-                                    <h3 class="text-xl font-bold text-gray-900">Tidak Ada Permintaan Menunggu</h3>
-                                    <p class="text-gray-500 max-w-md mx-auto">Semua dokumen telah diproses. Anda dapat memeriksa riwayat untuk melihat dokumen yang sudah selesai.</p>
+                                    <h4 class="text-base font-bold text-gray-900 mb-1">Semua Pengajuan Telah Diproses!</h4>
+                                    <p class="text-xs text-gray-500">Tidak ada permohonan persetujuan baru yang memerlukan tindakan Anda saat ini.</p>
                                 </div>
                             </td>
                         </tr>
                     @endforelse
                     
-                    <tr id="noResultsRow" style="display: none;">
-                        <td class="py-16 text-center" colspan="6">
-                            <div class="flex flex-col items-center justify-center space-y-3">
-                                <span class="material-symbols-outlined text-gray-300" style="font-size: 48px;">search_off</span>
-                                <h4 class="text-lg font-bold text-gray-900">Tidak ada pengajuan yang cocok dengan filter</h4>
-                                <p class="text-sm text-gray-500 max-w-sm">Coba ubah kata kunci pencarian atau sesuaikan pilihan peran, jenis dokumen, dan angkatan.</p>
+                    <tr id="emptySearchRow" class="hidden">
+                        <td colspan="7" class="px-6 py-16 text-center">
+                            <div class="flex flex-col items-center justify-center max-w-sm mx-auto">
+                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                    <x-icon name="search_off" class="w-12 h-12 text-gray-300" />
+                                </div>
+                                <h4 class="text-base font-bold text-gray-900 mb-1">Pengajuan Tidak Ditemukan</h4>
+                                <p class="text-xs text-gray-500">Tidak ada data permohonan yang sesuai dengan kata kunci atau filter pencarian Anda.</p>
                             </div>
                         </td>
                     </tr>
