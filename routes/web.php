@@ -44,6 +44,11 @@ Route::middleware('auth')
                 )->name('admin.letters');
 
                 Route::view(
+                    '/letters/create',
+                    'admin.letters-edit'
+                )->name('admin.letters.create');
+
+                Route::view(
                     '/letters/edit',
                     'admin.letters-edit'
                 )->name('admin.letters.edit');

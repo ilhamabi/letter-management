@@ -54,14 +54,14 @@
             ],
             [
                 'label' => 'Manajemen Surat',
-                'route' => Route::has('admin.letters') ? 'admin.letters' : 'admin.dashboard',
+                'route' => 'admin.letters',
                 'path' => 'admin/letters',
                 'icon' => 'description',
                 'active' => request()->routeIs('admin.letters*') || request()->is('admin/letters*'),
             ],
             [
                 'label' => 'Pengaturan Akun',
-                'route' => Route::has('admin.settings') ? 'admin.settings' : 'admin.dashboard',
+                'route' => 'admin.settings',
                 'path' => 'admin/settings',
                 'icon' => 'settings',
                 'active' => request()->routeIs('admin.settings*') || request()->is('admin/settings*'),
@@ -143,7 +143,7 @@
     </nav>
 @else
     <!-- Lecturer Sidebar -->
-    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" 
+    <aside x-bind:class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" 
            class="fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 flex flex-col justify-between transition-transform duration-300 ease-in-out md:static md:translate-x-0"
            data-purpose="sidebar">
         <div>

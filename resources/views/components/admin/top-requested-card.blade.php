@@ -19,9 +19,6 @@
                         <p class="text-xs text-gray-500 mt-0.5">{{ $item['count'] }}</p>
                     </div>
                 </div>
-                <div class="h-1.5 w-16 bg-gray-100 rounded-full overflow-hidden shrink-0 ml-3">
-                    <div class="h-full {{ $item['color'] ?? 'bg-amikom-purple' }}" style="width: {{ $item['percentage'] ?? 50 }}%"></div>
-                </div>
             </div>
         @empty
             <p class="text-xs text-gray-500 text-center py-4">Belum ada data pengajuan.</p>

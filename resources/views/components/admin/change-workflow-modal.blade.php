@@ -57,7 +57,7 @@
                                 <x-icon name="filter_list" class="w-4 h-4 text-gray-400" />
                                 <span class="font-medium">Filter Peran</span>
                             </div>
-                            <x-icon name="expand_more" class="w-4 h-4 text-gray-400 transition-transform duration-200" :class="filterOpen ? 'rotate-180' : ''" />
+                            <x-icon name="expand_more" class="w-4 h-4 text-gray-400 transition-transform duration-200" x-bind:class="filterOpen ? 'rotate-180' : ''" />
                         </button>
 
                         <!-- Filter Dropdown Menu -->
@@ -90,7 +90,7 @@
                             <button 
                                 @click="selectedFlow = flow.id" 
                                 type="button"
-                                :class="selectedFlow === flow.id 
+                                x-bind:class="selectedFlow === flow.id 
                                     ? 'border-2 border-amikom-purple bg-white shadow-sm' 
                                     : 'border border-gray-200 bg-gray-50 hover:border-amikom-purple hover:bg-white'"
                                 class="w-full px-4 py-3 rounded-xl flex items-center justify-between text-left transition-all">
@@ -99,7 +99,7 @@
                                         <template x-for="(step, idx) in flow.steps" :key="idx">
                                             <div class="flex items-center gap-2">
                                                 <span 
-                                                    :class="selectedFlow === flow.id ? 'text-gray-900 font-bold' : 'text-gray-600 font-medium'"
+                                                    x-bind:class="selectedFlow === flow.id ? 'text-gray-900 font-bold' : 'text-gray-600 font-medium'"
                                                     class="text-xs" 
                                                     x-text="step"></span>
                                                 <span x-show="idx < flow.steps.length - 1">

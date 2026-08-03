@@ -17,8 +17,9 @@
                 @forelse($types as $type)
                     @php
                         $isInactive = ($type['status'] ?? '') === 'Non-Aktif';
+                        $editUrl = route('admin.letters.edit', ['id' => $type['id'] ?? 1]);
                     @endphp
-                    <tr class="hover:bg-gray-50 transition-colors duration-200 group cursor-pointer {{ $isInactive ? 'bg-gray-50' : '' }}" onclick="window.location.href='{{ route('admin.letters.edit') }}'">
+                    <tr class="hover:bg-gray-50 transition-colors duration-200 group cursor-pointer {{ $isInactive ? 'bg-gray-50' : '' }}" onclick="window.location.href='{{ $editUrl }}'">
                         <td class="px-6 py-4 font-label-md text-sm {{ $isInactive ? 'text-gray-500' : 'text-gray-900' }}">
                             {{ $loop->iteration }}
                         </td>
@@ -42,7 +43,15 @@
                         </td>
                         <td class="px-6 py-4 text-right">
                             <x-status-badge :status="$type['status'] ?? 'Aktif'" size="sm" class="font-label-sm">
-                                <x-icon :name="$isInactive ? 'cancel' : 'check_circle'" class="w-3.5 h-3.5 inline mr-1" />
+                                @if($isInactive)
+                                    <svg class="w-3.5 h-3.5 mr-1 stroke-current inline shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                @else
+                                    <svg class="w-3.5 h-3.5 mr-1 stroke-current inline shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                @endif
                                 {{ $type['status'] ?? 'Aktif' }}
                             </x-status-badge>
                         </td>

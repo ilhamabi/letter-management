@@ -1,38 +1,72 @@
 @php
-    // Default / Mock data in case variables aren't passed from controller
-    $templateName = $templateName ?? 'Surat Keterangan Aktif';
-    $templateStatus = $templateStatus ?? 'Aktif';
-    $templateBanner = $templateBanner ?? 'Surat Keterangan Mahasiswa Aktif';
-    $approvalWorkflow = $approvalWorkflow ?? [
-        ['number' => 1, 'role' => 'Dosen Wali'],
-        ['number' => 2, 'role' => 'Kaprodi'],
+    $id = request()->query('id', 1);
+
+    $allTypes = [
+        1 => [
+            'name' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
+            'status' => 'Aktif',
+            'updated_at' => '12 Okt 2023, 14:30',
+            'banner' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
+            'workflow' => [
+                ['number' => 1, 'role' => 'Kaprodi'],
+                ['number' => 2, 'role' => 'Dosen Wali'],
+            ],
+        ],
+        2 => [
+            'name' => 'Surat Rekomendasi Magang',
+            'status' => 'Aktif',
+            'updated_at' => '15 Okt 2023, 09:15',
+            'banner' => 'Surat Rekomendasi Magang',
+            'workflow' => [
+                ['number' => 1, 'role' => 'Kaprodi'],
+                ['number' => 2, 'role' => 'Dosen Pembimbing'],
+            ],
+        ],
+        3 => [
+            'name' => 'Surat Rekomendasi Pendaftaran Pendadaran',
+            'status' => 'Aktif',
+            'updated_at' => '18 Okt 2023, 11:20',
+            'banner' => 'Surat Rekomendasi Pendaftaran Pendadaran',
+            'workflow' => [
+                ['number' => 1, 'role' => 'Kaprodi'],
+                ['number' => 2, 'role' => 'Dosen Wali'],
+            ],
+        ],
     ];
+
+    $letterData = $allTypes[$id] ?? $allTypes[1];
+
+    // Default / Mock data in case variables aren't passed from controller
+    $letter = $letter ?? $letterData;
+    $templateName = $templateName ?? $letter['name'];
+    $templateStatus = $templateStatus ?? $letter['status'];
+    $templateBanner = $templateBanner ?? $letter['banner'];
+    $approvalWorkflow = $approvalWorkflow ?? $letter['workflow'];
 @endphp
 
 @extends('layouts.admin')
 
 @section('title', 'Edit Template Surat - Layanan Dokumen')
 
-
-
 @section('content')
     <!-- Page Navigation Header -->
     <div class="flex items-center justify-between pb-4 border-b border-gray-200 mb-6">
         <div class="flex items-center gap-4">
-        <a href="{{ route('admin.letters') }}" class="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors" title="Kembali ke Daftar Surat">
-            <x-icon name="arrow_back" class="w-5 h-5" />
-        </a>
-        <div>
-            <div class="flex items-center gap-3">
-                <h1 class="text-2xl font-bold text-gray-900 font-headline-lg m-0">{{ $letter['name'] }}</h1>
-                <x-status-badge :status="$letter['status']" size="sm" />
+            <a href="{{ route('admin.letters') }}" class="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors" title="Kembali ke Daftar Surat">
+                <x-icon name="arrow_back" class="w-5 h-5" />
+            </a>
+            <div>
+                <div class="flex items-center gap-3">
+                    <h1 class="text-2xl font-bold text-gray-900 font-headline-lg m-0">{{ $letter['name'] }}</h1>
+                    <x-status-badge :status="$letter['status']" size="sm" />
+                </div>
+                <p class="text-sm text-gray-600 mt-1 font-body-sm">Diedit terakhir: {{ $letter['updated_at'] }}</p>
             </div>
-            <p class="text-sm text-gray-600 mt-1 font-body-sm">Kode: <span class="font-mono text-gray-800 font-semibold">{{ $letter['code'] }}</span> • Diedit terakhir: {{ $letter['updated_at'] }}</p>
         </div>
     </div>
 
     @if ($errors->any())
-        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center gap-2">
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center gap-2 mb-6">
             <x-icon name="info" class="w-5 h-5" />
             <div>
                 @foreach ($errors->all() as $error)
