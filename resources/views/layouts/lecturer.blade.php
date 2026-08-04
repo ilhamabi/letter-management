@@ -10,36 +10,16 @@
     ];
 @endphp
 
-<x-layouts.app 
-    title="Sistem Layanan Surat D3 Teknik Informatika – Universitas Amikom" 
-    customCss="css/dosen-dashboard.css" 
-    bodyClass="flex h-screen overflow-hidden text-sm"
-    x-data="{ sidebarOpen: false }"
+<x-layouts.dashboard 
+    role="lecturer"
+    title="Layanan Dokumen"
+    headerTitle="Layanan Dokumen"
+    customCss="css/dosen-dashboard.css"
+    :userName="$lecturerName"
+    :userSubtext="'NIDN: ' . $nidn"
+    :userPhoto="$lecturerPhoto"
+    :roles="$roles"
+    mainPadding="p-8"
 >
-    <!-- Mobile Sidebar Backdrop Overlay -->
-    <div x-show="sidebarOpen" 
-         x-transition:opacity
-         @click="sidebarOpen = false" 
-         class="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm md:hidden" 
-         style="display: none;"></div>
-
-    <!-- Sidebar Component -->
-    <x-sidebar 
-        role="lecturer" 
-        :userName="$lecturerName" 
-        :userSubtext="'NIDN: ' . $nidn" 
-        :userPhoto="$lecturerPhoto" 
-        :roles="$roles" 
-    />
-
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col overflow-hidden bg-[#FAFAFA]" data-purpose="main-content">
-        <!-- Header Component -->
-        <x-header role="lecturer" title="Layanan Dokumen" />
-
-        <!-- Page Content -->
-        <div class="flex-1 overflow-y-auto p-8">
-            @yield('content')
-        </div>
-    </main>
-</x-layouts.app>
+    @yield('content')
+</x-layouts.dashboard>

@@ -17,24 +17,18 @@
         </div>
     </div>
 
-    <!-- Settings Grid (Bento-style layout) -->
+    <!-- Settings Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Left Column (Profile & Photo) -->
+        <!-- Left Column: Profile Card -->
         <div class="lg:col-span-1 flex flex-col gap-6">
-            <!-- Profile Photo Card -->
-            <div class="bg-white border border-gray-200 rounded-xl p-6 flex flex-col items-center text-center gap-4 shadow-sm">
-                <div>
-                    <img class="w-32 h-32 rounded-xl object-cover border border-gray-200 shadow-sm" src="{{ $adminPhoto }}" alt="{{ $adminName }}">
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold text-gray-900 font-title-lg">{{ $adminName }}</h4>
-                    <p class="text-sm text-gray-500 font-body-sm mt-1">Administrator</p>
-                </div>
-            </div>
-            <!-- System Preferences -->
+            <x-settings.profile-card 
+                :name="$adminName" 
+                subtext="Administrator" 
+                :photo="$adminPhoto" 
+            />
         </div>
 
-        <!-- Right Column (Forms) -->
+        <!-- Right Column: Personal Info & Security -->
         <div class="lg:col-span-2 flex flex-col gap-6">
             <!-- Personal Info Card -->
             <div class="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-6 shadow-sm">
@@ -56,60 +50,7 @@
             </div>
 
             <!-- Security Card -->
-            <div class="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-6 shadow-sm">
-                <div class="border-b border-gray-200 pb-4">
-                    <h4 class="text-lg font-bold text-gray-900 font-title-lg">Keamanan Akun</h4>
-                    <p class="text-sm text-gray-500 mt-1 font-body-sm">Pastikan kata sandi Anda kuat dan panjang kata sandi minimal 6 karakter.</p>
-                </div>
-                <form class="flex flex-col gap-4">
-                    @csrf
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-xs font-bold uppercase tracking-wider text-gray-500 font-label-sm">Kata Sandi Saat Ini</label>
-                        <div class="relative">
-                            <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm bg-white font-body-sm" id="current-password" type="password" placeholder="••••••••">
-                            <span class="toggle-password-icon absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-700 flex items-center">
-                                <x-icon name="visibility_off" class="w-4 h-4" />
-                            </span>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-xs font-bold uppercase tracking-wider text-gray-500 font-label-sm">Kata Sandi Baru</label>
-                            <input class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm bg-white font-body-sm" id="new-password" type="password">
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-xs font-bold uppercase tracking-wider text-gray-500 font-label-sm">Konfirmasi Kata Sandi Baru</label>
-                            <input class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm bg-white font-body-sm" id="confirm-password" type="password">
-                        </div>
-                    </div>
-                    <div class="flex justify-end pt-4">
-                        <button class="px-6 py-2.5 bg-primary text-white rounded-md text-sm font-medium hover:bg-primary-container transition-colors shadow-sm font-label-md" type="button">Perbarui Kata Sandi</button>
-                    </div>
-                </form>
-            </div>
+            <x-settings.security-card />
         </div>
     </div>
 @endsection
-
-@push('scripts')
-<script>
-    (function() {
-      const toggleIcons = document.querySelectorAll('.toggle-password-icon');
-      const eyeSvg = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
-      const eyeOffSvg = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
-
-      toggleIcons.forEach(icon => {
-        icon.addEventListener('click', function() {
-          const container = this.closest('.relative');
-          const input = container.querySelector('input');
-          
-          if (input) {
-            const isPassword = input.getAttribute('type') === 'password';
-            input.setAttribute('type', isPassword ? 'text' : 'password');
-            this.innerHTML = isPassword ? eyeSvg : eyeOffSvg;
-          }
-        });
-      });
-    })();
-</script>
-@endpush

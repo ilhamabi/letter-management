@@ -28,15 +28,11 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Left Column: Profile Card -->
         <div class="lg:col-span-1 flex flex-col gap-6">
-            <div class="bg-white border border-gray-200 rounded-xl p-6 flex flex-col items-center text-center gap-4 shadow-sm">
-                <div class="relative">
-                    <img alt="{{ $lecturerName }}" class="w-32 h-32 rounded-xl object-cover border border-gray-200 shadow-sm" src="{{ $lecturerPhoto }}">
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold text-gray-900">{{ $lecturerName }}</h4>
-                    <p class="text-sm text-gray-500">Dosen Universitas Amikom</p>
-                </div>
-            </div>
+            <x-settings.profile-card 
+                :name="$lecturerName" 
+                subtext="Dosen Universitas Amikom" 
+                :photo="$lecturerPhoto" 
+            />
         </div>
 
         <!-- Right Column: Personal Info & Security -->
@@ -71,36 +67,7 @@
             </div>
 
             <!-- Security Card -->
-            <div class="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-6 shadow-sm" data-purpose="security-settings">
-                <div class="border-b border-gray-200 pb-4">
-                    <h4 class="text-lg font-bold text-gray-900">Keamanan Akun</h4>
-                    <p class="text-sm text-gray-500 mt-1">Pastikan kata sandi Anda kuat dan panjang kata sandi minimal 6 karakter.</p>
-                </div>
-                <form class="flex flex-col gap-4">
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-xs font-bold uppercase tracking-wider text-gray-500" for="current-password">Kata Sandi Saat Ini</label>
-                        <div class="relative">
-                            <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm bg-white" id="current-password" placeholder="••••••••" type="password">
-                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-primary transition-colors flex items-center" onclick="const input = this.previousElementSibling; const isPwd = input.type === 'password'; input.type = isPwd ? 'text' : 'password'; this.innerHTML = isPwd ? `<svg class='w-4 h-4' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'/><circle cx='12' cy='12' r='3'/></svg>` : `<svg class='w-4 h-4' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24'/><line x1='1' y1='1' x2='23' y2='23'/></svg>`;">
-                                <x-icon name="visibility_off" class="w-4 h-4" />
-                            </span>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-xs font-bold uppercase tracking-wider text-gray-500" for="new-password">Kata Sandi Baru</label>
-                            <input class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm bg-white" id="new-password" placeholder="••••••••" type="password">
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-xs font-bold uppercase tracking-wider text-gray-500" for="confirm-password">Konfirmasi Kata Sandi Baru</label>
-                            <input class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm bg-white" id="confirm-password" placeholder="••••••••" type="password">
-                        </div>
-                    </div>
-                    <div class="flex justify-end pt-4">
-                        <button class="px-6 py-2.5 bg-primary text-white rounded-md text-sm font-medium hover:opacity-90 transition-colors shadow-sm" type="button">Perbarui Kata Sandi</button>
-                    </div>
-                </form>
-            </div>
+            <x-settings.security-card />
         </div>
     </div>
 </div>

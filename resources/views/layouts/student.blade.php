@@ -7,7 +7,7 @@
 @endphp
 
 <x-layouts.app 
-    title="@yield('title', 'Universitas Amikom')" 
+    title="Layanan Dokumen" 
     customCss="css/mahasiswa-dashboard.css" 
     bodyClass="bg-surface-gray text-on-surface min-h-screen flex"
 >

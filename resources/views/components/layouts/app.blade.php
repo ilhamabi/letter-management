@@ -1,5 +1,6 @@
 @props([
-    'title' => 'Universitas Amikom',
+    'role' => 'student',
+    'title' => 'Layanan Dokumen',
     'customCss' => null,
     'bodyClass' => 'bg-surface-gray text-on-surface min-h-screen flex',
 ])
