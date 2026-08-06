@@ -5,16 +5,14 @@
 @php
     $user = auth()->user();
     $studentName = $user?->name ?? 'User';
-    $nim = $user?->student?->student_number ?? $user?->username ?? '-';
-    $prodi = '-';
+    $nim = $nim ?? ($user?->student?->student_number ?? $user?->username ?? '-');
+    $prodi = $prodi ?? '-';
 
-    $stats = $stats ?? [
-        'pending' => 0,
-        'approved' => 0,
-        'rejected' => 0,
-    ];
+    $pendingCount = $pendingCount ?? 0;
+    $approvedCount = $approvedCount ?? 0;
+    $rejectedCount = $rejectedCount ?? 0;
 
-    $submissions = $submissions ?? [];
+    $latestSubmissions = $latestSubmissions ?? collect();
 @endphp
 
 @section('content')
@@ -33,21 +31,21 @@
             iconBg="bg-primary-fixed" 
             iconColor="text-primary" 
             title="Menunggu" 
-            :value="$stats['pending']" 
+            :value="$pendingCount" 
         />
         <x-stat-card 
             icon="check_circle" 
             iconBg="bg-green-100" 
             iconColor="text-green-700" 
             title="Disetujui" 
-            :value="$stats['approved']" 
+            :value="$approvedCount" 
         />
         <x-stat-card 
             icon="cancel" 
             iconBg="bg-error-container" 
             iconColor="text-error" 
             title="Ditolak / Perlu Tindakan" 
-            :value="$stats['rejected']" 
+            :value="$rejectedCount" 
         />
     </section>
     
@@ -55,13 +53,13 @@
     <section class="bg-pure-white rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col w-full">
         <div class="p-6 border-b border-outline-variant flex justify-between items-center">
             <h3 class="text-lg font-bold text-deep-black">Pengajuan yang Berlangsung</h3>
-            <a href="{{ url('/student/submission-history') }}" class="group inline-flex items-center gap-1 text-primary text-sm font-semibold">
+            <a href="{{ route('student.submissions.history') }}" class="group inline-flex items-center gap-1 text-primary text-sm font-semibold">
                 <span class="group-hover:underline">Lihat Riwayat Pengajuan</span>
                 <x-icon name="chevron_right" class="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </a>
         </div>
         
-        @if (count($submissions) > 0)
+        @if (count($latestSubmissions) > 0)
             <div class="overflow-x-auto w-full">
                 <table class="w-full text-left border-collapse">
                     <thead class="bg-surface-container-low/70 border-b border-outline-variant">
@@ -72,12 +70,12 @@
                         </tr>
                     </thead>
                     <tbody class="text-sm text-on-surface divide-y divide-outline-variant">
-                        @foreach ($submissions as $sub)
+                        @foreach ($latestSubmissions as $sub)
                             <tr class="hover:bg-surface-container-low/50 transition-colors duration-200 cursor-pointer" onclick="openStatusModal({{ json_encode($sub) }})">
-                                <td class="py-4 px-6 font-semibold text-deep-black">{{ $sub['type'] }}</td>
-                                <td class="py-4 px-6 text-on-surface-variant">{{ $sub['date'] }}</td>
+                                <td class="py-4 px-6 font-semibold text-deep-black">{{ is_array($sub) ? $sub['type'] : $sub->letterType?->name }}</td>
+                                <td class="py-4 px-6 text-on-surface-variant">{{ is_array($sub) ? $sub['date'] : $sub->created_at?->format('d M Y') }}</td>
                                 <td class="py-4 px-6 text-center">
-                                    <x-status-badge :status="$sub['status']" size="sm" />
+                                    <x-status-badge :status="is_array($sub) ? $sub['status'] : (is_object($sub->status) ? $sub->status->value : $sub->status)" size="sm" />
                                 </td>
                             </tr>
                         @endforeach
@@ -91,7 +89,7 @@
                 </div>
                 <h4 class="text-lg font-bold text-deep-black mb-2">Tidak ada pengajuan yang sedang berlangsung</h4>
                 <p class="text-sm text-on-surface-variant mb-6">Semua permintaan dokumen Anda telah selesai diproses atau belum ada pengajuan baru.</p>
-                <a class="group inline-flex items-center gap-2 text-primary text-sm font-semibold" href="{{ url('/student/submission-history') }}">
+                <a class="group inline-flex items-center gap-2 text-primary text-sm font-semibold" href="{{ route('student.submissions.history') }}">
                     <span class="group-hover:underline">Lihat Riwayat Pengajuan</span>
                     <x-icon name="arrow_forward" class="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>

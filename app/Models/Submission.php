@@ -56,4 +56,21 @@ class Submission extends Model
     {
         return $this->hasMany(SubmissionLog::class);
     }
+
+    public function groupMembers()
+    {
+        return $this->hasMany(SubmissionGroupMember::class)->orderBy('sort_order');
+    }
+
+    public function members()
+    {
+        return $this->belongsToMany(Student::class, 'submission_group_members')
+            ->withPivot('sort_order')
+            ->orderByPivot('sort_order');
+    }
+
+    public function generatedLetter()
+    {
+        return $this->hasOne(GeneratedLetter::class);
+    }
 }

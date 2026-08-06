@@ -2,15 +2,12 @@
     $user = auth()->user();
     $lecturerName = $user?->name ?? 'User';
     $nidn = $user?->lecturer?->national_lecturer_number ?? $user?->username ?? '-';
-    $roles = $roles ?? [];
-
-    $stats = $stats ?? [
-        'total' => 0,
-        'pending' => 0,
-        'verified' => 0,
-        'percentage_verified' => 0,
-    ];
-    $submissions = $submissions ?? [];
+    
+    $pendingCount = $pendingCount ?? 0;
+    $processedCount = $processedCount ?? 0;
+    $totalCount = $totalCount ?? 0;
+    $percentageProcessed = $percentageProcessed ?? 0;
+    $latestSubmissions = $latestSubmissions ?? collect();
 @endphp
 
 @extends('layouts.lecturer')
@@ -38,7 +35,7 @@
             <div class="flex justify-between items-start">
                 <div>
                     <p class="text-sm font-semibold text-gray-500 mb-1">Total Permintaan</p>
-                    <h4 class="text-gray-900 text-4xl font-bold">{{ $stats['total'] }}</h4>
+                    <h4 class="text-gray-900 text-4xl font-bold">{{ $totalCount }}</h4>
                 </div>
                 <div class="p-3 bg-amikom-purple-light rounded-lg text-amikom-purple">
                     <x-icon name="folder_shared" class="w-6 h-6" />
@@ -51,7 +48,7 @@
             <div class="flex justify-between items-start">
                 <div>
                     <p class="text-sm font-semibold text-gray-500 mb-1">Menunggu</p>
-                    <h4 class="text-amikom-purple text-4xl font-bold">{{ $stats['pending'] }}</h4>
+                    <h4 class="text-amikom-purple text-4xl font-bold">{{ $pendingCount }}</h4>
                 </div>
                 <div class="p-3 bg-[#FEF3C7] rounded-lg text-amikom-gold">
                     <x-icon name="pending_actions" class="w-6 h-6" />
@@ -65,14 +62,14 @@
             <div class="flex justify-between items-start">
                 <div>
                     <p class="text-sm font-semibold text-gray-500 mb-1">Selesai Diverifikasi</p>
-                    <h4 class="text-gray-900 text-4xl font-bold">{{ $stats['verified'] }}</h4>
+                    <h4 class="text-gray-900 text-4xl font-bold">{{ $processedCount }}</h4>
                 </div>
                 <div class="p-3 bg-[#D1FAE5] rounded-lg text-amikom-green">
                     <x-icon name="verified" class="w-6 h-6" />
                 </div>
             </div>
             <div class="mt-4 w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
-                <div class="bg-amikom-purple h-full" style="width: {{ $stats['percentage_verified'] }}%"></div>
+                <div class="bg-amikom-purple h-full" style="width: {{ round($percentageProcessed) }}%"></div>
             </div>
         </div>
     </div>
@@ -85,14 +82,14 @@
                 <p class="text-sm text-gray-600">Ringkasan pengajuan terbaru yang membutuhkan perhatian Anda.</p>
             </div>
             <div class="flex items-center gap-4">
-                <a class="group inline-flex items-center gap-1 text-amikom-purple text-sm font-semibold ml-2" href="{{ url('/lecturer/approval') }}">
+                <a class="group inline-flex items-center gap-1 text-amikom-purple text-sm font-semibold ml-2" href="{{ route('lecturer.submissions.index') }}">
                     <span class="group-hover:underline">Lihat Semua Pengajuan</span>
                     <x-icon name="chevron_right" class="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
             </div>
         </div>
         
-        @if (count($submissions) > 0)
+        @if (count($latestSubmissions) > 0)
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="bg-[#F8F9FA] border-b border-gray-200">
@@ -106,23 +103,29 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 text-sm">
-                        @foreach (array_slice($submissions, 0, 5) as $submission)
-                            <tr class="transition-colors group cursor-pointer hover:bg-gray-50" onclick="window.location='{{ url('/lecturer/approval/detail') }}'">
+                        @foreach ($latestSubmissions as $submission)
+                            @php
+                                $studentName = $submission->student?->user?->name ?? 'Mahasiswa';
+                                $studentNim = $submission->student?->student_number ?? '-';
+                                $letterType = $submission->letterType?->name ?? 'Surat';
+                                $submittedDate = $submission->created_at?->translatedFormat('d M Y') ?? $submission->created_at?->format('d M Y');
+                                $roleName = $submission->approvalFlowStep?->name ?? 'Dosen';
+                                $statusValue = is_object($submission->status) ? $submission->status->value : (string) $submission->status;
+                            @endphp
+                            <tr class="transition-colors group cursor-pointer hover:bg-gray-50" onclick="window.location='{{ route('lecturer.submissions.detail') }}'">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="font-semibold text-gray-900 text-sm">{{ $submission['name'] }}</span>
+                                    <span class="font-semibold text-gray-900 text-sm">{{ $studentName }}</span>
                                 </td>
-                                <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $submission['nim'] }}</td>
-                                <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $submission['type'] }}</td>
-                                <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $submission['date'] }}</td>
+                                <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $studentNim }}</td>
+                                <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $letterType }}</td>
+                                <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $submittedDate }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex flex-col gap-1 items-start">
-                                        @foreach ($submission['roles'] as $role)
-                                            <span class="px-3 py-1 rounded-full text-xs font-semibold text-white tracking-wider {{ $role['bg'] }}">{{ $role['name'] }}</span>
-                                        @endforeach
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold text-white tracking-wider bg-amikom-purple">{{ $roleName }}</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                    <x-status-badge :status="$submission['status']" size="sm" />
+                                    <x-status-badge :status="$statusValue" size="sm" />
                                 </td>
                             </tr>
                         @endforeach

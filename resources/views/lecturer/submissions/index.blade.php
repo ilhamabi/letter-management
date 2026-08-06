@@ -129,39 +129,39 @@
                 <tbody class="bg-white divide-y divide-gray-200 text-sm">
                     @forelse ($submissions as $sub)
                         @php
-                            $nimParts = explode('.', $sub['nim']);
-                            $batchYear = count($nimParts) > 0 && is_numeric($nimParts[0]) ? '20' . $nimParts[0] : '';
-                            
-                            $roleNames = array_map(function($r) {
-                                return strtolower($r['name']);
-                            }, $sub['roles']);
+                            $studentName = $sub->student?->user?->name ?? 'Mahasiswa';
+                            $studentNim = $sub->student?->student_number ?? '-';
+                            $letterType = $sub->letterType?->name ?? 'Surat';
+                            $submittedDate = $sub->created_at?->translatedFormat('d M Y') ?? $sub->created_at?->format('d M Y');
+                            $roleName = $sub->approvalFlowStep?->name ?? 'Dosen';
+                            $statusValue = is_object($sub->status) ? $sub->status->value : (string) $sub->status;
+                            $timestamp = $sub->created_at?->timestamp ?? 0;
 
-                            $timestamp = isset($sub['timestamp']) ? $sub['timestamp'] : strtotime(str_replace(['Okt', 'Des', 'Mei'], ['Oct', 'Dec', 'May'], $sub['date']));
+                            $nimParts = explode('.', $studentNim);
+                            $batchYear = count($nimParts) > 0 && is_numeric($nimParts[0]) ? '20' . $nimParts[0] : '';
                         @endphp
                         <tr class="transition-colors group cursor-pointer hover:bg-gray-50 submission-row"
-                            data-name="{{ strtolower($sub['name']) }}"
-                            data-nim="{{ $sub['nim'] }}"
-                            data-type="{{ strtolower($sub['type']) }}"
+                            data-name="{{ strtolower($studentName) }}"
+                            data-nim="{{ $studentNim }}"
+                            data-type="{{ strtolower($letterType) }}"
                             data-batch="{{ $batchYear }}"
-                            data-roles="{{ implode(',', $roleNames) }}"
-                            data-status="{{ strtolower($sub['status']) }}"
+                            data-roles="{{ strtolower($roleName) }}"
+                            data-status="{{ strtolower($statusValue) }}"
                             data-date="{{ $timestamp }}"
                             onclick="window.location='{{ route('lecturer.submissions.detail') }}'">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="font-semibold text-gray-900 text-sm">{{ $sub['name'] }}</span>
+                                <span class="font-semibold text-gray-900 text-sm">{{ $studentName }}</span>
                             </td>
-                            <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $sub['nim'] }}</td>
-                            <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $sub['type'] }}</td>
-                            <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $sub['date'] }}</td>
+                            <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $studentNim }}</td>
+                            <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $letterType }}</td>
+                            <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $submittedDate }}</td>
                             <td class="px-6 py-4">
                                 <div class="flex flex-col gap-1 items-start">
-                                    @foreach ($sub['roles'] as $r)
-                                        <span class="px-3 py-1 rounded-full text-xs font-semibold text-white tracking-wider {{ $r['bg'] }}">{{ $r['name'] }}</span>
-                                    @endforeach
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold text-white tracking-wider bg-amikom-purple">{{ $roleName }}</span>
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <x-status-badge :status="$sub['status']" size="sm" />
+                                <x-status-badge :status="$statusValue" size="sm" />
                             </td>
                         </tr>
                     @empty
@@ -193,8 +193,15 @@
             </table>
         </div>
         <!-- Table Footer/Pagination info -->
-        <div class="bg-[#F8F9FA] px-6 py-4 border-t border-gray-200 text-gray-600 text-base">
-            Menampilkan <span class="font-medium text-gray-900" id="displayCount">{{ count($submissions) }}</span> permintaan <span id="displayLabel">{{ count($submissions) === 0 ? 'pending' : 'yang membutuhkan persetujuan' }}</span>
+        <div class="bg-[#F8F9FA] px-6 py-4 border-t border-gray-200 text-gray-600 text-base flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+                Menampilkan <span class="font-medium text-gray-900" id="displayCount">{{ is_object($submissions) && method_exists($submissions, 'count') ? $submissions->count() : count($submissions) }}</span> permintaan <span id="displayLabel">{{ (is_object($submissions) && method_exists($submissions, 'count') ? $submissions->count() : count($submissions)) === 0 ? 'pending' : 'yang membutuhkan persetujuan' }}</span>
+            </div>
+            @if(is_object($submissions) && method_exists($submissions, 'links'))
+                <div>
+                    {{ $submissions->links() }}
+                </div>
+            @endif
         </div>
     </div>
     <!-- END: Data Table -->

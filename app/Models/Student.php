@@ -35,4 +35,11 @@ class Student extends Model
     {
         return $this->hasMany(Submission::class);
     }
+
+    public function groupSubmissions()
+    {
+        return $this->belongsToMany(Submission::class, 'submission_group_members')
+            ->withPivot('sort_order')
+            ->orderByPivot('sort_order');
+    }
 }

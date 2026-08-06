@@ -21,22 +21,26 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full">
         <div class="lg:col-span-8 bg-pure-white border border-outline-variant rounded-xl shadow-sm overflow-hidden">
             <div class="pt-1 px-8 pb-8">
-                <form class="space-y-8" id="request-form">
+                <form class="space-y-8" id="request-form" action="{{ route('student.submissions.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="space-y-2">
-                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="jenis_surat">Jenis Surat</label>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="letter_type_id">Jenis Surat</label>
                         <div class="relative">
-                            <select class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface text-sm" id="jenis_surat">
-                                <option disabled="" selected="" value="">Pilih jenis surat...</option>
-                                <option value="persetujuan_ta_non_reguler">Surat Persetujuan Tugas Akhir Jalur Non-Reguler</option>
-                                <option value="rekomendasi_magang">Surat Rekomendasi Magang</option>
-                                <option value="rekomendasi_pendadaran">Surat Rekomendasi Pendaftaran Pendadaran</option>
+                            <select name="letter_type_id" id="letter_type_id" class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface text-sm" required>
+                                <option disabled selected value="">Pilih jenis surat...</option>
+                                @if(isset($letterTypes))
+                                    @foreach ($letterTypes as $type)
+                                        <option value="{{ $type->id }}" {{ old('letter_type_id') == $type->id ? 'selected' : '' }}>
+                                            {{ $type->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                     </div>
                     <div class="space-y-2">
-                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="keperluan">Keperluan</label>
-                        <textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface text-sm resize-none" id="keperluan" placeholder="Contoh: Pengajuan Beasiswa PPA, Persyaratan Magang di PT. Telkom..." rows="3"></textarea>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="purpose">Keperluan</label>
+                        <textarea name="purpose" id="purpose" class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface text-sm resize-none" placeholder="Contoh: Pengajuan Beasiswa PPA, Persyaratan Magang di PT. Telkom..." rows="3" required>{{ old('purpose') }}</textarea>
                         <p class="text-xs text-on-surface-variant">Jelaskan secara singkat tujuan penggunaan dokumen ini.</p>
                     </div>
                     <div class="space-y-4">
@@ -205,11 +209,8 @@
     if (confirmBtn) {
         confirmBtn.addEventListener('click', () => {
             confirmBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg><span>Memproses...</span>';
-            setTimeout(() => {
-                closeModal('confirmation-modal');
-                confirmBtn.innerHTML = '<span>Ya, Ajukan</span><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
-                alert('Permintaan Anda telah berhasil dikirim!');
-            }, 1500);
+            const form = document.getElementById('request-form');
+            if (form) form.submit();
         });
     }
 

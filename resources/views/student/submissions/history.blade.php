@@ -93,46 +93,54 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant/60 font-body-sm text-on-surface" id="submission-table-body">
-                    @foreach ($submissions as $index => $item)
+                    @forelse ($submissions as $index => $item)
+                        @php
+                            $letterType = is_array($item) ? $item['type'] : ($item->letterType?->name ?? 'Surat');
+                            $submittedDate = is_array($item) ? $item['date'] : ($item->created_at?->translatedFormat('d M Y') ?? $item->created_at?->format('d M Y') ?? '-');
+                            $statusValue = is_array($item) ? $item['status'] : (is_object($item->status) ? $item->status->value : (string) $item->status);
+                            $statusLabel = is_array($item) ? $item['status'] : (is_object($item->status) && method_exists($item->status, 'label') ? $item->status->label() : $statusValue);
+                            $rejectionReason = is_array($item) ? ($item['reason'] ?? '') : ($item->rejection_note ?? '');
+                        @endphp
                         <tr class="submission-row hover:bg-surface-container-low/50 transition-colors duration-200 cursor-pointer" 
-                            data-type="{{ strtolower($item['type']) }}" 
-                            data-status="{{ strtolower($item['status']) }}" 
-                            data-date="{{ $item['date'] }}"
-                            onclick="openDetailModal('{{ addslashes($item['type']) }}', '{{ $item['date'] }}', '{{ $item['status'] }}', '{{ addslashes($item['reason'] ?? '') }}')">
-                            <td class="px-6 py-4 text-center text-on-surface-variant font-medium">{{ $index + 1 }}</td>
-                            <td class="px-6 py-4 font-semibold text-deep-black">{{ $item['type'] }}</td>
-                            <td class="px-6 py-4 text-on-surface-variant">{{ $item['date'] }}</td>
+                            data-type="{{ strtolower($letterType) }}" 
+                            data-status="{{ strtolower($statusValue) }}" 
+                            data-date="{{ $submittedDate }}"
+                            onclick="openDetailModal('{{ addslashes($letterType) }}', '{{ $submittedDate }}', '{{ addslashes($statusLabel) }}', '{{ addslashes($rejectionReason) }}')">
+                            <td class="px-6 py-4 text-center text-on-surface-variant font-medium">
+                                {{ is_object($submissions) && method_exists($submissions, 'firstItem') ? ($submissions->firstItem() + $index) : ($index + 1) }}
+                            </td>
+                            <td class="px-6 py-4 font-semibold text-deep-black">{{ $letterType }}</td>
+                            <td class="px-6 py-4 text-on-surface-variant">{{ $submittedDate }}</td>
                             <td class="px-6 py-4 text-center">
-                                <x-status-badge :status="$item['status']" size="sm" />
+                                <x-status-badge :status="$statusValue" size="sm" />
                             </td>
                         </tr>
-                    @endforeach
-                    <tr id="no-results-row" class="hidden">
-                        <td colspan="4" class="py-12 text-center text-on-surface-variant font-medium">
-                            <div class="flex flex-col items-center justify-center space-y-2">
-                                <x-icon name="search_off" class="w-8 h-8 text-outline" />
-                                <p>Tidak ada riwayat pengajuan yang sesuai dengan filter.</p>
-                            </div>
-                        </td>
-                    </tr>
+                    @empty
+                        <tr id="no-results-row">
+                            <td colspan="4" class="py-12 text-center text-on-surface-variant font-medium">
+                                <div class="flex flex-col items-center justify-center space-y-2">
+                                    <x-icon name="search_off" class="w-8 h-8 text-outline" />
+                                    <p>Belum ada riwayat pengajuan.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
         
         <!-- Pagination -->
-        <div class="px-6 py-4 bg-surface-container-low flex items-center justify-between border-t border-outline-variant flex-wrap">
-            <p class="text-body-sm text-on-surface-variant font-medium">Menampilkan 1-5 dari 24 pengajuan</p>
-            <div class="flex gap-2">
-                <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant bg-pure-white text-on-surface-variant hover:border-primary hover:text-primary transition-all">
-                    <x-icon name="chevron_left" class="w-5 h-5" />
-                </button>
-                <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold">1</button>
-                <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant bg-pure-white text-on-surface-variant hover:border-primary hover:text-primary transition-all">2</button>
-                <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant bg-pure-white text-on-surface-variant hover:border-primary hover:text-primary transition-all">3</button>
-                <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant bg-pure-white text-on-surface-variant hover:border-primary hover:text-primary transition-all">
-                    <x-icon name="chevron_right" class="w-5 h-5" />
-                </button>
-            </div>
+        <div class="px-6 py-4 bg-surface-container-low flex items-center justify-between border-t border-outline-variant flex-wrap gap-4">
+            @if (is_object($submissions) && method_exists($submissions, 'firstItem'))
+                <p class="text-body-sm text-on-surface-variant font-medium">
+                    Menampilkan {{ $submissions->firstItem() ?? 0 }}-{{ $submissions->lastItem() ?? 0 }} dari {{ $submissions->total() }} pengajuan
+                </p>
+                <div>
+                    {{ $submissions->links() }}
+                </div>
+            @else
+                <p class="text-body-sm text-on-surface-variant font-medium">Menampilkan {{ count($submissions) }} pengajuan</p>
+            @endif
         </div>
     </section>
 
