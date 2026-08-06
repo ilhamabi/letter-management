@@ -21,14 +21,14 @@
             ],
             [
                 'label' => 'Buat Baru',
-                'route' => 'student.submission',
-                'path' => 'student/submission',
+                'route' => 'student.submissions.create',
+                'path' => 'student/submissions/create',
                 'icon' => 'add_circle'
             ],
             [
                 'label' => 'Riwayat Pengajuan',
-                'route' => 'student.submission-history',
-                'path' => 'student/submission-history',
+                'route' => 'student.submissions.history',
+                'path' => 'student/submissions',
                 'icon' => 'history'
             ],
             [
@@ -54,7 +54,7 @@
             ],
             [
                 'label' => 'Manajemen Surat',
-                'route' => 'admin.letters',
+                'route' => 'admin.letters.index',
                 'path' => 'admin/letters',
                 'icon' => 'description',
                 'active' => request()->routeIs('admin.letters*') || request()->is('admin/letters*'),
@@ -86,15 +86,15 @@
             ],
             [
                 'label' => 'Persetujuan Dokumen',
-                'route' => 'lecturer.approval',
+                'route' => 'lecturer.submissions.index',
                 'icon' => 'description',
-                'active' => (request()->routeIs('lecturer.approval*') || request()->is('lecturer/approval*')) && !request()->routeIs('lecturer.approval-history*') && !request()->is('lecturer/approval-history*'),
+                'active' => (request()->routeIs('lecturer.submissions*') || request()->is('lecturer/submissions*')) && !request()->routeIs('lecturer.submissions.history*') && !request()->is('lecturer/submissions/history*'),
             ],
             [
                 'label' => 'Riwayat Persetujuan',
-                'route' => 'lecturer.approval-history',
+                'route' => 'lecturer.submissions.history',
                 'icon' => 'history',
-                'active' => request()->routeIs('lecturer.approval-history*') || request()->is('lecturer/approval-history*'),
+                'active' => request()->routeIs('lecturer.submissions.history*') || request()->is('lecturer/submissions/history*'),
             ],
             [
                 'label' => 'Pengaturan Akun',

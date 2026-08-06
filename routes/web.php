@@ -42,18 +42,25 @@ Route::middleware('auth')
                     'admin.dashboard'
                 )->name('admin.dashboard');
 
-                Route::view(
-                    '/letters',
-                    'admin.letters'
-                )->name('admin.letters');
-                Route::view(
-                    '/letters/create',
-                    'admin.letters-edit'
-                )->name('admin.letters.create');
-                Route::view(
-                    '/letters/edit',
-                    'admin.letters-edit'
-                )->name('admin.letters.edit');
+                Route::prefix('letters')->group(function () {
+                    Route::view(
+                        '/',
+                        'admin.letters.index'
+                    )->name('admin.letters.index');
+
+                    Route::view(
+                        '/create',
+                        'admin.letters.create'
+                    )->name('admin.letters.create');
+
+                    Route::view(
+                        '/edit',
+                        'admin.letters.edit'
+                    )->name('admin.letters.edit');
+                });
+
+                // Legacy route name alias
+                Route::view('/letters-legacy', 'admin.letters.index')->name('admin.letters');
 
                 Route::view(
                     '/settings',
@@ -70,25 +77,31 @@ Route::middleware('auth')
                     [StudentDashboardController::class, 'index']
                 )->name('student.dashboard');
 
-                Route::get(
-                    '/submissions',
-                    [StudentSubmissionController::class, 'index']
-                )->name('student.submissions.history');
+                Route::prefix('submissions')->group(function () {
+                    Route::get(
+                        '/',
+                        [StudentSubmissionController::class, 'index']
+                    )->name('student.submissions.history');
 
-                Route::get(
-                    '/submissions/create',
-                    [StudentSubmissionController::class, 'create']
-                )->name('student.submissions.create');
+                    Route::get(
+                        '/create',
+                        [StudentSubmissionController::class, 'create']
+                    )->name('student.submissions.create');
 
-                Route::post(
-                    '/submissions',
-                    [StudentSubmissionController::class, 'store']
-                )->name('student.submissions.store');
+                    Route::post(
+                        '/',
+                        [StudentSubmissionController::class, 'store']
+                    )->name('student.submissions.store');
 
-                Route::get(
-                    '/submissions/{submission}',
-                    [StudentSubmissionController::class, 'detail']
-                )->name('student.submissions.detail');
+                    Route::get(
+                        '/{submission}',
+                        [StudentSubmissionController::class, 'detail']
+                    )->name('student.submissions.detail');
+                });
+
+                // Legacy aliases
+                Route::get('/submission-history', [StudentSubmissionController::class, 'index'])->name('student.submission-history');
+                Route::get('/submission', [StudentSubmissionController::class, 'create'])->name('student.submission');
 
                 Route::view(
                     '/settings',
@@ -105,25 +118,27 @@ Route::middleware('auth')
                     [LecturerDashboardController::class, 'index']
                 )->name('lecturer.dashboard');
 
-                Route::get(
-                    '/submissions',
-                    [LecturerSubmissionController::class, 'index']
-                )->name('lecturer.submissions.index');
+                Route::prefix('submissions')->group(function () {
+                    Route::get(
+                        '/',
+                        [LecturerSubmissionController::class, 'index']
+                    )->name('lecturer.submissions.index');
 
-                Route::view(
-                    '/approval',
-                    'lecturer.approval'
-                )->name('lecturer.approval');
+                    Route::view(
+                        '/detail',
+                        'lecturer.submissions.detail'
+                    )->name('lecturer.submissions.detail');
 
-                Route::view(
-                    '/approval/detail',
-                    'lecturer.approval-detail'
-                )->name('lecturer.approval-detail');
+                    Route::view(
+                        '/history',
+                        'lecturer.submissions.history'
+                    )->name('lecturer.submissions.history');
+                });
 
-                Route::view(
-                    '/approval-history',
-                    'lecturer.approval-history'
-                )->name('lecturer.approval-history');
+                // Legacy approval aliases
+                Route::get('/approval', [LecturerSubmissionController::class, 'index'])->name('lecturer.approval');
+                Route::view('/approval/detail', 'lecturer.submissions.detail')->name('lecturer.approval-detail');
+                Route::view('/approval-history', 'lecturer.submissions.history')->name('lecturer.approval-history');
 
                 Route::view(
                     '/settings',
