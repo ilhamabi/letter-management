@@ -1,37 +1,5 @@
 @php
-    // Default mock data matching files in resources/views/letter
-    $letterTypes = $letterTypes ?? [
-        [
-            'id' => 1,
-            'name' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
-            'file' => 'surat_persetujuan_non_reguler_ahmad_doni.html',
-            'roles' => [
-                ['name' => 'Kaprodi', 'class' => 'role-kaprodi', 'style' => 'background-color: rgb(65, 0, 99); color: rgb(255, 255, 255); width: fit-content;'],
-                ['name' => 'Dosen Wali', 'class' => 'role-dosen-wali', 'style' => 'background-color: rgb(245, 158, 11); color: rgb(255, 255, 255); width: fit-content;'],
-            ],
-            'status' => 'Aktif',
-        ],
-        [
-            'id' => 2,
-            'name' => 'Surat Rekomendasi Magang',
-            'file' => 'surat_rekomendasi_magang - table.html',
-            'roles' => [
-                ['name' => 'Kaprodi', 'class' => 'role-kaprodi', 'style' => 'background-color: rgb(65, 0, 99); color: rgb(255, 255, 255); width: fit-content;'],
-                ['name' => 'Dosen Pembimbing', 'class' => 'role-dosen-pembimbing', 'style' => 'background-color: rgb(0, 107, 94); color: rgb(255, 255, 255); width: fit-content;'],
-            ],
-            'status' => 'Aktif',
-        ],
-        [
-            'id' => 3,
-            'name' => 'Surat Rekomendasi Pendaftaran Pendadaran',
-            'file' => 'surat_rekomendasi_pendadaran_taradiva.html',
-            'roles' => [
-                ['name' => 'Kaprodi', 'class' => 'role-kaprodi', 'style' => 'background-color: rgb(65, 0, 99); color: rgb(255, 255, 255); width: fit-content;'],
-                ['name' => 'Dosen Wali', 'class' => 'role-dosen-wali', 'style' => 'background-color: rgb(245, 158, 11); color: rgb(255, 255, 255); width: fit-content;'],
-            ],
-            'status' => 'Aktif',
-        ],
-    ];
+    $letterTypes = $letterTypes ?? [];
 @endphp
 
 @extends('layouts.admin')

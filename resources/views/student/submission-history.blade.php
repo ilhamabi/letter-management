@@ -3,99 +3,13 @@
 @section('title', 'Riwayat Pengajuan - Universitas Amikom')
 
 @php
-    // Default / Mock data so the page works out of the box even without controller variables
-    $studentName = $studentName ?? (auth()->check() ? auth()->user()->name : 'Alex Chandra');
-    $nim = $nim ?? '21.11.9999';
-    $prodi = $prodi ?? 'D3 Teknik Informatika';
-    $profilePhoto = $profilePhoto ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuAI8U6QdliiTjyZkmQbBg28RYGNyEZiVLatEqMLpzH_ob8gvGl3P0O3s-Qt3Fc_D79jcaahFcbv3qSGezuoYVvawMrNM46hPYZSlOtyaAlPOojd2ZNhDPc1JYxE7y4tEponJE2zSBgJXYCeIo86cW_9J3AKqWvThHpMPKk9_JoTHl67QUOIb6pY3uPxrBpOxsik07pJOMRi5tfE-Y5BWv_wSM8ZGJ0l6pO-W_bb1XcmX1-qIBDqQRuXnyhiZkKKhr43d09ocXNKJ80';
+    $user = auth()->user();
+    $studentName = $user?->name ?? 'User';
+    $nim = $user?->student?->student_number ?? $user?->username ?? '-';
+    $prodi = '-';
+    $profilePhoto = null;
 
-    $submissions = $submissions ?? [
-        [
-            'id' => 1,
-            'type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
-            'date' => '14 Okt 2023, 09:12',
-            'status' => 'Disetujui',
-            'purpose' => 'Pengajuan Tugas Akhir Non-Reguler',
-            'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
-            'reason' => '',
-            'attachments' => [
-                ['name' => 'Dokumen_1.pdf', 'size' => '1.2 MB']
-            ],
-            'timeline' => [
-                ['title' => 'Pengajuan Terkirim', 'time' => '14 Okt 2023, 09:12 WIB', 'status' => 'completed'],
-                ['title' => 'Persetujuan Dosen Wali', 'time' => 'Diverifikasi oleh Dr. Heri Setyawan, M.Kom.', 'status' => 'completed'],
-                ['title' => 'Disetujui Kaprodi', 'time' => 'Disetujui oleh Dr. Barka Satya, M.Kom.', 'status' => 'completed']
-            ]
-        ],
-        [
-            'id' => 2,
-            'type' => 'Surat Rekomendasi Magang',
-            'date' => '12 Okt 2023, 14:30',
-            'status' => 'Disetujui',
-            'purpose' => 'Persyaratan Magang Industri',
-            'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
-            'reason' => '',
-            'attachments' => [
-                ['name' => 'Dokumen_1.pdf', 'size' => '1.2 MB']
-            ],
-            'timeline' => [
-                ['title' => 'Pengajuan Terkirim', 'time' => '12 Okt 2023, 14:30 WIB', 'status' => 'completed'],
-                ['title' => 'Persetujuan Dosen Wali', 'time' => 'Diverifikasi oleh Dr. Heri Setyawan, M.Kom.', 'status' => 'completed'],
-                ['title' => 'Disetujui Kaprodi', 'time' => 'Disetujui oleh Dr. Barka Satya, M.Kom.', 'status' => 'completed']
-            ]
-        ],
-        [
-            'id' => 3,
-            'type' => 'Surat Rekomendasi Pendaftaran Pendadaran',
-            'date' => '10 Okt 2023, 11:05',
-            'status' => 'Ditolak',
-            'purpose' => 'Pendaftaran Ujian Pendadaran',
-            'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
-            'reason' => 'Berkas kelengkapan prasyarat pendadaran belum terpenuhi.',
-            'attachments' => [
-                ['name' => 'Dokumen_1.pdf', 'size' => '1.2 MB']
-            ],
-            'timeline' => [
-                ['title' => 'Pengajuan Terkirim', 'time' => '10 Okt 2023, 11:05 WIB', 'status' => 'completed'],
-                ['title' => 'Persetujuan Dosen Wali', 'time' => 'Diverifikasi oleh Dr. Heri Setyawan, M.Kom.', 'status' => 'completed'],
-                ['title' => 'Verifikasi Program Studi Ditolak', 'time' => 'Ditolak pada proses akhir', 'status' => 'rejected']
-            ]
-        ],
-        [
-            'id' => 4,
-            'type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
-            'date' => '08 Okt 2023, 16:45',
-            'status' => 'Disetujui',
-            'purpose' => 'Persyaratan Lomba / Proyek Mandiri',
-            'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
-            'reason' => '',
-            'attachments' => [
-                ['name' => 'Dokumen_1.pdf', 'size' => '1.2 MB']
-            ],
-            'timeline' => [
-                ['title' => 'Pengajuan Terkirim', 'time' => '08 Okt 2023, 16:45 WIB', 'status' => 'completed'],
-                ['title' => 'Persetujuan Dosen Wali', 'time' => 'Diverifikasi oleh Dr. Heri Setyawan, M.Kom.', 'status' => 'completed'],
-                ['title' => 'Disetujui Kaprodi', 'time' => 'Disetujui oleh Dr. Barka Satya, M.Kom.', 'status' => 'completed']
-            ]
-        ],
-        [
-            'id' => 5,
-            'type' => 'Surat Rekomendasi Magang',
-            'date' => '05 Okt 2023, 08:20',
-            'status' => 'Disetujui',
-            'purpose' => 'Persyaratan Magang BUMN',
-            'lecturer' => 'Dr. Heri Setyawan, M.Kom. (Dosen Wali)',
-            'reason' => '',
-            'attachments' => [
-                ['name' => 'Dokumen_1.pdf', 'size' => '1.2 MB']
-            ],
-            'timeline' => [
-                ['title' => 'Pengajuan Terkirim', 'time' => '05 Okt 2023, 08:20 WIB', 'status' => 'completed'],
-                ['title' => 'Persetujuan Dosen Wali', 'time' => 'Diverifikasi oleh Dr. Heri Setyawan, M.Kom.', 'status' => 'completed'],
-                ['title' => 'Disetujui Kaprodi', 'time' => 'Disetujui oleh Dr. Barka Satya, M.Kom.', 'status' => 'completed']
-            ]
-        ]
-    ];
+    $submissions = $submissions ?? [];
 @endphp
 
 @section('content')

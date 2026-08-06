@@ -1,69 +1,10 @@
 @php
-    // Detect if we want to simulate the empty state (via query parameter e.g., ?empty=1)
-    $isEmpty = request()->has('empty');
+    $user = auth()->user();
+    $lecturerName = $user?->name ?? 'User';
+    $nidn = $user?->lecturer?->national_lecturer_number ?? $user?->username ?? '-';
+    $roles = $roles ?? [];
 
-    // Default / Mock data so the page works out of the box even without controller variables
-    $lecturerName = $lecturerName ?? 'Heri Setyawan, M.Kom.';
-    $nidn = $nidn ?? '123456789';
-    $roles = $roles ?? [
-        ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
-        ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
-        ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
-    ];
-
-    if ($isEmpty) {
-        $submissions = [];
-    } else {
-        $submissions = $submissions ?? [
-            [
-                'name' => 'Budi Santoso',
-                'nim' => '21.11.4321',
-                'type' => 'Surat Rekomendasi Magang',
-                'date' => '12 Okt 2023',
-                'timestamp' => strtotime('2023-10-12'),
-                'roles' => [
-                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
-                    ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
-                ],
-                'status' => 'Disetujui',
-            ],
-            [
-                'name' => 'Siti Aminah',
-                'nim' => '21.11.4092',
-                'type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
-                'date' => '11 Okt 2023',
-                'timestamp' => strtotime('2023-10-11'),
-                'roles' => [
-                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
-                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
-                    ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
-                ],
-                'status' => 'Ditolak',
-            ],
-            [
-                'name' => 'Rizky Aditya',
-                'nim' => '20.12.3321',
-                'type' => 'Surat Rekomendasi Pendaftaran Pendadaran',
-                'date' => '10 Okt 2023',
-                'timestamp' => strtotime('2023-10-10'),
-                'roles' => [
-                    ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
-                ],
-                'status' => 'Diteruskan',
-            ],
-            [
-                'name' => 'Dian Permatasari',
-                'nim' => '22.11.5110',
-                'type' => 'Surat Rekomendasi Magang',
-                'date' => '08 Okt 2023',
-                'timestamp' => strtotime('2023-10-08'),
-                'roles' => [
-                    ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
-                ],
-                'status' => 'Disetujui',
-            ],
-        ];
-    }
+    $submissions = $submissions ?? [];
 @endphp
 
 @extends('layouts.lecturer')

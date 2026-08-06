@@ -1,43 +1,11 @@
 @php
-    $id = request()->query('id', 1);
-
-    $allTypes = [
-        1 => [
-            'name' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
-            'status' => 'Aktif',
-            'updated_at' => '12 Okt 2023, 14:30',
-            'banner' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
-            'workflow' => [
-                ['number' => 1, 'role' => 'Kaprodi'],
-                ['number' => 2, 'role' => 'Dosen Wali'],
-            ],
-        ],
-        2 => [
-            'name' => 'Surat Rekomendasi Magang',
-            'status' => 'Aktif',
-            'updated_at' => '15 Okt 2023, 09:15',
-            'banner' => 'Surat Rekomendasi Magang',
-            'workflow' => [
-                ['number' => 1, 'role' => 'Kaprodi'],
-                ['number' => 2, 'role' => 'Dosen Pembimbing'],
-            ],
-        ],
-        3 => [
-            'name' => 'Surat Rekomendasi Pendaftaran Pendadaran',
-            'status' => 'Aktif',
-            'updated_at' => '18 Okt 2023, 11:20',
-            'banner' => 'Surat Rekomendasi Pendaftaran Pendadaran',
-            'workflow' => [
-                ['number' => 1, 'role' => 'Kaprodi'],
-                ['number' => 2, 'role' => 'Dosen Wali'],
-            ],
-        ],
+    $letter = $letter ?? [
+        'name' => 'Jenis Surat Baru',
+        'status' => 'Aktif',
+        'updated_at' => '-',
+        'banner' => '',
+        'workflow' => [],
     ];
-
-    $letterData = $allTypes[$id] ?? $allTypes[1];
-
-    // Default / Mock data in case variables aren't passed from controller
-    $letter = $letter ?? $letterData;
     $templateName = $templateName ?? $letter['name'];
     $templateStatus = $templateStatus ?? $letter['status'];
     $templateBanner = $templateBanner ?? $letter['banner'];

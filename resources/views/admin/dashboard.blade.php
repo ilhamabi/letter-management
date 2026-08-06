@@ -1,71 +1,15 @@
 @php
-    // Default / Mock data in case variables aren't passed from controller or view
-    $adminName = $adminName ?? (auth()->check() ? auth()->user()->name : 'Admin');
+    $adminName = auth()->check() ? auth()->user()->name : 'Admin';
 
     $stats = $stats ?? [
-        'total_types' => 24,
-        'active_types' => 18,
-        'needs_attention' => 6,
-        'total_roles' => 3,
+        'total_types' => 0,
+        'active_types' => 0,
+        'needs_attention' => 0,
+        'total_roles' => 0,
     ];
 
-    $recentActivities = $recentActivities ?? [
-        [
-            'letter_type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
-            'admin' => 'Super Admin',
-            'date' => 'Hari ini, 10:42',
-            'change' => 'Update Template',
-            'badge_class' => 'bg-blue-50 text-blue-700 border-blue-200',
-        ],
-        [
-            'letter_type' => 'Surat Rekomendasi Magang',
-            'admin' => 'Admin Akademik',
-            'date' => 'Kemarin, 15:20',
-            'change' => 'Ubah Alur',
-            'badge_class' => 'bg-gray-100 text-gray-700 border-gray-200',
-        ],
-        [
-            'letter_type' => 'Surat Rekomendasi Pendaftaran Pendadaran',
-            'admin' => 'Admin Akademik',
-            'date' => '12 Okt 2023',
-            'change' => 'Nonaktifkan',
-            'badge_class' => 'bg-red-50 text-red-700 border-red-200',
-        ],
-        [
-            'letter_type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
-            'admin' => 'Super Admin',
-            'date' => '10 Okt 2023',
-            'change' => 'Buat Baru',
-            'badge_class' => 'bg-green-50 text-green-700 border-green-200',
-        ],
-    ];
-
-    $topRequested = $topRequested ?? [
-        [
-            'rank' => 1,
-            'name' => 'Surat Persetujuan TA Non-Reguler',
-            'count' => '142 Pengajuan',
-            'percentage' => 85,
-            'color' => 'bg-amikom-purple',
-            'rank_bg' => 'bg-blue-100 text-blue-700',
-        ],
-        [
-            'rank' => 2,
-            'name' => 'Surat Rekomendasi Magang',
-            'count' => '98 Pengajuan',
-            'percentage' => 60,
-            'color' => 'bg-amikom-gold',
-            'rank_bg' => 'bg-gray-100 text-gray-600',
-        ],
-        [
-            'rank' => 3,
-            'name' => 'Surat Rekomendasi Pendadaran',
-            'count' => '56 Pengajuan',
-            'percentage' => 35,
-            'color' => 'bg-gray-400',
-            'rank_bg' => 'bg-gray-100 text-gray-600',
-        ],
-    ];
+    $recentActivities = $recentActivities ?? [];
+    $topRequested = $topRequested ?? [];
 @endphp
 
 @extends('layouts.admin')

@@ -3,11 +3,12 @@
 @section('title', 'Pengaturan Akun - Layanan Dokumen')
 
 @php
-    // Default / Mock data so the settings page works out of the box even without controller variables
-    $studentName = $studentName ?? (auth()->check() ? auth()->user()->name : 'Alex Chandra');
-    $nim = $nim ?? '21.11.9999';
-    $prodi = $prodi ?? 'D3 Teknik Informatika';
-    $profilePhoto = $profilePhoto ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuAI8U6QdliiTjyZkmQbBg28RYGNyEZiVLatEqMLpzH_ob8gvGl3P0O3s-Qt3Fc_D79jcaahFcbv3qSGezuoYVvawMrNM46hPYZSlOtyaAlPOojd2ZNhDPc1JYxE7y4tEponJE2zSBgJXYCeIo86cW_9J3AKqWvThHpMPKk9_JoTHl67QUOIb6pY3uPxrBpOxsik07pJOMRi5tfE-Y5BWv_wSM8ZGJ0l6pO-W_bb1XcmX1-qIBDqQRuXnyhiZkKKhr43d09ocXNKJ80';
+    $user = auth()->user();
+    $studentName = $user?->name ?? 'User';
+    $nim = $user?->student?->student_number ?? $user?->username ?? '-';
+    $prodi = '-';
+    $studentEmail = $user?->email ?? '-';
+    $profilePhoto = null;
 @endphp
 
 @section('content')
@@ -46,7 +47,7 @@
                     </div>
                     <div class="flex flex-col gap-1.5">
                         <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Alamat Email</label>
-                        <p class="text-sm text-on-surface font-semibold py-2">{{ strtolower(str_replace(' ', '.', $studentName)) }}@students.amikom.ac.id</p>
+                        <p class="text-sm text-on-surface font-semibold py-2">{{ $studentEmail }}</p>
                     </div>
                     <div class="flex flex-col gap-1.5">
                         <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Program Studi</label>

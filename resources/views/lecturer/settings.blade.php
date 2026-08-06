@@ -1,13 +1,10 @@
 @php
-    // Default / Mock data so the settings page works out of the box even without controller variables
-    $lecturerName = $lecturerName ?? 'Heri Setyawan, M.Kom.';
-    $nidn = $nidn ?? '123456789';
-    $lecturerPhoto = $lecturerPhoto ?? 'https://i1.pickpik.com/photos/206/134/327/teacher-lecturer-writer-counselor-626ababd87ee30e9c0eb278ac724ee0a.jpg';
-    $roles = $roles ?? [
-        ['name' => 'Kaprodi', 'bg' => 'bg-primary'],
-        ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
-        ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
-    ];
+    $user = auth()->user();
+    $lecturerName = $user?->name ?? 'User';
+    $nidn = $user?->lecturer?->national_lecturer_number ?? $user?->username ?? '-';
+    $lecturerEmail = $user?->email ?? '-';
+    $lecturerPhoto = null;
+    $roles = $roles ?? [];
 @endphp
 
 @extends('layouts.lecturer')
@@ -53,7 +50,7 @@
                     </div>
                     <div class="flex flex-col gap-1.5">
                         <label class="text-xs font-bold uppercase tracking-wider text-gray-500">Alamat Email</label>
-                        <p class="text-sm font-semibold text-gray-900 py-2">heri.setyawan@amikom.ac.id</p>
+                        <p class="text-sm font-semibold text-gray-900 py-2">{{ $lecturerEmail }}</p>
                     </div>
                     <div class="flex flex-col gap-1.5">
                         <label class="text-xs font-bold uppercase tracking-wider text-gray-500">Peran Akademik</label>

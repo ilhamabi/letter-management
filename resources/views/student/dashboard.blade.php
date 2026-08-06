@@ -3,122 +3,18 @@
 @section('title', 'Dashboard - Universitas Amikom')
 
 @php
-    // Detect if we want to simulate the empty state (via query parameter e.g., ?empty=1)
-    $isEmpty = request()->has('empty');
+    $user = auth()->user();
+    $studentName = $user?->name ?? 'User';
+    $nim = $user?->student?->student_number ?? $user?->username ?? '-';
+    $prodi = '-';
 
-    // Default / Mock data so the dashboard works out of the box even without controller variables
-    $studentName = $studentName ?? (auth()->check() ? auth()->user()->name : 'Alex Chandra');
-    $nim = $nim ?? '21.11.9999';
-    $prodi = $prodi ?? 'D3 Teknik Informatika';
+    $stats = $stats ?? [
+        'pending' => 0,
+        'approved' => 0,
+        'rejected' => 0,
+    ];
 
-    if ($isEmpty) {
-        $stats = $stats ?? [
-            'pending' => 0,
-            'approved' => 12,
-            'rejected' => 1,
-        ];
-        $submissions = [];
-    } else {
-        $stats = $stats ?? [
-            'pending' => 3,
-            'approved' => 12,
-            'rejected' => 1,
-        ];
-
-        $submissions = $submissions ?? [
-            [
-                'id' => 1,
-                'type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
-                'date' => '24 Okt 2023',
-                'status' => 'Sedang Diproses',
-                'purpose' => 'Pengajuan TA Non-Reguler',
-                'lecturer' => 'Heri Setyawan, M.Kom.',
-                'kaprodi' => 'Dr. Barka Satya, M.Kom.',
-                'time' => '09:45 WIB',
-                'attachments' => [
-                    ['name' => 'KTM_Alex.pdf', 'size' => '1.2 MB'],
-                    ['name' => 'Draft_Proposal.pdf', 'size' => '850 KB'],
-                ],
-                'timeline' => [
-                    ['title' => 'Pengajuan Terkirim', 'time' => '14 Okt 2023, 09:12', 'status' => 'completed'],
-                    ['title' => 'Persetujuan Dosen Wali', 'time' => 'Diverifikasi oleh Heri Setyawan, M.Kom.', 'status' => 'completed'],
-                    ['title' => 'Verifikasi Program Studi', 'time' => 'Sedang diverifikasi oleh Kaprodi', 'status' => 'active']
-                ]
-            ],
-            [
-                'id' => 2,
-                'type' => 'Surat Rekomendasi Magang',
-                'date' => '02 Nov 2023',
-                'status' => 'Sedang Diproses',
-                'purpose' => 'Magang Industri',
-                'lecturer' => 'Heri Setyawan, M.Kom.',
-                'kaprodi' => 'Dr. Barka Satya, M.Kom.',
-                'time' => '10:15 WIB',
-                'attachments' => [
-                    ['name' => 'KTM_Alex.pdf', 'size' => '1.2 MB'],
-                ],
-                'timeline' => [
-                    ['title' => 'Pengajuan Terkirim', 'time' => '02 Nov 2023, 10:15', 'status' => 'completed'],
-                    ['title' => 'Persetujuan Dosen Wali', 'time' => 'Diverifikasi oleh Heri Setyawan, M.Kom.', 'status' => 'completed'],
-                    ['title' => 'Verifikasi Program Studi', 'time' => 'Sedang diverifikasi oleh Kaprodi', 'status' => 'active']
-                ]
-            ],
-            [
-                'id' => 3,
-                'type' => 'Surat Rekomendasi Pendaftaran Pendadaran',
-                'date' => '15 Nov 2023',
-                'status' => 'Sedang Diproses',
-                'purpose' => 'Pendaftaran Ujian Pendadaran',
-                'lecturer' => 'Heri Setyawan, M.Kom.',
-                'kaprodi' => 'Dr. Barka Satya, M.Kom.',
-                'time' => '08:30 WIB',
-                'attachments' => [
-                    ['name' => 'Transkrip_Final.pdf', 'size' => '2.1 MB'],
-                ],
-                'timeline' => [
-                    ['title' => 'Pengajuan Terkirim', 'time' => '15 Nov 2023, 08:30', 'status' => 'completed'],
-                    ['title' => 'Persetujuan Dosen Wali', 'time' => 'Diverifikasi oleh Heri Setyawan, M.Kom.', 'status' => 'completed'],
-                    ['title' => 'Verifikasi Program Studi', 'time' => 'Sedang diverifikasi oleh Kaprodi', 'status' => 'active']
-                ]
-            ],
-            [
-                'id' => 4,
-                'type' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
-                'date' => '20 Nov 2023',
-                'status' => 'Sedang Diproses',
-                'purpose' => 'Proyek Industri Mandiri',
-                'lecturer' => 'Heri Setyawan, M.Kom.',
-                'kaprodi' => 'Dr. Barka Satya, M.Kom.',
-                'time' => '11:00 WIB',
-                'attachments' => [
-                    ['name' => 'KTM_Alex.pdf', 'size' => '1.2 MB'],
-                ],
-                'timeline' => [
-                    ['title' => 'Pengajuan Terkirim', 'time' => '20 Nov 2023, 11:00', 'status' => 'completed'],
-                    ['title' => 'Persetujuan Dosen Wali', 'time' => 'Diverifikasi oleh Heri Setyawan, M.Kom.', 'status' => 'completed'],
-                    ['title' => 'Verifikasi Program Studi', 'time' => 'Sedang diverifikasi oleh Kaprodi', 'status' => 'active']
-                ]
-            ],
-            [
-                'id' => 5,
-                'type' => 'Surat Rekomendasi Magang',
-                'date' => '25 Nov 2023',
-                'status' => 'Sedang Diproses',
-                'purpose' => 'Magang BUMN Merdeka Belajar',
-                'lecturer' => 'Heri Setyawan, M.Kom.',
-                'kaprodi' => 'Dr. Barka Satya, M.Kom.',
-                'time' => '14:20 WIB',
-                'attachments' => [
-                    ['name' => 'KTM_Alex.pdf', 'size' => '510 KB'],
-                ],
-                'timeline' => [
-                    ['title' => 'Pengajuan Terkirim', 'time' => '25 Nov 2023, 14:20', 'status' => 'completed'],
-                    ['title' => 'Persetujuan Dosen Wali', 'time' => 'Diverifikasi oleh Heri Setyawan, M.Kom.', 'status' => 'completed'],
-                    ['title' => 'Verifikasi Program Studi', 'time' => 'Sedang diverifikasi oleh Kaprodi', 'status' => 'active']
-                ]
-            ],
-        ];
-    }
+    $submissions = $submissions ?? [];
 @endphp
 
 @section('content')

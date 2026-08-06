@@ -1,12 +1,8 @@
 @php
-    // Default / Mock data so the page works out of the box even without controller variables
-    $lecturerName = $lecturerName ?? 'Heri Setyawan, M.Kom.';
-    $nidn = $nidn ?? '123456789';
-    $roles = $roles ?? [
-        ['name' => 'Kaprodi', 'bg' => 'bg-amikom-purple'],
-        ['name' => 'Dosen Wali', 'bg' => 'bg-amikom-gold'],
-        ['name' => 'Dosen Pembimbing', 'bg' => 'bg-amikom-green'],
-    ];
+    $user = auth()->user();
+    $lecturerName = $user?->name ?? 'User';
+    $nidn = $user?->lecturer?->national_lecturer_number ?? $user?->username ?? '-';
+    $roles = $roles ?? [];
 
     // Load letter HTML and style
     $letterHtmlPath = resource_path('views/letter/surat_persetujuan_non_reguler_ahmad_doni.html');

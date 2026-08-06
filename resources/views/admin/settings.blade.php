@@ -3,9 +3,9 @@
 @section('title', 'Pengaturan Akun - Layanan Dokumen')
 
 @php
-    $adminName = $adminName ?? (auth()->check() ? auth()->user()->name : 'Admin');
-    $adminEmail = $adminEmail ?? (auth()->check() ? auth()->user()->email : 'admin@amikom.ac.id');
-    $adminPhoto = $adminPhoto ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuBMizNsImUsAhQ1K0MobwV_I-xE5GJAje3rmApO43UMzs2HSAmf2BVZXm3AyvXCbW0TyVQiGNpGGQH_7zZhKQzgE-socR3g9BJVABx_IEBfzntAvOyZtgMO_tlj8GVxuL_2qNWxXtDetUKHpaysIf0n3dKfPG1eIM9EYmkaKrSEPDLsi_Yib9xlm8vTGmzkww7ib2CoLQf1OUEl8CMPS6G-eIKzYMC5EPlK5uOkKYOSDPufDRy7TRMg';
+    $adminName = auth()->check() ? auth()->user()->name : 'User';
+    $adminEmail = auth()->check() ? auth()->user()->email : '-';
+    $adminPhoto = null;
 @endphp
 
 @section('content')
