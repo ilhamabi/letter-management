@@ -137,35 +137,23 @@
     </section>
 
     <!-- Status Detail Modal -->
-    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="status-detail-modal">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="relative bg-pure-white w-full max-w-lg mx-4 rounded-xl shadow-xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
-            <!-- Modal Header -->
-            <div class="p-6 border-b border-outline-variant flex justify-between items-center">
-                <div class="flex flex-col">
-                    <h3 class="font-headline-sm text-headline-sm text-deep-black">Status Pengajuan</h3>
-                    <p class="text-body-sm text-on-surface-variant" id="modal-title">Surat Persetujuan Tugas Akhir Jalur Non-Reguler</p>
-                </div>
-                <button class="p-2 hover:bg-surface-container rounded-full transition-colors" onclick="closeModal()">
-                    <x-icon name="close" class="w-5 h-5" />
-                </button>
-            </div>
-            
-            <!-- Modal Body -->
-            <div class="p-6 space-y-6 overflow-y-auto max-h-[70vh]" id="modal-body">
-                <!-- Dynamic Content Rendered via JavaScript -->
-            </div>
-            
-            <!-- Modal Footer -->
-            <div class="p-6 bg-surface-gray border-t border-outline-variant flex justify-end gap-3" id="modal-footer">
-                <button class="px-6 py-2 border border-primary text-primary font-label-md rounded-lg hover:bg-primary-fixed/20 transition-colors flex items-center gap-2" id="download-btn">
-                    <x-icon name="download" class="w-4 h-4" />
-                    Unduh Dokumen
-                </button>
-                <button class="px-6 py-2 bg-primary text-white font-label-md rounded-lg hover:shadow-md transition-shadow" onclick="closeModal()">Tutup</button>
-            </div>
+    <x-modal id="status-detail-modal" title="Status Pengajuan" maxWidth="max-w-lg">
+        <x-slot:subtitle>
+            <span id="modal-title">Surat Persetujuan Tugas Akhir Jalur Non-Reguler</span>
+        </x-slot:subtitle>
+
+        <div class="space-y-6" id="modal-body">
+            <!-- Dynamic Content Rendered via JavaScript -->
         </div>
-    </div>
+
+        <x-slot:footer>
+            <button class="px-6 py-2 border border-primary text-primary font-label-md rounded-lg hover:bg-primary-fixed/20 transition-colors flex items-center gap-2" id="download-btn">
+                <x-icon name="download" class="w-4 h-4" />
+                Unduh Dokumen
+            </button>
+            <button class="px-6 py-2 bg-primary text-white font-label-md rounded-lg hover:shadow-md transition-shadow" onclick="closeModal('status-detail-modal')">Tutup</button>
+        </x-slot:footer>
+    </x-modal>
 @endsection
 
 @push('scripts')
@@ -367,13 +355,11 @@
             ${slaHTML}
         `;
 
-        document.getElementById('status-detail-modal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+        openModal('status-detail-modal');
     }
 
-    function closeModal() {
-        document.getElementById('status-detail-modal').classList.add('hidden');
-        document.body.style.overflow = 'auto';
+    function closeModal(id = 'status-detail-modal') {
+        toggleModal(id, false);
     }
 
     // Interactive Client-Side Filters

@@ -168,66 +168,50 @@
     </div>
 
     <!-- Confirmation Modal -->
-    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden" id="confirmation-modal">
-        <div class="absolute inset-0 bg-deep-black/60 backdrop-blur-sm animate-fade-in" id="modal-backdrop"></div>
-        <div class="relative z-10 bg-pure-white w-full max-w-md rounded-xl shadow-xl overflow-hidden transform animate-scale-up border border-outline-variant my-auto mx-auto">
-                <div class="p-8">
-                    <div class="flex items-center gap-4 mb-5">
-                        <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
-                            <x-icon name="help" class="w-7 h-7" />
-                        </div>
-                        <div>
-                            <h3 class="font-headline-md text-[20px] font-bold text-on-surface leading-tight">Konfirmasi Pengajuan</h3>
-                            <p class="text-on-surface-variant text-[12px] font-medium tracking-wide uppercase mt-0.5">Permintaan Dokumen</p>
-                        </div>
-                    </div>
-                    <p class="text-on-surface-variant text-body-md mb-8 leading-relaxed">
-                        Apakah Anda yakin data yang dimasukkan sudah benar? Permintaan yang sudah dikirim <span class="font-bold text-on-surface">tidak dapat diubah kembali</span>.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <button class="flex-1 order-2 sm:order-1 py-3.5 px-4 rounded-xl border border-outline-variant text-on-surface font-label-lg hover:bg-surface-container-low transition-all active:scale-[0.98]" id="close-modal-btn">
-                            Batal
-                        </button>
-                        <button class="flex-1 order-1 sm:order-2 py-3.5 px-4 rounded-xl bg-primary text-on-primary font-label-lg hover:brightness-110 active:scale-[0.98] transition-all shadow-md shadow-primary/20 flex items-center justify-center gap-2" id="confirm-submit-btn">
-                            <span>Ya, Ajukan</span>
-                            <x-icon name="check_circle" class="w-4 h-4" />
-                        </button>
-                    </div>
-                </div>
+    <x-modal id="confirmation-modal" :showHeader="false" maxWidth="max-w-md" zIndex="z-[100]" padding="p-8">
+        <div class="flex items-center gap-4 mb-5">
+            <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary shrink-0">
+                <x-icon name="help" class="w-7 h-7" />
+            </div>
+            <div>
+                <h3 class="font-headline-md text-[20px] font-bold text-on-surface leading-tight">Konfirmasi Pengajuan</h3>
+                <p class="text-on-surface-variant text-[12px] font-medium tracking-wide uppercase mt-0.5">Permintaan Dokumen</p>
             </div>
         </div>
+        <p class="text-on-surface-variant text-body-md mb-8 leading-relaxed">
+            Apakah Anda yakin data yang dimasukkan sudah benar? Permintaan yang sudah dikirim <span class="font-bold text-on-surface">tidak dapat diubah kembali</span>.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3">
+            <button class="flex-1 order-2 sm:order-1 py-3.5 px-4 rounded-xl border border-outline-variant text-on-surface font-label-lg hover:bg-surface-container-low transition-all active:scale-[0.98]" id="close-modal-btn" onclick="closeModal('confirmation-modal')">
+                Batal
+            </button>
+            <button class="flex-1 order-1 sm:order-2 py-3.5 px-4 rounded-xl bg-primary text-on-primary font-label-lg hover:brightness-110 active:scale-[0.98] transition-all shadow-md shadow-primary/20 flex items-center justify-center gap-2" id="confirm-submit-btn">
+                <span>Ya, Ajukan</span>
+                <x-icon name="check_circle" class="w-4 h-4" />
+            </button>
+        </div>
+    </x-modal>
 @endsection
 
 @push('scripts')
 <script>
-    const modal = document.getElementById('confirmation-modal');
     const openBtn = document.getElementById('submit-request-btn');
     const closeBtn = document.getElementById('close-modal-btn');
-    const backdrop = document.getElementById('modal-backdrop');
     const confirmBtn = document.getElementById('confirm-submit-btn');
 
-    const toggleModal = (show) => {
-        if (show) {
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        } else {
-            modal.classList.add('hidden');
-            document.body.style.overflow = '';
-        }
-    };
-
-    openBtn.addEventListener('click', () => toggleModal(true));
-    closeBtn.addEventListener('click', () => toggleModal(false));
-    backdrop.addEventListener('click', () => toggleModal(false));
+    if (openBtn) openBtn.addEventListener('click', () => openModal('confirmation-modal'));
+    if (closeBtn) closeBtn.addEventListener('click', () => closeModal('confirmation-modal'));
     
-    confirmBtn.addEventListener('click', () => {
-        confirmBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg><span>Memproses...</span>';
-        setTimeout(() => {
-            toggleModal(false);
-            confirmBtn.innerHTML = '<span>Ya, Ajukan</span><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
-            alert('Permintaan Anda telah berhasil dikirim!');
-        }, 1500);
-    });
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', () => {
+            confirmBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg><span>Memproses...</span>';
+            setTimeout(() => {
+                closeModal('confirmation-modal');
+                confirmBtn.innerHTML = '<span>Ya, Ajukan</span><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+                alert('Permintaan Anda telah berhasil dikirim!');
+            }, 1500);
+        });
+    }
 
     // Multi-File PDF Upload Validation & Drag-and-Drop
     const fileInput = document.getElementById('file-input');

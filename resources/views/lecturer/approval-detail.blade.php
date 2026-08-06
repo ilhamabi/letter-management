@@ -276,115 +276,114 @@
 </div>
 
 <!-- Rejection Reason Modal -->
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden" id="reject-modal">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 border border-gray-200 font-title-lg">
-        <div class="flex items-center gap-2 mb-4 p-3 bg-blue-50 border border-blue-100 rounded-lg">
-            <x-icon name="info" class="w-5 h-5 text-blue-600" />
-            <p class="text-xs text-blue-700 font-medium">Peran yang tidak dicentang akan tetap berada pada status saat ini.</p>
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 mb-2 text-primary">Konfirmasi Penolakan</h3>
-        <p class="text-sm text-gray-500 mb-6">Pilih peran Anda dan berikan alasan penolakan:</p>
-        
-        <div class="space-y-4 mb-8">
-            <!-- Kaprodi Role -->
-            <div class="role-group border rounded-xl overflow-hidden transition-all border-gray-200" id="group-kaprodi">
-                <label class="flex items-center gap-3 p-4 bg-gray-50 cursor-pointer">
-                    <input checked class="role-checkbox w-5 h-5 rounded border-gray-300 text-error focus:ring-error" onchange="handleRoleToggle('kaprodi')" type="checkbox">
-                    <div class="flex flex-col">
-                        <span class="text-xs font-semibold text-white tracking-wider px-3 py-1 rounded-full bg-primary self-start mb-1">Kaprodi</span>
-                    </div>
-                </label>
-                <div class="reason-fields p-4 bg-white border-t border-gray-100 space-y-3 hidden" id="fields-kaprodi">
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Alasan Penolakan</label>
-                        <select class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-sm focus:ring-1 focus:ring-primary outline-none">
-                            <option value="sks">Syarat SKS tidak terpenuhi</option>
-                            <option value="visi">Judul tidak sesuai visi keilmuan prodi</option>
-                            <option value="slot">Slot Dosen Pembimbing penuh</option>
-                            <option value="lainnya">Lainnya</option>
-                        </select>
-                    </div>
-                    <textarea class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-sm resize-none focus:ring-1 focus:ring-primary outline-none" placeholder="Catatan Tambahan..." rows="2"></textarea>
-                </div>
-            </div>
+<x-modal id="reject-modal" title="Konfirmasi Penolakan" maxWidth="max-w-md">
+    <x-slot:subtitle>
+        Pilih peran Anda dan berikan alasan penolakan:
+    </x-slot:subtitle>
 
-            <!-- Dosen Wali Role -->
-            <div class="role-group border border-gray-200 rounded-xl overflow-hidden transition-all" id="group-wali">
-                <label class="flex items-center gap-3 p-4 bg-gray-50 cursor-pointer">
-                    <input class="role-checkbox w-5 h-5 rounded border-gray-300 text-error focus:ring-error" onchange="handleRoleToggle('wali')" type="checkbox">
-                    <div class="flex flex-col">
-                        <span class="text-xs font-semibold text-[#6e5c00] tracking-wider px-3 py-1 rounded-full bg-[#fcd400] self-start mb-1">Dosen Wali</span>
-                    </div>
-                </label>
-                <div class="reason-fields p-4 bg-white border-t border-gray-100 space-y-3 hidden" id="fields-wali">
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Alasan Penolakan</label>
-                        <select class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-sm focus:ring-1 focus:ring-primary outline-none">
-                            <option value="admin">Masalah administrasi</option>
-                            <option value="etika">Etika bimbingan</option>
-                            <option value="lainnya">Lainnya</option>
-                        </select>
-                    </div>
-                    <textarea class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-sm resize-none focus:ring-1 focus:ring-primary outline-none" placeholder="Catatan Tambahan..." rows="2"></textarea>
-                </div>
-            </div>
+    <div class="flex items-center gap-2 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+        <x-icon name="info" class="w-5 h-5 text-blue-600 shrink-0" />
+        <p class="text-xs text-blue-700 font-medium">Peran yang tidak dicentang akan tetap berada pada status saat ini.</p>
+    </div>
 
-            <!-- Dosen Pembimbing Role -->
-            <div class="role-group border border-gray-200 rounded-xl overflow-hidden transition-all" id="group-pembimbing">
-                <label class="flex items-center gap-3 p-4 bg-gray-50 cursor-pointer">
-                    <input class="role-checkbox w-5 h-5 rounded border-gray-300 text-error focus:ring-error" onchange="handleRoleToggle('pembimbing')" type="checkbox">
-                    <div class="flex flex-col">
-                        <span class="text-xs font-semibold text-white tracking-wider px-3 py-1 rounded-full bg-amikom-green self-start mb-1">Dosen Pembimbing</span>
-                    </div>
-                </label>
-                <div class="reason-fields p-4 bg-white border-t border-gray-100 space-y-3 hidden" id="fields-pembimbing">
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Alasan Penolakan</label>
-                        <select class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-sm focus:ring-1 focus:ring-primary outline-none">
-                            <option value="materi">Materi tidak sesuai</option>
-                            <option value="jadwal">Jadwal penuh</option>
-                            <option value="lainnya">Lainnya</option>
-                        </select>
-                    </div>
-                    <textarea class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-sm resize-none focus:ring-1 focus:ring-primary outline-none" placeholder="Catatan Tambahan..." rows="2"></textarea>
+    <div class="space-y-4">
+        <!-- Kaprodi Role -->
+        <div class="role-group border rounded-xl overflow-hidden transition-all border-gray-200" id="group-kaprodi">
+            <label class="flex items-center gap-3 p-4 bg-gray-50 cursor-pointer">
+                <input checked class="role-checkbox w-5 h-5 rounded border-gray-300 text-error focus:ring-error" onchange="handleRoleToggle('kaprodi')" type="checkbox">
+                <div class="flex flex-col">
+                    <span class="text-xs font-semibold text-white tracking-wider px-3 py-1 rounded-full bg-primary self-start mb-1">Kaprodi</span>
                 </div>
+            </label>
+            <div class="reason-fields p-4 bg-white border-t border-gray-100 space-y-3 hidden" id="fields-kaprodi">
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Alasan Penolakan</label>
+                    <select class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-sm focus:ring-1 focus:ring-primary outline-none">
+                        <option value="sks">Syarat SKS tidak terpenuhi</option>
+                        <option value="visi">Judul tidak sesuai visi keilmuan prodi</option>
+                        <option value="slot">Slot Dosen Pembimbing penuh</option>
+                        <option value="lainnya">Lainnya</option>
+                    </select>
+                </div>
+                <textarea class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-sm resize-none focus:ring-1 focus:ring-primary outline-none" placeholder="Catatan Tambahan..." rows="2"></textarea>
             </div>
         </div>
 
-        <div class="flex gap-3 justify-end">
-            <button class="py-2.5 px-6 text-gray-700 hover:bg-gray-100 rounded-lg font-bold transition-colors border border-gray-300" onclick="toggleModal('reject-modal', false)">Batal</button>
-            <button class="py-2.5 px-6 bg-error text-white rounded-lg font-bold hover:bg-error/90 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" id="confirm-reject-btn" onclick="confirmRejection()">Konfirmasi Penolakan</button>
+        <!-- Dosen Wali Role -->
+        <div class="role-group border border-gray-200 rounded-xl overflow-hidden transition-all" id="group-wali">
+            <label class="flex items-center gap-3 p-4 bg-gray-50 cursor-pointer">
+                <input class="role-checkbox w-5 h-5 rounded border-gray-300 text-error focus:ring-error" onchange="handleRoleToggle('wali')" type="checkbox">
+                <div class="flex flex-col">
+                    <span class="text-xs font-semibold text-[#6e5c00] tracking-wider px-3 py-1 rounded-full bg-[#fcd400] self-start mb-1">Dosen Wali</span>
+                </div>
+            </label>
+            <div class="reason-fields p-4 bg-white border-t border-gray-100 space-y-3 hidden" id="fields-wali">
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Alasan Penolakan</label>
+                    <select class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-sm focus:ring-1 focus:ring-primary outline-none">
+                        <option value="admin">Masalah administrasi</option>
+                        <option value="etika">Etika bimbingan</option>
+                        <option value="lainnya">Lainnya</option>
+                    </select>
+                </div>
+                <textarea class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-sm resize-none focus:ring-1 focus:ring-primary outline-none" placeholder="Catatan Tambahan..." rows="2"></textarea>
+            </div>
+        </div>
+
+        <!-- Dosen Pembimbing Role -->
+        <div class="role-group border border-gray-200 rounded-xl overflow-hidden transition-all" id="group-pembimbing">
+            <label class="flex items-center gap-3 p-4 bg-gray-50 cursor-pointer">
+                <input class="role-checkbox w-5 h-5 rounded border-gray-300 text-error focus:ring-error" onchange="handleRoleToggle('pembimbing')" type="checkbox">
+                <div class="flex flex-col">
+                    <span class="text-xs font-semibold text-white tracking-wider px-3 py-1 rounded-full bg-amikom-green self-start mb-1">Dosen Pembimbing</span>
+                </div>
+            </label>
+            <div class="reason-fields p-4 bg-white border-t border-gray-100 space-y-3 hidden" id="fields-pembimbing">
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Alasan Penolakan</label>
+                    <select class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-sm focus:ring-1 focus:ring-primary outline-none">
+                        <option value="materi">Materi tidak sesuai</option>
+                        <option value="jadwal">Jadwal penuh</option>
+                        <option value="lainnya">Lainnya</option>
+                    </select>
+                </div>
+                <textarea class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-sm resize-none focus:ring-1 focus:ring-primary outline-none" placeholder="Catatan Tambahan..." rows="2"></textarea>
+            </div>
         </div>
     </div>
-</div>
+
+    <x-slot:footer>
+        <button class="py-2.5 px-6 text-gray-700 hover:bg-gray-100 rounded-lg font-bold transition-colors border border-gray-300" onclick="closeModal('reject-modal')">Batal</button>
+        <button class="py-2.5 px-6 bg-error text-white rounded-lg font-bold hover:bg-error/90 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" id="confirm-reject-btn" onclick="confirmRejection()">Konfirmasi Penolakan</button>
+    </x-slot:footer>
+</x-modal>
 
 <!-- Confirm Approval Modal -->
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden" id="approve-modal">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 border border-gray-200 font-title-lg">
-        <h3 class="text-xl font-bold text-primary mb-2">Konfirmasi Persetujuan</h3>
-        <p class="text-sm text-gray-500 mb-6">Pilih peran Anda untuk memberikan persetujuan pada dokumen ini:</p>
-        
-        <div class="space-y-2 mb-8">
-            <label class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors justify-start gap-3">
-                <input class="approve-role-checkbox w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary" onchange="updateApproveButtonState()" type="checkbox">
-                <span class="text-xs font-semibold text-white tracking-wider px-3 py-1 rounded-full bg-primary">Kaprodi</span>
-            </label>
-            <label class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors justify-start gap-3">
-                <input class="approve-role-checkbox w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary" onchange="updateApproveButtonState()" type="checkbox">
-                <span class="text-xs font-semibold text-[#6e5c00] tracking-wider px-3 py-1 rounded-full bg-[#fcd400]">Dosen Wali</span>
-            </label>
-            <label class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors justify-start gap-3">
-                <input class="approve-role-checkbox w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary" onchange="updateApproveButtonState()" type="checkbox">
-                <span class="text-xs font-semibold text-white tracking-wider px-3 py-1 rounded-full bg-amikom-green">Dosen Pembimbing</span>
-            </label>
-        </div>
-        
-        <div class="flex gap-3 justify-end">
-            <button class="py-2.5 px-6 text-gray-500 hover:bg-gray-100 rounded-lg font-bold transition-colors border border-gray-300" onclick="toggleModal('approve-modal', false)">Batal</button>
-            <button class="py-2.5 px-6 bg-primary text-white rounded-lg font-bold hover:bg-primary-container shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all" id="confirm-approve-btn" onclick="confirmApproval()">Setujui</button>
-        </div>
+<x-modal id="approve-modal" title="Konfirmasi Persetujuan" maxWidth="max-w-md">
+    <x-slot:subtitle>
+        Pilih peran Anda untuk memberikan persetujuan pada dokumen ini:
+    </x-slot:subtitle>
+
+    <div class="space-y-2">
+        <label class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors justify-start gap-3">
+            <input class="approve-role-checkbox w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary" onchange="updateApproveButtonState()" type="checkbox">
+            <span class="text-xs font-semibold text-white tracking-wider px-3 py-1 rounded-full bg-primary">Kaprodi</span>
+        </label>
+        <label class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors justify-start gap-3">
+            <input class="approve-role-checkbox w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary" onchange="updateApproveButtonState()" type="checkbox">
+            <span class="text-xs font-semibold text-[#6e5c00] tracking-wider px-3 py-1 rounded-full bg-[#fcd400]">Dosen Wali</span>
+        </label>
+        <label class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors justify-start gap-3">
+            <input class="approve-role-checkbox w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary" onchange="updateApproveButtonState()" type="checkbox">
+            <span class="text-xs font-semibold text-white tracking-wider px-3 py-1 rounded-full bg-amikom-green">Dosen Pembimbing</span>
+        </label>
     </div>
-</div>
+
+    <x-slot:footer>
+        <button class="py-2.5 px-6 text-gray-500 hover:bg-gray-100 rounded-lg font-bold transition-colors border border-gray-300" onclick="closeModal('approve-modal')">Batal</button>
+        <button class="py-2.5 px-6 bg-primary text-white rounded-lg font-bold hover:bg-primary-container shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all" id="confirm-approve-btn" onclick="confirmApproval()">Setujui</button>
+    </x-slot:footer>
+</x-modal>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {

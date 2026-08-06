@@ -36,9 +36,18 @@ export function closeModal(id) {
     if (id) {
         toggleModal(id, false);
     } else {
-        // Close any active modal dialogs
-        document.querySelectorAll('[id$="-modal"]').forEach(modal => {
+        // Close any active visible modal dialogs
+        document.querySelectorAll('[id$="-modal"]:not(.hidden)').forEach(modal => {
             modal.classList.add('hidden');
         });
     }
+}
+
+// Global listener to close active modal on Escape key press
+if (typeof window !== 'undefined') {
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+            closeModal();
+        }
+    });
 }

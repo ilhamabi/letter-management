@@ -1,36 +1,48 @@
 @props([
     'id' => 'modal',
     'title' => '',
+    'subtitle' => null,
     'maxWidth' => 'max-w-2xl',
+    'zIndex' => 'z-50',
+    'showHeader' => true,
+    'showClose' => true,
+    'padding' => 'p-6',
+    'backdropClickClose' => true,
 ])
 
-<div id="{{ $id }}" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm hidden">
+<div id="{{ $id }}" class="fixed inset-0 {{ $zIndex }} flex items-center justify-center p-4 bg-deep-black/60 backdrop-blur-sm hidden animate-fade-in" {{ $attributes }}>
     <!-- Click backdrop to close -->
-    <div class="fixed inset-0 -z-10" onclick="document.getElementById('{{ $id }}').classList.add('hidden')"></div>
+    <div class="fixed inset-0 -z-10" @if($backdropClickClose) onclick="closeModal('{{ $id }}')" @endif></div>
 
     <!-- Modal Content Card -->
-    <div class="relative bg-pure-white rounded-2xl max-h-[90vh] w-full {{ $maxWidth }} overflow-hidden flex flex-col shadow-2xl animate-fade-in z-10 my-auto mx-auto">
+    <div class="relative bg-pure-white rounded-2xl max-h-[90vh] w-full {{ $maxWidth }} overflow-hidden flex flex-col shadow-2xl animate-scale-up z-10 my-auto mx-auto border border-outline-variant">
         <!-- Modal Header -->
-        <div class="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
-            <div>
-                <h3 class="font-headline-sm text-headline-sm text-deep-black font-bold" id="{{ $id }}-title">{{ $title }}</h3>
-                @if (isset($subtitle))
-                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5" id="{{ $id }}-subtitle">{{ $subtitle }}</p>
+        @if ($showHeader)
+            <div class="{{ $padding }} border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
+                <div>
+                    @if ($title)
+                        <h3 class="font-headline-sm text-headline-sm text-deep-black font-bold" id="{{ $id }}-title">{{ $title }}</h3>
+                    @endif
+                    @if (isset($subtitle) || $subtitle)
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5" id="{{ $id }}-subtitle">{{ $subtitle }}</p>
+                    @endif
+                </div>
+                @if ($showClose)
+                    <button type="button" class="text-on-surface-variant hover:text-deep-black p-2 rounded-full hover:bg-surface-container transition-colors" onclick="closeModal('{{ $id }}')">
+                        <x-icon name="close" class="w-5 h-5" />
+                    </button>
                 @endif
             </div>
-            <button class="text-on-surface-variant hover:text-deep-black p-2 rounded-full hover:bg-surface-container transition-colors" onclick="document.getElementById('{{ $id }}').classList.add('hidden')">
-                <x-icon name="close" class="w-5 h-5" />
-            </button>
-        </div>
+        @endif
 
         <!-- Modal Body -->
-        <div class="p-6 overflow-y-auto flex-grow space-y-6">
+        <div class="{{ $padding }} overflow-y-auto flex-grow space-y-6" id="{{ $id }}-body">
             {{ $slot }}
         </div>
 
         <!-- Modal Footer -->
         @if (isset($footer))
-            <div class="p-6 bg-surface-gray border-t border-outline-variant flex justify-end gap-3">
+            <div class="{{ $padding }} bg-surface-gray border-t border-outline-variant flex justify-end gap-3" id="{{ $id }}-footer">
                 {{ $footer }}
             </div>
         @endif

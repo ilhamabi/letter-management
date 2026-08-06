@@ -226,93 +226,82 @@
 </div>
 
 <!-- Modal Detail Alur Persetujuan -->
-<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-opacity hidden" id="approval-modal">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]" onclick="event.stopPropagation()">
-        <!-- Modal Header -->
-        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-surface-container">
-            <div class="flex items-center gap-3">
-                <h3 class="text-lg font-bold text-amikom-purple font-title-lg">Detail Alur Persetujuan</h3>
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-gray-100 text-gray-700 border border-gray-200" id="modal-status-badge">DITERUSKAN</span>
+<x-modal id="approval-modal" title="Detail Alur Persetujuan" maxWidth="max-w-2xl">
+    <x-slot:subtitle>
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-gray-100 text-gray-700 border border-gray-200 mt-1" id="modal-status-badge">DITERUSKAN</span>
+    </x-slot:subtitle>
+
+    <!-- Student Info Summary -->
+    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <p class="text-xs font-semibold text-gray-500 tracking-wider font-label-sm">Mahasiswa</p>
+                <p class="text-base font-bold text-gray-900" id="modal-student-name">-</p>
             </div>
-            <button class="p-1 hover:bg-gray-200 rounded-full transition-colors" id="close-modal-btn">
-                <x-icon name="close" class="w-5 h-5 text-gray-500" />
-            </button>
-        </div>
-        <!-- Modal Body -->
-        <div class="p-6 overflow-y-auto">
-            <!-- Student Info Summary -->
-            <div class="mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <p class="text-xs font-semibold text-gray-500 tracking-wider font-label-sm">Mahasiswa</p>
-                        <p class="text-base font-bold text-gray-900" id="modal-student-name">-</p>
-                    </div>
-                    <div>
-                        <p class="text-xs font-semibold text-gray-500 tracking-wider font-label-sm">NIM</p>
-                        <p class="text-base text-gray-700" id="modal-student-nim">-</p>
-                    </div>
-                    <div class="col-span-2">
-                        <p class="text-xs font-semibold text-gray-500 tracking-wider font-label-sm">Jenis Dokumen</p>
-                        <p class="text-base text-gray-700" id="modal-doc-type">-</p>
-                    </div>
-                </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-500 tracking-wider font-label-sm">NIM</p>
+                <p class="text-base text-gray-700" id="modal-student-nim">-</p>
             </div>
-            <!-- Rejection Reason -->
-            <div class="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg hidden" id="modal-rejection-reason">
-                <h4 class="text-sm font-semibold text-red-800 mb-1">Alasan Penolakan</h4>
-                <p class="text-sm text-red-700">Dokumen tidak lengkap atau tidak sesuai dengan persyaratan administrasi yang berlaku. Silakan perbaiki dan ajukan kembali.</p>
+            <div class="col-span-2">
+                <p class="text-xs font-semibold text-gray-500 tracking-wider font-label-sm">Jenis Dokumen</p>
+                <p class="text-base text-gray-700" id="modal-doc-type">-</p>
             </div>
-            <!-- Timeline -->
-            <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
-                <!-- Step 1 -->
-                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
-                        <x-icon name="check_circle" class="w-4 h-4" />
-                    </div>
-                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
-                        <div class="flex items-center justify-between space-x-2 mb-1">
-                            <div class="font-bold text-slate-900 font-label-lg font-headline-md">Pengajuan Terkirim</div>
-                            <time class="font-medium text-xs text-amikom-green">Selesai</time>
-                        </div>
-                        <div class="text-slate-500 text-xs">Dokumen telah berhasil diunggah oleh mahasiswa.</div>
-                    </div>
-                </div>
-                <!-- Step 2 -->
-                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" id="step-2">
-                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2" id="step-2-icon">
-                        <x-icon name="check_circle" class="w-4 h-4" />
-                    </div>
-                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
-                        <div class="flex items-center justify-between space-x-2 mb-1">
-                            <div class="font-bold text-slate-900 font-label-lg font-headline-md">Persetujuan Dosen Wali</div>
-                            <time class="font-medium text-xs text-amikom-green" id="step-2-time">Selesai</time>
-                        </div>
-                        <div class="text-slate-500 text-xs" id="step-2-desc">Telah diverifikasi oleh Dosen Wali.</div>
-                    </div>
-                </div>
-                <!-- Step 3 -->
-                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" id="step-3">
-                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-purple text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 animate-pulse" id="step-3-icon">
-                        <x-icon name="sync" class="w-4 h-4" />
-                    </div>
-                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
-                        <div class="flex items-center justify-between space-x-2 mb-1">
-                            <div class="font-bold text-slate-900 font-label-lg font-headline-md">Verifikasi Program Studi</div>
-                            <time class="font-medium text-xs text-amikom-purple" id="step-3-time">Menunggu</time>
-                        </div>
-                        <div class="text-slate-500 text-xs" id="step-3-desc">Sedang dalam tahap verifikasi oleh Program Studi.</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal Footer -->
-        <div class="px-6 py-4 border-t border-gray-200 flex justify-end gap-3 bg-gray-50">
-            <button class="px-6 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-50 transition-colors shadow-sm" id="close-modal-footer-btn">
-                Tutup
-            </button>
         </div>
     </div>
-</div>
+    <!-- Rejection Reason -->
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg hidden" id="modal-rejection-reason">
+        <h4 class="text-sm font-semibold text-red-800 mb-1">Alasan Penolakan</h4>
+        <p class="text-sm text-red-700">Dokumen tidak lengkap atau tidak sesuai dengan persyaratan administrasi yang berlaku. Silakan perbaiki dan ajukan kembali.</p>
+    </div>
+    <!-- Timeline -->
+    <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+        <!-- Step 1 -->
+        <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+            <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                <x-icon name="check_circle" class="w-4 h-4" />
+            </div>
+            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
+                <div class="flex items-center justify-between space-x-2 mb-1">
+                    <div class="font-bold text-slate-900 font-label-lg font-headline-md">Pengajuan Terkirim</div>
+                    <time class="font-medium text-xs text-amikom-green">Selesai</time>
+                </div>
+                <div class="text-slate-500 text-xs">Dokumen telah berhasil diunggah oleh mahasiswa.</div>
+            </div>
+        </div>
+        <!-- Step 2 -->
+        <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" id="step-2">
+            <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-green text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2" id="step-2-icon">
+                <x-icon name="check_circle" class="w-4 h-4" />
+            </div>
+            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
+                <div class="flex items-center justify-between space-x-2 mb-1">
+                    <div class="font-bold text-slate-900 font-label-lg font-headline-md">Persetujuan Dosen Wali</div>
+                    <time class="font-medium text-xs text-amikom-green" id="step-2-time">Selesai</time>
+                </div>
+                <div class="text-slate-500 text-xs" id="step-2-desc">Telah diverifikasi oleh Dosen Wali.</div>
+            </div>
+        </div>
+        <!-- Step 3 -->
+        <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" id="step-3">
+            <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-amikom-purple text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 animate-pulse" id="step-3-icon">
+                <x-icon name="sync" class="w-4 h-4" />
+            </div>
+            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
+                <div class="flex items-center justify-between space-x-2 mb-1">
+                    <div class="font-bold text-slate-900 font-label-lg font-headline-md">Verifikasi Program Studi</div>
+                    <time class="font-medium text-xs text-amikom-purple" id="step-3-time">Menunggu</time>
+                </div>
+                <div class="text-slate-500 text-xs" id="step-3-desc">Sedang dalam tahap verifikasi oleh Program Studi.</div>
+            </div>
+        </div>
+    </div>
+
+    <x-slot:footer>
+        <button class="px-6 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-50 transition-colors shadow-sm" id="close-modal-footer-btn" onclick="closeModal('approval-modal')">
+            Tutup
+        </button>
+    </x-slot:footer>
+</x-modal>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -545,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 step3Desc.innerText = 'Tahap akhir persetujuan oleh Kepala Program Studi.';
             }
             
-            modal.classList.remove('hidden');
+            openModal('approval-modal');
         });
     });
 });
