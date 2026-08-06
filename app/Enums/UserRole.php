@@ -17,6 +17,15 @@ enum UserRole: string
     };
   }
 
+  public function badgeClass(): string
+  {
+    return match ($this) {
+      self::ADMIN => 'bg-amber-100 text-amber-800 border border-amber-200',
+      self::LECTURER => 'bg-sky-100 text-sky-800 border border-sky-200',
+      self::STUDENT => 'bg-indigo-100 text-indigo-800 border border-indigo-200',
+    };
+  }
+
   public static function values(): array
   {
     return array_column(self::cases(), 'value');

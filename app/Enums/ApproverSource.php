@@ -15,6 +15,14 @@ enum ApproverSource: string
     };
   }
 
+  public function badgeClass(): string
+  {
+    return match ($this) {
+      self::STUDENT_LECTURER => 'bg-cyan-100 text-cyan-800 border border-cyan-200',
+      self::LECTURER_POSITION => 'bg-violet-100 text-violet-800 border border-violet-200',
+    };
+  }
+
   public static function values(): array
   {
     return array_column(self::cases(), 'value');
