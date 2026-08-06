@@ -56,4 +56,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Lecturer::class);
     }
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class, 'assigned_to_user_id');
+    }
+
+    public function submissionLogs()
+    {
+        return $this->hasMany(SubmissionLog::class);
+    }
 }

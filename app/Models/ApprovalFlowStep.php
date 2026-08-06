@@ -26,4 +26,9 @@ class ApprovalFlowStep extends Model
     {
         return $this->belongsTo(ApprovalFlow::class);
     }
+
+    public function submissionLogs()
+    {
+        return $this->hasMany(SubmissionLog::class);
+    }
 }

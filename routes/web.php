@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Lecturer\DashboardController as LecturerDashboardController;
+use App\Http\Controllers\Lecturer\SubmissionController as LecturerSubmissionController;
+use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
+use App\Http\Controllers\Student\SubmissionController as StudentSubmissionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -42,12 +46,10 @@ Route::middleware('auth')
                     '/letters',
                     'admin.letters'
                 )->name('admin.letters');
-
                 Route::view(
                     '/letters/create',
                     'admin.letters-edit'
                 )->name('admin.letters.create');
-
                 Route::view(
                     '/letters/edit',
                     'admin.letters-edit'
@@ -63,21 +65,70 @@ Route::middleware('auth')
             ->middleware('role:STUDENT')
             ->group(function () {
 
-                Route::view('/dashboard', 'student.dashboard')->name('student.dashboard');
-                Route::view('/submission', 'student.submission')->name('student.submission');
-                Route::view('/submission-history', 'student.submission-history')->name('student.submission-history');
-                Route::view('/settings', 'student.settings')->name('student.settings');
+                Route::get(
+                    '/dashboard',
+                    [StudentDashboardController::class, 'index']
+                )->name('student.dashboard');
+
+                Route::get(
+                    '/submissions',
+                    [StudentSubmissionController::class, 'index']
+                )->name('student.submissions.history');
+
+                Route::get(
+                    '/submissions/create',
+                    [StudentSubmissionController::class, 'create']
+                )->name('student.submissions.create');
+
+                Route::post(
+                    '/submissions',
+                    [StudentSubmissionController::class, 'store']
+                )->name('student.submissions.store');
+
+                Route::get(
+                    '/submissions/{submission}',
+                    [StudentSubmissionController::class, 'detail']
+                )->name('student.submissions.detail');
+
+                Route::view(
+                    '/settings',
+                    'student.settings'
+                )->name('student.settings');
             });
 
         Route::prefix('lecturer')
             ->middleware('role:LECTURER')
             ->group(function () {
 
-                Route::view('/dashboard', 'lecturer.dashboard')->name('lecturer.dashboard');
-                Route::view('/approval', 'lecturer.approval')->name('lecturer.approval');
-                Route::view('/approval/detail', 'lecturer.approval-detail')->name('lecturer.approval-detail');
-                Route::view('/approval-history', 'lecturer.approval-history')->name('lecturer.approval-history');
-                Route::view('/settings', 'lecturer.settings')->name('lecturer.settings');
+                Route::get(
+                    '/dashboard',
+                    [LecturerDashboardController::class, 'index']
+                )->name('lecturer.dashboard');
+
+                Route::get(
+                    '/submissions',
+                    [LecturerSubmissionController::class, 'index']
+                )->name('lecturer.submissions.index');
+
+                Route::view(
+                    '/approval',
+                    'lecturer.approval'
+                )->name('lecturer.approval');
+
+                Route::view(
+                    '/approval/detail',
+                    'lecturer.approval-detail'
+                )->name('lecturer.approval-detail');
+
+                Route::view(
+                    '/approval-history',
+                    'lecturer.approval-history'
+                )->name('lecturer.approval-history');
+
+                Route::view(
+                    '/settings',
+                    'lecturer.settings'
+                )->name('lecturer.settings');
             });
     });
 
@@ -89,4 +140,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-
