@@ -29,21 +29,11 @@ enum SubmissionStatus: string
   public function badgeClass(): string
   {
     return match ($this) {
-
-      self::PENDING =>
-      'bg-gray-100 text-gray-800',
-
-      self::IN_REVIEW =>
-      'bg-blue-100 text-blue-800',
-
-      self::REJECTED =>
-      'bg-red-100 text-red-800',
-
-      self::APPROVED =>
-      'bg-green-100 text-green-800',
-
-      self::GENERATED =>
-      'bg-emerald-100 text-emerald-800',
+      self::PENDING => 'bg-amber-100 text-amber-800 border-amber-200',
+      self::IN_REVIEW => 'bg-amber-100 text-amber-800 border-amber-200',
+      self::REJECTED => 'bg-red-100 text-red-800 border-red-200',
+      self::APPROVED => 'bg-green-100 text-green-800 border-green-200',
+      self::GENERATED => 'bg-green-100 text-green-800 border-green-200',
     };
   }
 }

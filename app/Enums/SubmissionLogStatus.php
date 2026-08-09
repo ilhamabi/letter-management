@@ -10,8 +10,8 @@ enum SubmissionLogStatus: string
   public function label(): string
   {
     return match ($this) {
-      self::APPROVED => 'Approved',
-      self::REJECTED => 'Rejected',
+      self::APPROVED => 'Disetujui',
+      self::REJECTED => 'Ditolak',
     };
   }
 

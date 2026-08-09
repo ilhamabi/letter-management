@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('submission_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('submission_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('approval_flow_step_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('approval_flow_step_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('status', 50);
             $table->text('notes')->nullable();

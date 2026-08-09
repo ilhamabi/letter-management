@@ -7,7 +7,6 @@
 
 <x-layouts.app 
     title="Layanan Dokumen" 
-    customCss="css/mahasiswa-dashboard.css" 
     bodyClass="bg-surface-gray text-on-surface min-h-screen flex"
 >
     <!-- SideNavBar Component -->

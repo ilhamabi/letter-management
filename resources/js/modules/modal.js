@@ -37,17 +37,27 @@ export function closeModal(id) {
         toggleModal(id, false);
     } else {
         // Close any active visible modal dialogs
-        document.querySelectorAll('[id$="-modal"]:not(.hidden)').forEach(modal => {
+        document.querySelectorAll('[id*="modal"]:not(.hidden)').forEach(modal => {
             modal.classList.add('hidden');
         });
     }
 }
 
-// Global listener to close active modal on Escape key press
+// Global listener to close active modal on Escape key press or link navigation
 if (typeof window !== 'undefined') {
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' || e.key === 'Esc') {
             closeModal();
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        const activeModals = document.querySelectorAll('[id*="modal"]:not(.hidden)');
+        if (activeModals.length > 0) {
+            const link = e.target.closest('a[href]');
+            if (link && link.getAttribute('href') && !link.getAttribute('href').startsWith('#') && !link.getAttribute('href').startsWith('javascript:')) {
+                closeModal();
+            }
         }
     });
 }

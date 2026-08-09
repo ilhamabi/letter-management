@@ -10,12 +10,15 @@
     'backdropClickClose' => true,
 ])
 
-<div id="{{ $id }}" class="fixed inset-0 {{ $zIndex }} flex items-center justify-center p-4 bg-deep-black/60 backdrop-blur-sm hidden animate-fade-in" {{ $attributes }}>
-    <!-- Click backdrop to close -->
-    <div class="fixed inset-0 -z-10" @if($backdropClickClose) onclick="closeModal('{{ $id }}')" @endif></div>
+<div id="{{ $id }}" 
+     class="fixed inset-0 {{ $zIndex }} flex items-center justify-center p-4 bg-deep-black/60 backdrop-blur-sm hidden animate-fade-in" 
+     @if($backdropClickClose) 
+        onclick="if (event.target === this) (typeof closeModal === 'function' ? closeModal('{{ $id }}') : this.classList.add('hidden'))" 
+     @endif
+     {{ $attributes }}>
 
     <!-- Modal Content Card -->
-    <div class="relative bg-pure-white rounded-2xl max-h-[90vh] w-full {{ $maxWidth }} overflow-hidden flex flex-col shadow-2xl animate-scale-up z-10 my-auto mx-auto border border-outline-variant">
+    <div class="relative bg-pure-white rounded-2xl max-h-[90vh] w-full {{ $maxWidth }} overflow-hidden flex flex-col shadow-2xl animate-scale-up z-10 my-auto mx-auto border border-outline-variant" onclick="event.stopPropagation()">
         <!-- Modal Header -->
         @if ($showHeader)
             <div class="{{ $padding }} border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
@@ -28,8 +31,10 @@
                     @endif
                 </div>
                 @if ($showClose)
-                    <button type="button" class="text-on-surface-variant hover:text-deep-black p-2 rounded-full hover:bg-surface-container transition-colors" onclick="closeModal('{{ $id }}')">
-                        <x-icon name="close" class="w-5 h-5" />
+                    <button type="button" 
+                            class="text-on-surface-variant hover:text-deep-black p-2 rounded-full hover:bg-surface-container transition-colors cursor-pointer" 
+                            onclick="typeof closeModal === 'function' ? closeModal('{{ $id }}') : document.getElementById('{{ $id }}').classList.add('hidden')">
+                        <x-icon name="close" class="w-5 h-5 pointer-events-none" />
                     </button>
                 @endif
             </div>

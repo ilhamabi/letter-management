@@ -22,7 +22,7 @@ enum ApprovalRole: string
   public function bg(): string
   {
     return match ($this) {
-      self::ACADEMIC_ADVISOR => 'bg-amikom-gold',
+      self::ACADEMIC_ADVISOR => 'bg-[#fcd400]',
       self::INTERNSHIP_SUPERVISOR => 'bg-amikom-green',
       self::THESIS_SUPERVISOR => 'bg-amikom-green',
       self::HEAD_OF_STUDY_PROGRAM => 'bg-amikom-purple',
@@ -31,6 +31,9 @@ enum ApprovalRole: string
 
   public function badgeClass(): string
   {
+    if ($this === self::ACADEMIC_ADVISOR) {
+        return "text-[#6e5c00] {$this->bg()}";
+    }
     return "text-white {$this->bg()}";
   }
 

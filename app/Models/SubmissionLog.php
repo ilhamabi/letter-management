@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubmissionLog extends Model
 {
-    protected function cast(): array
+    protected function casts(): array
     {
         return [
             'status' => SubmissionLogStatus::class,
