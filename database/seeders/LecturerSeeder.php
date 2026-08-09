@@ -30,5 +30,14 @@ class LecturerSeeder extends Seeder
             'employee_number' => '19870002',
             'national_lecturer_number' => '9876543210',
         ]);
+
+        Lecturer::create([
+            'user_id' => User::where(
+                'username',
+                '19870003'
+            )->first()->id,
+            'employee_number' => '19870003',
+            'national_lecturer_number' => '5554443322',
+        ]);
     }
 }

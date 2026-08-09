@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('minimum_gpa', 3, 2)->nullable();
             $table->integer('minimum_credits')->nullable();
             $table->boolean('requires_attachment')->default(false);
+            $table->boolean('allow_group_submission')->default(false);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

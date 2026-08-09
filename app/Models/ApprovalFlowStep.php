@@ -27,6 +27,12 @@ class ApprovalFlowStep extends Model
         return $this->belongsTo(ApprovalFlow::class);
     }
 
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class, 'approval_flow_step_id');
+    }
+
+
     public function submissionLogs()
     {
         return $this->hasMany(SubmissionLog::class);

@@ -13,13 +13,12 @@ use Illuminate\Database\Eloquent\Model;
     'approval_flow_step_id',
     'status',
     'purpose',
-    'attachment_path',
     'notes',
     'submitted_at',
 ])]
 class Submission extends Model
 {
-    protected function cast(): array
+    protected function casts(): array
     {
         return [
             'submitted_at' => 'datetime',
@@ -43,6 +42,11 @@ class Submission extends Model
     }
 
     public function approvalFlowStep()
+    {
+        return $this->belongsTo(ApprovalFlowStep::class, 'approval_flow_step_id');
+    }
+
+    public function currentStep()
     {
         return $this->belongsTo(ApprovalFlowStep::class, 'approval_flow_step_id');
     }

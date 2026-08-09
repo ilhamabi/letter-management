@@ -8,6 +8,21 @@
     $nim = $user?->student?->student_number ?? $user?->username ?? '-';
     $prodi = '-';
     $profilePhoto = null;
+
+    $createLetterOptions = [];
+    if (isset($letterTypes)) {
+        foreach ($letterTypes as $type) {
+            $createLetterOptions[] = [
+                'value' => (string) $type->id,
+                'label' => $type->name,
+                'badge' => $type->allow_group_submission ? 'Kelompok' : 'Individu',
+                'badgeClass' => $type->allow_group_submission 
+                    ? 'bg-indigo-50 text-indigo-700 border-indigo-200' 
+                    : 'bg-gray-50 text-gray-600 border-gray-200',
+                'allowGroup' => $type->allow_group_submission ? 'true' : 'false'
+            ];
+        }
+    }
 @endphp
 
 @section('content')
@@ -25,24 +40,33 @@
                     @csrf
                     <div class="space-y-2">
                         <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="letter_type_id">Jenis Surat</label>
-                        <div class="relative">
-                            <select name="letter_type_id" id="letter_type_id" class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface text-sm" required>
-                                <option disabled selected value="">Pilih jenis surat...</option>
-                                @if(isset($letterTypes))
-                                    @foreach ($letterTypes as $type)
-                                        <option value="{{ $type->id }}" {{ old('letter_type_id') == $type->id ? 'selected' : '' }}>
-                                            {{ $type->name }}
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
+                        <x-select-input 
+                            name="letter_type_id" 
+                            id="letter_type_id" 
+                            placeholder="Pilih jenis surat..."
+                            :options="$createLetterOptions" 
+                            onchange="if(typeof toggleGroupMembersSection === 'function') toggleGroupMembersSection();"
+                        />
                     </div>
                     <div class="space-y-2">
                         <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="purpose">Keperluan</label>
                         <textarea name="purpose" id="purpose" class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface text-sm resize-none" placeholder="Contoh: Pengajuan Beasiswa PPA, Persyaratan Magang di PT. Telkom..." rows="3" required>{{ old('purpose') }}</textarea>
                         <p class="text-xs text-on-surface-variant">Jelaskan secara singkat tujuan penggunaan dokumen ini.</p>
                     </div>
+
+                    <!-- Optional Group Members Input (Hidden by default, shown if type allows group submission) -->
+                    <div id="group-members-wrapper" class="hidden space-y-3 pt-2">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-on-surface">Anggota Kelompok (Opsional)</label>
+                            <button type="button" id="btn-add-member" class="text-xs font-semibold text-primary hover:underline flex items-center gap-1 cursor-pointer">
+                                <x-icon name="add" class="w-4 h-4" />
+                                <span>Tambah Anggota</span>
+                            </button>
+                        </div>
+                        <p class="text-xs text-on-surface-variant">Masukkan NIM anggota jika pengajuan surat ini ditujukan untuk kelompok/tim.</p>
+                        <div id="group-members-container" class="space-y-2"></div>
+                    </div>
+
                     <div class="space-y-4">
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1">Lampiran Pendukung</label>
@@ -74,7 +98,7 @@
                         <div class="space-y-2" id="file-list-container"></div>
                     </div>
                     <div class="pt-6 border-t border-outline-variant">
-                        <button class="w-full bg-primary text-on-primary text-base font-semibold py-3.5 px-6 rounded-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-md shadow-primary/10 flex items-center justify-center gap-2" id="submit-request-btn" type="button">
+                        <button class="w-full bg-primary text-on-primary text-base font-semibold py-3.5 px-6 rounded-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-md shadow-primary/10 flex items-center justify-center gap-2 cursor-pointer" id="submit-request-btn" type="button">
                             <x-icon name="send" class="w-5 h-5" />
                             Ajukan Permintaan
                         </button>
@@ -113,17 +137,17 @@
                             </div>
                             <div>
                                 <p class="text-[12px] text-on-secondary-container/70 font-medium">Status Akademik</p>
-                                <p class="font-bold text-on-secondary-container">Aktif Kuliah</p>
+                                <p class="font-bold text-on-secondary-container">{{ $student?->academic_status ?? 'Aktif Kuliah' }}</p>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4 pt-2">
                             <div class="bg-pure-white/40 p-3 rounded-xl border border-secondary/10">
                                 <p class="text-[10px] text-on-secondary-container/70 uppercase font-bold tracking-wider mb-1">Total SKS</p>
-                                <p class="text-[18px] font-bold text-on-secondary-container">112</p>
+                                <p class="text-[18px] font-bold text-on-secondary-container">{{ $student?->total_credits ?? '0' }}</p>
                             </div>
                             <div class="bg-pure-white/40 p-3 rounded-xl border border-secondary/10">
                                 <p class="text-[10px] text-on-secondary-container/70 uppercase font-bold tracking-wider mb-1">IPK</p>
-                                <p class="text-[18px] font-bold text-on-secondary-container">3.85</p>
+                                <p class="text-[18px] font-bold text-on-secondary-container">{{ number_format($student?->gpa ?? 0, 2) }}</p>
                             </div>
                         </div>
                         <div class="pt-4 border-t border-secondary/10">
@@ -133,9 +157,8 @@
                                     <x-icon name="person" class="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-on-secondary-container text-[14px]">Heri Setyawan, M.Kom.</p>
-                                    <p class="text-[12px] text-on-secondary-container/70">NIDN: 123456789</p>
-                                    <p class="text-[12px] text-on-secondary-container/70">heri.s@amikom.ac.id</p>
+                                    <p class="font-semibold text-on-secondary-container text-[14px]">{{ $academicAdvisor?->user?->name ?? 'Belum Ditentukan' }}</p>
+                                    <p class="text-[12px] text-on-secondary-container/70">NIDN: {{ $academicAdvisor?->national_lecturer_number ?? '—' }}</p>
                                 </div>
                             </div>
                             <div class="pt-4 border-t border-secondary/10 mt-4">
@@ -145,22 +168,8 @@
                                         <x-icon name="person" class="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <p class="font-semibold text-on-secondary-container text-[14px]">Dr. Andi Wijaya, M.T.</p>
-                                        <p class="text-[12px] text-on-secondary-container/70">NIDN: 061234567</p>
-                                        <p class="text-[12px] text-on-secondary-container/70">andi.w@amikom.ac.id</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="pt-4 border-t border-secondary/10 mt-4">
-                                <p class="text-xs text-on-secondary-container/80 font-bold uppercase tracking-wider mb-2">Dosen Pembimbing</p>
-                                <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
-                                        <x-icon name="person" class="w-5 h-5" />
-                                    </div>
-                                    <div>
-                                        <p class="font-semibold text-on-secondary-container text-[14px]">Siti Aminah, S.Kom., M.Cs.</p>
-                                        <p class="text-[12px] text-on-secondary-container/70">NIDN: 069876543</p>
-                                        <p class="text-[12px] text-on-secondary-container/70">siti.a@amikom.ac.id</p>
+                                        <p class="font-semibold text-on-secondary-container text-[14px]">{{ $kaprodi?->user?->name ?? 'Belum Ditentukan' }}</p>
+                                        <p class="text-[12px] text-on-secondary-container/70">NIDN: {{ $kaprodi?->national_lecturer_number ?? '—' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -340,6 +349,47 @@
             if (files.length > 0) {
                 processFiles(files);
             }
+        });
+    }
+
+    // Dynamic Group Members Input Handler & Show/Hide Listener
+    const letterTypeSelect = document.getElementById('letter_type_id');
+    const groupMembersWrapper = document.getElementById('group-members-wrapper');
+    const btnAddMember = document.getElementById('btn-add-member');
+    const groupMembersContainer = document.getElementById('group-members-container');
+
+    function toggleGroupMembersSection() {
+        if (!letterTypeSelect || !groupMembersWrapper) return;
+        const val = letterTypeSelect.value;
+        const letterOptions = @json($createLetterOptions);
+        const selectedOpt = letterOptions.find(o => String(o.value) === String(val));
+        const allowGroup = selectedOpt && selectedOpt.allowGroup === 'true';
+
+        if (allowGroup) {
+            groupMembersWrapper.classList.remove('hidden');
+        } else {
+            groupMembersWrapper.classList.add('hidden');
+            if (groupMembersContainer) groupMembersContainer.innerHTML = '';
+        }
+    }
+
+    if (letterTypeSelect) {
+        letterTypeSelect.addEventListener('change', toggleGroupMembersSection);
+        toggleGroupMembersSection();
+    }
+
+    if (btnAddMember && groupMembersContainer) {
+        btnAddMember.addEventListener('click', () => {
+            const memberCount = groupMembersContainer.children.length + 1;
+            const inputHtml = `
+                <div class="flex items-center gap-2 animate-fade-in">
+                    <input type="text" name="group_members[]" placeholder="Masukkan NIM Anggota ${memberCount} (contoh: 21.11.1234)" class="flex-1 bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-2.5 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary">
+                    <button type="button" onclick="this.parentElement.remove()" class="p-2.5 text-on-surface-variant hover:text-error hover:bg-surface-container rounded-lg transition-colors cursor-pointer">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+            `;
+            groupMembersContainer.insertAdjacentHTML('beforeend', inputHtml);
         });
     }
 </script>

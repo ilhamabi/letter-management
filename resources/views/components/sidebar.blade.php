@@ -8,8 +8,8 @@
 
 @php
     if ($role === 'student') {
-        $name = $userName ?? (auth()->check() ? auth()->user()->name : 'Alex Chandra');
-        $subtext = $userSubtext ?? 'NIM: 21.11.9999';
+        $name = $userName ?? (auth()->check() ? auth()->user()->name : 'Mahasiswa');
+        $subtext = $userSubtext ?? (auth()->check() && auth()->user()->student ? 'NIM: ' . (auth()->user()->student->student_number ?? auth()->user()->username ?? '-') : 'NIM: -');
         $photo = $userPhoto ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuAI8U6QdliiTjyZkmQbBg28RYGNyEZiVLatEqMLpzH_ob8gvGl3P0O3s-Qt3Fc_D79jcaahFcbv3qSGezuoYVvawMrNM46hPYZSlOtyaAlPOojd2ZNhDPc1JYxE7y4tEponJE2zSBgJXYCeIo86cW_9J3AKqWvThHpMPKk9_JoTHl67QUOIb6pY3uPxrBpOxsik07pJOMRi5tfE-Y5BWv_wSM8ZGJ0l6pO-W_bb1XcmX1-qIBDqQRuXnyhiZkKKhr43d09ocXNKJ80';
         
         $navItems = [
@@ -108,7 +108,7 @@
 
 @if($role === 'student')
     <!-- Student SideNavBar -->
-    <nav class="hidden md:flex flex-col h-screen w-sidebar-width fixed left-0 top-0 bg-pure-white border-r border-outline-variant z-20 w-[280px] pt-8">
+    <nav class="hidden md:flex flex-col h-screen w-sidebar-width fixed left-0 top-0 bg-pure-white border-r border-outline-variant z-40 w-[280px] pt-8">
         <div class="px-container-padding mb-12 flex items-center gap-4">
             <img alt="Universitas Amikom Logo" class="w-12 h-12 object-contain shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzP5jFOS82Pd35fmnUkuGV6T1SjLrH8yph0LfAZECxQhHtrBR07hagT1GxHZ2N8-SZc2xBmiH2MP6ibJ92d9VntHHnqPwhkU-iUK_XGgHC_89n3CQkexpZ5M_hbYur0Ac4OT_sFNCmPCbhTOVAE91jJDgNVoKoYE19eI35kafYYSR_86RT-A_4wUQplxu0_3BoeglQHTQ1c1BWldP-TxTfnyDSB8et-dpbLGFKV-9-w-vqsCoqCoceEVpQFdKgqrzSowvtEzWRAGs">
             <div>
@@ -123,8 +123,8 @@
                     $isActive = $item['active'] ?? (request()->routeIs($item['route']) || request()->is($item['path']));
                 @endphp
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ $isActive ? 'bg-primary text-white font-bold relative' : 'text-on-surface-variant hover:bg-surface-container' }}" href="{{ route($item['route']) }}">
-                    <x-icon :name="$item['icon']" class="w-6 h-6 shrink-0" />
-                    <span class="font-label-lg text-label-lg">{{ $item['label'] }}</span>
+                    <x-icon :name="$item['icon']" class="w-6 h-6 shrink-0 pointer-events-none" />
+                    <span class="font-label-lg text-label-lg pointer-events-none">{{ $item['label'] }}</span>
                 </a>
             @endforeach
         </nav>

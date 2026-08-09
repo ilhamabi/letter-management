@@ -2,94 +2,72 @@
 
 namespace App\Http\Controllers\Student;
 
-use App\Enums\SubmissionStatus;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSubmissionRequest;
-use App\Models\LetterType;
+use App\Http\Requests\Student\StoreSubmissionRequest;
+use App\Http\Requests\Student\SubmissionHistoryFilterRequest;
 use App\Models\Submission;
-use App\Models\SubmissionAttachment;
 use App\Services\ApprovalWorkflowService;
+use App\Services\StudentSubmissionService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class SubmissionController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * Display paginated submission history with server-side filters.
+     */
+    public function index(SubmissionHistoryFilterRequest $request, StudentSubmissionService $submissionService): View
     {
-        $student = $request->user()->student;
+        $filters = $request->query() ?: $request->all();
 
-        $submissions = Submission::query()
-            ->where('student_id', $student->id)
-            ->with([
-                'letterType',
-                'approvalFlowStep',
-                'assignedToUser',
-            ])
-            ->latest('created_at')
-            ->paginate(10);
+        $data = $submissionService->getHistoryData($request->user(), $filters);
 
-        return view('student.submissions.history', compact('submissions'));
+        return view('student.submissions.history', $data);
     }
 
-    public function create(Request $request)
+    /**
+     * Show the form for creating a new submission.
+     */
+    public function create(Request $request, StudentSubmissionService $submissionService): View
     {
-        $student = $request->user()->student;
+        $data = $submissionService->getCreateFormData($request->user());
 
-        $letterTypes = LetterType::query()
-            ->where('is_active', true)
-            ->orderBy('name', 'asc')
-            ->get();
+        return view('student.submissions.create', $data);
+    }
 
-        return view(
-            'student.submissions.create',
-            compact('student', 'letterTypes')
+    /**
+     * Store a newly created submission in storage.
+     */
+    public function store(
+        StoreSubmissionRequest $request,
+        StudentSubmissionService $submissionService,
+        ApprovalWorkflowService $workflowService
+    ): RedirectResponse {
+        $submissionService->createSubmission(
+            $request->user(),
+            $request->validated(),
+            $request->file('attachments', []),
+            $workflowService
         );
-    }
-
-    public function store(StoreSubmissionRequest $request, ApprovalWorkflowService $workflowService)
-    {
-        DB::transaction(function () use ($request, $workflowService) {
-            $student = $request->user()->student;
-
-            $submission = Submission::create([
-                'student_id' => $student->id,
-                'letter_type_id' => $request->letter_type_id,
-                'purpose' => $request->purpose,
-                'status' => SubmissionStatus::IN_REVIEW,
-            ]);
-
-            if ($request->hasFile('attachments')) {
-                foreach ($request->file('attachments') as $attachment) {
-                    $storedName = Str::uuid() . '.' . $attachment->getClientOriginalExtension();
-                    $path = $attachment->storeAs('submissions', $storedName, 'public');
-
-                    SubmissionAttachment::create([
-                        'submission_id' => $submission->id,
-                        'original_filename' => $attachment->getClientOriginalName(),
-                        'stored_filename' => $storedName,
-                        'file_path' => $path,
-                        'file_size' => $attachment->getSize(),
-                        'mime_type' => $attachment->getClientMimeType(),
-                    ]);
-                }
-            }
-
-            $workflowService->assignFirstApprover($submission->fresh([
-                'letterType.approvalFlow.steps',
-            ]));
-        });
 
         return redirect()
             ->route('student.submissions.history')
-            ->with('success', 'Submission created successfully.');
+            ->with('success', 'Pengajuan surat berhasil dikirim! Status saat ini: Sedang Diproses.');
     }
 
-    public function detail(Request $request, Submission $submission)
+    /**
+     * Display the specified submission details formatted as JSON.
+     */
+    public function detail(Request $request, Submission $submission): JsonResponse
     {
         $student = $request->user()->student;
 
-        abort_if($submission->student_id !== $student->id, 403);
+        $isMember = $submission->student_id === $student?->id 
+            || $submission->groupMembers()->where('student_id', $student?->id)->exists();
+
+        abort_if(! $isMember, 403);
 
         $submission->load([
             'letterType',
@@ -100,22 +78,25 @@ class SubmissionController extends Controller
 
         return response()->json([
             'id' => $submission->id,
-            'letter_type' => $submission->letterType->name,
+            'letter_type' => $submission->letterType?->name ?? 'Surat Akademik',
             'purpose' => $submission->purpose,
-            'status' => $submission->status->label(),
+            'status' => $submission->status?->label() ?? 'Sedang Diproses',
             'submitted_at' => $submission->submitted_at?->format('d M Y H:i'),
             'current_approval_flow_step' => $submission->currentApprovalFlowStep?->name,
             'assigned_to_user' => $submission->assignedToUser?->name,
             'attachments' => $submission->attachments->map(function ($attachment) {
                 return [
                     'name' => $attachment->original_filename,
-                    'size' => $this->formatFileSize($attachment->file_size),
+                    'size' => $this->formatFileSize((int) $attachment->file_size),
                     'url' => asset('storage/' . $attachment->file_path),
                 ];
             }),
         ]);
     }
 
+    /**
+     * Helper to format attachment file size.
+     */
     private function formatFileSize(int $bytes): string
     {
         if ($bytes >= 1048576) {

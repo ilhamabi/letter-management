@@ -12,8 +12,8 @@ enum UserRole: string
   {
     return match ($this) {
       self::ADMIN => 'Admin',
-      self::STUDENT => 'Student',
-      self::LECTURER => 'Lecturer',
+      self::STUDENT => 'Mahasiswa',
+      self::LECTURER => 'Dosen',
     };
   }
 

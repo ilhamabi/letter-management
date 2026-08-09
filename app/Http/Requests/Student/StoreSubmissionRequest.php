@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Student;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreSubmissionRequest extends FormRequest
@@ -18,7 +17,7 @@ class StoreSubmissionRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -27,28 +26,27 @@ class StoreSubmissionRequest extends FormRequest
                 'required',
                 'exists:letter_types,id',
             ],
-
             'purpose' => [
                 'required',
                 'string',
                 'max:2000',
             ],
-
-            'purpose_2' => [
-                'nullable',
-                'string',
-                'max:2000',
-            ],
-
             'attachments' => [
                 'nullable',
                 'array',
             ],
-
             'attachments.*' => [
                 'file',
                 'mimes:pdf,jpg,jpeg,png',
                 'max:5120',
+            ],
+            'group_members' => [
+                'nullable',
+                'array',
+            ],
+            'group_members.*' => [
+                'nullable',
+                'string',
             ],
         ];
     }

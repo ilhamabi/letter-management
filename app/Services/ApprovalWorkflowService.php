@@ -59,7 +59,7 @@ class ApprovalWorkflowService
       $notes
     ) {
 
-      $currentStep = $submission->currentStep;
+      $currentStep = $submission->approvalFlowStep ?? $submission->currentStep;
 
       SubmissionLog::create([
         'submission_id' => $submission->id,

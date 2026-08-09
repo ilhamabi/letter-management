@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             ApprovalFlowSeeder::class,
             LetterTypeSeeder::class,
             LetterTemplateSeeder::class,
+            SubmissionSeeder::class,
         ]);
     }
 }

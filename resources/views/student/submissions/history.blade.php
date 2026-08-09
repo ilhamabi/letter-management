@@ -5,11 +5,40 @@
 @php
     $user = auth()->user();
     $studentName = $user?->name ?? 'User';
+<<<<<<< HEAD
     $nim = $nim ?? ($user?->student?->student_number ?? $user?->username ?? '-');
     $prodi = $prodi ?? ($user?->student?->studyProgram?->name ?? 'D3 Teknik Informatika');
+=======
+    $nim = $user?->student?->student_number ?? $user?->username ?? '-';
+    $prodi = $user?->student?->study_program ?? 'D3 Teknik Informatika';
+>>>>>>> origin/dev-wahyu
     $profilePhoto = null;
 
     $submissions = $submissions ?? [];
+    $letterTypes = $letterTypes ?? [];
+
+    $typeOptions = [
+        ['value' => '', 'label' => 'Semua Jenis Surat']
+    ];
+    foreach ($letterTypes as $type) {
+        $typeOptions[] = [
+            'value' => (string) $type->id,
+            'label' => $type->name,
+            'badge' => $type->allow_group_submission ? 'Kelompok' : 'Individu',
+            'badgeClass' => $type->allow_group_submission 
+                ? 'bg-indigo-50 text-indigo-700 border-indigo-200' 
+                : 'bg-gray-50 text-gray-600 border-gray-200'
+        ];
+    }
+
+    use App\Enums\SubmissionStatus;
+
+    $statusOptions = [
+        ['value' => '', 'label' => 'Semua Status'],
+        ['value' => 'diproses', 'label' => 'Diproses', 'badge' => 'Sedang Diproses', 'badgeClass' => SubmissionStatus::IN_REVIEW->badgeClass()],
+        ['value' => 'disetujui', 'label' => 'Disetujui', 'badge' => 'Disetujui', 'badgeClass' => SubmissionStatus::APPROVED->badgeClass()],
+        ['value' => 'ditolak', 'label' => 'Ditolak', 'badge' => 'Ditolak', 'badgeClass' => SubmissionStatus::REJECTED->badgeClass()],
+    ];
 @endphp
 
 @section('content')
@@ -18,18 +47,37 @@
         <h2 class="font-headline-lg text-headline-lg text-on-surface">Riwayat Pengajuan Saya</h2>
         <p class="font-body-md text-body-md text-on-surface-variant">Kelola dan pantau status permohonan dokumen akademik Anda di sini.</p>
     </section>
+
+    @if (session('success'))
+        <div class="p-4 bg-green-50 border border-green-200 text-green-800 rounded-xl flex items-center justify-between shadow-sm animate-fade-in">
+            <div class="flex items-center gap-3">
+                <x-icon name="check_circle" class="w-5 h-5 text-green-600 shrink-0" />
+                <span class="text-sm font-semibold">{{ session('success') }}</span>
+            </div>
+            <button type="button" onclick="this.parentElement.remove()" class="text-green-600 hover:text-green-900 p-1 cursor-pointer">
+                <x-icon name="close" class="w-4 h-4" />
+            </button>
+        </div>
+    @endif
     
     <!-- Filter Section -->
-    <section class="bg-pure-white p-6 rounded-xl border border-outline-variant shadow-sm flex flex-col gap-4">
+    <form action="{{ route('student.submissions.history') }}" method="GET" id="filter-form" class="bg-pure-white p-6 rounded-xl border border-outline-variant shadow-sm flex flex-col gap-4">
         <div class="flex items-center justify-between border-b border-outline-variant/60 pb-3">
             <div class="flex items-center gap-2 text-on-surface font-semibold text-sm">
                 <x-icon name="filter_list" class="w-5 h-5 text-primary" />
                 <span>Filter Pengajuan</span>
             </div>
-            <button id="btn-reset-filter" type="button" class="text-xs font-semibold text-primary hover:text-primary-container transition-colors flex items-center gap-1 cursor-pointer">
-                <x-icon name="restart_alt" class="w-4 h-4" />
-                <span>Reset Filter</span>
-            </button>
+            @if(request()->hasAny(['start_date', 'end_date', 'letter_type_id', 'status']))
+                <a href="{{ route('student.submissions.history') }}" class="text-xs font-semibold text-primary hover:text-primary-container transition-colors flex items-center gap-1 cursor-pointer">
+                    <x-icon name="restart_alt" class="w-4 h-4" />
+                    <span>Reset Filter</span>
+                </a>
+            @else
+                <button type="button" onclick="resetFilterForm()" class="text-xs font-semibold text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 cursor-pointer">
+                    <x-icon name="restart_alt" class="w-4 h-4" />
+                    <span>Reset Filter</span>
+                </button>
+            @endif
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
@@ -40,14 +88,14 @@
                     <!-- Start Date -->
                     <div class="relative flex-1 cursor-pointer" onclick="try{document.getElementById('filter-start-date').showPicker()}catch(e){}">
                         <input id="filter-start-date-display" type="text" placeholder="dd/mm/yy" readonly class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-lg pl-4 pr-10 h-11 text-body-sm font-body-sm text-on-surface transition-all cursor-pointer">
-                        <input id="filter-start-date" type="date" class="sr-only">
+                        <input id="filter-start-date" name="start_date" type="date" value="{{ request('start_date') }}" onchange="handleDateInputChange()" class="sr-only">
                         <x-icon name="calendar_today" class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" />
                     </div>
                     <span class="text-on-surface-variant font-medium text-sm">-</span>
                     <!-- End Date -->
                     <div class="relative flex-1 cursor-pointer" onclick="try{document.getElementById('filter-end-date').showPicker()}catch(e){}">
                         <input id="filter-end-date-display" type="text" placeholder="dd/mm/yy" readonly class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-lg pl-4 pr-10 h-11 text-body-sm font-body-sm text-on-surface transition-all cursor-pointer">
-                        <input id="filter-end-date" type="date" class="sr-only">
+                        <input id="filter-end-date" name="end_date" type="date" value="{{ request('end_date') }}" onchange="handleDateInputChange()" class="sr-only">
                         <x-icon name="calendar_today" class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" />
                     </div>
                 </div>
@@ -56,29 +104,28 @@
             <!-- Jenis Surat -->
             <div class="lg:col-span-4 flex flex-col gap-1.5">
                 <label for="filter-type" class="block text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Jenis Surat</label>
-                <div class="relative">
-                    <select id="filter-type" class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-lg pl-4 pr-10 h-11 text-body-sm font-body-sm text-on-surface cursor-pointer transition-all">
-                        <option value="">Semua Jenis Surat</option>
-                        <option value="persetujuan">Surat Persetujuan Tugas Akhir Jalur Non-Reguler</option>
-                        <option value="magang">Surat Rekomendasi Magang</option>
-                        <option value="pendadaran">Surat Rekomendasi Pendaftaran Pendadaran</option>
-                    </select>
-                </div>
+                <x-select-input 
+                    id="filter-type" 
+                    name="letter_type_id" 
+                    placeholder="Semua Jenis Surat"
+                    :options="$typeOptions" 
+                    onchange="document.getElementById('filter-form').submit()" 
+                />
             </div>
 
             <!-- Status -->
             <div class="lg:col-span-3 flex flex-col gap-1.5">
                 <label for="filter-status" class="block text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Status Pengajuan</label>
-                <div class="relative">
-                    <select id="filter-status" class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-lg pl-4 pr-10 h-11 text-body-sm font-body-sm text-on-surface cursor-pointer transition-all">
-                        <option value="">Semua Status</option>
-                        <option value="disetujui">Disetujui</option>
-                        <option value="ditolak">Ditolak</option>
-                    </select>
-                </div>
+                <x-select-input 
+                    id="filter-status" 
+                    name="status" 
+                    placeholder="Semua Status"
+                    :options="$statusOptions" 
+                    onchange="document.getElementById('filter-form').submit()" 
+                />
             </div>
         </div>
-    </section>
+    </form>
     
     <!-- Data Table -->
     <section class="bg-pure-white rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col">
@@ -95,95 +142,43 @@
                 <tbody class="divide-y divide-outline-variant/60 font-body-sm text-on-surface" id="submission-table-body">
                     @forelse ($submissions as $index => $item)
                         @php
-                            $letterType = is_array($item) ? $item['type'] : ($item->letterType?->name ?? 'Surat');
-                            $submittedDate = is_array($item) ? $item['date'] : ($item->created_at?->translatedFormat('d M Y') ?? $item->created_at?->format('d M Y') ?? '-');
-                            $submittedDateTime = is_array($item) ? ($item['time'] ?? ($item['date'] . (str_contains($item['date'], ':') ? '' : ', 08:30 WIB'))) : ($item->created_at?->translatedFormat('d M Y, H:i \W\I\B') ?? $item->created_at?->format('d M Y, H:i \W\I\B') ?? '-');
-                            $statusValue = is_array($item) ? $item['status'] : (is_object($item->status) ? $item->status->value : (string) $item->status);
-                            $statusLabel = is_array($item) ? $item['status'] : (is_object($item->status) && method_exists($item->status, 'label') ? $item->status->label() : $statusValue);
-                            $rejectionReason = is_array($item) ? ($item['reason'] ?? '') : ($item->rejection_note ?? '');
-
-                            if (is_array($item)) {
-                                $modalPayload = $item;
-                            } else {
-                                $flowSteps = $item->letterType?->approvalFlow?->steps?->sortBy('step_order')->values() ?? collect();
-                                $currentStepOrder = $item->approvalFlowStep?->step_order ?? 0;
-                                $currentStepId = $item->approvalFlowStep?->id;
-
-                                $timeline = $flowSteps->map(function ($step) use ($statusValue, $currentStepOrder, $currentStepId) {
-                                    $stepStatus = 'pending';
-                                    if ($statusValue === \App\Enums\SubmissionStatus::APPROVED->value) {
-                                        $stepStatus = 'completed';
-                                    } elseif ($step->id === $currentStepId) {
-                                        $stepStatus = 'active';
-                                    } elseif ($step->step_order < $currentStepOrder) {
-                                        $stepStatus = 'completed';
-                                    }
-
-                                    return [
-                                        'title' => $step->approval_role?->label() ?? $step->name,
-                                        'time' => match ($stepStatus) {
-                                            'completed' => 'Selesai',
-                                            'active' => 'Sedang diverifikasi',
-                                            default => 'Menunggu penugasan',
-                                        },
-                                        'status' => $stepStatus,
-                                    ];
-                                })->values()->all();
-
-                                if (empty($timeline)) {
-                                    $timeline = [
-                                        ['title' => 'Pengajuan Terkirim', 'time' => $submittedDateTime, 'status' => 'completed'],
-                                        ['title' => 'Persetujuan Dosen Wali', 'time' => $statusValue === 'approved' ? 'Selesai' : 'Sedang diverifikasi', 'status' => $statusValue === 'approved' ? 'completed' : 'active'],
-                                        ['title' => 'Verifikasi Program Studi', 'time' => $statusValue === 'approved' ? 'Selesai' : 'Menunggu penugasan', 'status' => $statusValue === 'approved' ? 'completed' : 'pending'],
-                                    ];
-                                }
-
-                                $attachments = $item->attachments?->map(function ($att) {
-                                    $bytes = (int) ($att->file_size ?? 0);
-                                    $sizeStr = $bytes >= 1048576 ? round($bytes / 1048576, 2) . ' MB' : round($bytes / 1024, 2) . ' KB';
-                                    return [
-                                        'name' => $att->original_filename ?? $att->stored_filename ?? 'Lampiran.pdf',
-                                        'size' => $sizeStr,
-                                        'url' => asset('storage/' . $att->file_path),
-                                    ];
-                                })->values()->all() ?? [];
-
-                                $modalPayload = [
-                                    'id' => $item->id,
-                                    'type' => $letterType,
-                                    'date' => $submittedDate,
-                                    'time' => $submittedDateTime,
-                                    'status' => $statusValue,
-                                    'statusLabel' => $statusLabel,
-                                    'purpose' => $item->purpose ?? 'Pengajuan dokumen akademik',
-                                    'nim' => $nim,
-                                    'prodi' => $prodi,
-                                    'reason' => $rejectionReason,
-                                    'attachments' => $attachments,
-                                    'timeline' => $timeline,
-                                ];
-                            }
+                            $subDto = app(\App\Services\StudentDashboardService::class)->formatSubmissionDto($item);
                         @endphp
                         <tr class="submission-row hover:bg-surface-container-low/50 transition-colors duration-200 cursor-pointer" 
-                            data-type="{{ strtolower($letterType) }}" 
-                            data-status="{{ strtolower($statusValue) }}" 
-                            data-date="{{ $submittedDate }}"
-                            onclick="openDetailModal({{ json_encode($modalPayload) }})">
+                            onclick="openStatusModal({{ json_encode($subDto) }})">
                             <td class="px-6 py-4 text-center text-on-surface-variant font-medium">
                                 {{ is_object($submissions) && method_exists($submissions, 'firstItem') ? ($submissions->firstItem() + $index) : ($index + 1) }}
                             </td>
-                            <td class="px-6 py-4 font-semibold text-deep-black">{{ $letterType }}</td>
-                            <td class="px-6 py-4 text-on-surface-variant">{{ $submittedDate }}</td>
+                            <td class="px-6 py-4 font-semibold text-deep-black">
+                                <div class="flex items-center gap-2">
+                                    <span>{{ $subDto['type'] }}</span>
+                                    @if($subDto['isGroup'])
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-100 text-indigo-700 border border-indigo-200">Kelompok</span>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-600 border border-gray-200">Individu</span>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-on-surface-variant">{{ $subDto['date'] }}</td>
                             <td class="px-6 py-4 text-center">
-                                <x-status-badge :status="$statusValue" size="sm" />
+                                <x-status-badge :status="$subDto['status']" size="sm" />
                             </td>
                         </tr>
                     @empty
                         <tr id="no-results-row">
                             <td colspan="4" class="py-12 text-center text-on-surface-variant font-medium">
-                                <div class="flex flex-col items-center justify-center space-y-2">
-                                    <x-icon name="search_off" class="w-8 h-8 text-outline" />
-                                    <p>Belum ada riwayat pengajuan.</p>
+                                <div class="flex flex-col items-center justify-center space-y-3">
+                                    <div class="w-12 h-12 rounded-full bg-outline-variant/30 flex items-center justify-center text-on-surface-variant">
+                                        <x-icon name="search_off" class="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <p class="text-base font-bold text-deep-black">Tidak ada data pengajuan yang sesuai dengan filter yang dipilih.</p>
+                                        <p class="text-xs text-on-surface-variant mt-1">Coba ubah rentang tanggal, jenis surat, atau status yang Anda cari.</p>
+                                    </div>
+                                    <a href="{{ route('student.submissions.history') }}" class="mt-1 px-4 py-2 bg-primary/10 text-primary rounded-lg text-xs font-semibold hover:bg-primary/20 transition-colors inline-flex items-center gap-1.5">
+                                        <x-icon name="restart_alt" class="w-4 h-4" />
+                                        <span>Reset Filter</span>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -207,96 +202,24 @@
         </div>
     </section>
 
+<<<<<<< HEAD
     <!-- Status Detail Modal Component -->
     <x-student.status-modal id="status-detail-modal" :nim="$nim" :prodi="$prodi" />
+=======
+    <!-- Submission Detail Modal -->
+    @include('student.submissions.partials.submission-detail-modal')
+>>>>>>> origin/dev-wahyu
 @endsection
 
 @push('scripts')
 <script>
+<<<<<<< HEAD
     const filterType = document.getElementById('filter-type');
     const filterStatus = document.getElementById('filter-status');
+=======
+>>>>>>> origin/dev-wahyu
     const startDateInput = document.getElementById('filter-start-date');
     const endDateInput = document.getElementById('filter-end-date');
-    const rows = document.querySelectorAll('.submission-row');
-
-    function parseISOInputDate(val) {
-        if (!val) return null;
-        const parts = val.split('-');
-        if (parts.length === 3) {
-            return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-        }
-        return new Date(val);
-    }
-
-    function filterTable() {
-        const selectedType = filterType ? filterType.value.toLowerCase() : '';
-        const selectedStatus = filterStatus ? filterStatus.value.toLowerCase() : '';
-        const startDateVal = startDateInput && startDateInput.value ? parseISOInputDate(startDateInput.value) : null;
-        const endDateVal = endDateInput && endDateInput.value ? parseISOInputDate(endDateInput.value) : null;
-        let visibleCount = 0;
-
-        rows.forEach(row => {
-            const type = row.getAttribute('data-type').toLowerCase();
-            const status = row.getAttribute('data-status').toLowerCase();
-            const dateStr = row.getAttribute('data-date');
-            
-            let show = true;
-            
-            if (selectedType && !type.includes(selectedType)) {
-                show = false;
-            }
-            
-            if (selectedStatus && !status.includes(selectedStatus)) {
-                show = false;
-            }
-            
-            if (show && (startDateVal || endDateVal)) {
-                const rowDate = parseIndonesianDate(dateStr);
-                if (rowDate) {
-                    if (startDateVal) {
-                        const start = new Date(startDateVal.getFullYear(), startDateVal.getMonth(), startDateVal.getDate());
-                        const current = new Date(rowDate.getFullYear(), rowDate.getMonth(), rowDate.getDate());
-                        if (current < start) show = false;
-                    }
-                    if (endDateVal) {
-                        const end = new Date(endDateVal.getFullYear(), endDateVal.getMonth(), endDateVal.getDate());
-                        const current = new Date(rowDate.getFullYear(), rowDate.getMonth(), rowDate.getDate());
-                        if (current > end) show = false;
-                    }
-                }
-            }
-
-            if (show) visibleCount++;
-            row.style.display = show ? '' : 'none';
-        });
-
-        const noResultsRow = document.getElementById('no-results-row');
-        if (noResultsRow) {
-            noResultsRow.style.display = (visibleCount === 0 && rows.length > 0) ? '' : 'none';
-        }
-    }
-
-    function parseIndonesianDate(dateStr) {
-        const months = {
-            'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'mei': 4, 'jun': 5,
-            'jul': 6, 'agu': 7, 'sep': 8, 'okt': 9, 'nov': 10, 'des': 11
-        };
-        try {
-            const datePart = dateStr.split(',')[0].trim();
-            const parts = datePart.split(' ');
-            if (parts.length === 3) {
-                const day = parseInt(parts[0]);
-                const monthName = parts[1].toLowerCase();
-                const year = parseInt(parts[2]);
-                const month = months[monthName] !== undefined ? months[monthName] : 0;
-                return new Date(year, month, day);
-            }
-        } catch (e) {
-            console.error('Failed to parse date:', dateStr, e);
-        }
-        return null;
-    }
-
     const startDateDisplay = document.getElementById('filter-start-date-display');
     const endDateDisplay = document.getElementById('filter-end-date-display');
 
@@ -321,32 +244,18 @@
         }
     }
 
-    function handleDateChange() {
+    function handleDateInputChange() {
         updateDateDisplays();
-        filterTable();
+        document.getElementById('filter-form').submit();
     }
 
-    const btnResetFilter = document.getElementById('btn-reset-filter');
-    if (btnResetFilter) {
-        btnResetFilter.addEventListener('click', function() {
-            if (filterType) filterType.value = '';
-            if (filterStatus) filterStatus.value = '';
-            if (startDateInput) startDateInput.value = '';
-            if (endDateInput) endDateInput.value = '';
-            updateDateDisplays();
-            filterTable();
-        });
+    function resetFilterForm() {
+        window.location.href = "{{ route('student.submissions.history') }}";
     }
 
-    if (filterType) filterType.addEventListener('change', filterTable);
-    if (filterStatus) filterStatus.addEventListener('change', filterTable);
-    if (startDateInput) {
-        startDateInput.addEventListener('change', handleDateChange);
-        startDateInput.addEventListener('input', handleDateChange);
-    }
-    if (endDateInput) {
-        endDateInput.addEventListener('change', handleDateChange);
-        endDateInput.addEventListener('input', handleDateChange);
-    }
+    // Initialize displays on load
+    document.addEventListener('DOMContentLoaded', function() {
+        updateDateDisplays();
+    });
 </script>
 @endpush

@@ -22,7 +22,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    @if ($customCss)
+    @if ($customCss && file_exists(public_path($customCss)))
         <link rel="stylesheet" href="{{ asset($customCss) }}">
     @endif
 
