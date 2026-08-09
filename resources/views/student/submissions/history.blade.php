@@ -5,8 +5,8 @@
 @php
     $user = auth()->user();
     $studentName = $user?->name ?? 'User';
-    $nim = $user?->student?->student_number ?? $user?->username ?? '-';
-    $prodi = '-';
+    $nim = $nim ?? ($user?->student?->student_number ?? $user?->username ?? '-');
+    $prodi = $prodi ?? ($user?->student?->studyProgram?->name ?? 'D3 Teknik Informatika');
     $profilePhoto = null;
 
     $submissions = $submissions ?? [];
@@ -97,15 +97,78 @@
                         @php
                             $letterType = is_array($item) ? $item['type'] : ($item->letterType?->name ?? 'Surat');
                             $submittedDate = is_array($item) ? $item['date'] : ($item->created_at?->translatedFormat('d M Y') ?? $item->created_at?->format('d M Y') ?? '-');
+                            $submittedDateTime = is_array($item) ? ($item['time'] ?? ($item['date'] . (str_contains($item['date'], ':') ? '' : ', 08:30 WIB'))) : ($item->created_at?->translatedFormat('d M Y, H:i \W\I\B') ?? $item->created_at?->format('d M Y, H:i \W\I\B') ?? '-');
                             $statusValue = is_array($item) ? $item['status'] : (is_object($item->status) ? $item->status->value : (string) $item->status);
                             $statusLabel = is_array($item) ? $item['status'] : (is_object($item->status) && method_exists($item->status, 'label') ? $item->status->label() : $statusValue);
                             $rejectionReason = is_array($item) ? ($item['reason'] ?? '') : ($item->rejection_note ?? '');
+
+                            if (is_array($item)) {
+                                $modalPayload = $item;
+                            } else {
+                                $flowSteps = $item->letterType?->approvalFlow?->steps?->sortBy('step_order')->values() ?? collect();
+                                $currentStepOrder = $item->approvalFlowStep?->step_order ?? 0;
+                                $currentStepId = $item->approvalFlowStep?->id;
+
+                                $timeline = $flowSteps->map(function ($step) use ($statusValue, $currentStepOrder, $currentStepId) {
+                                    $stepStatus = 'pending';
+                                    if ($statusValue === \App\Enums\SubmissionStatus::APPROVED->value) {
+                                        $stepStatus = 'completed';
+                                    } elseif ($step->id === $currentStepId) {
+                                        $stepStatus = 'active';
+                                    } elseif ($step->step_order < $currentStepOrder) {
+                                        $stepStatus = 'completed';
+                                    }
+
+                                    return [
+                                        'title' => $step->approval_role?->label() ?? $step->name,
+                                        'time' => match ($stepStatus) {
+                                            'completed' => 'Selesai',
+                                            'active' => 'Sedang diverifikasi',
+                                            default => 'Menunggu penugasan',
+                                        },
+                                        'status' => $stepStatus,
+                                    ];
+                                })->values()->all();
+
+                                if (empty($timeline)) {
+                                    $timeline = [
+                                        ['title' => 'Pengajuan Terkirim', 'time' => $submittedDateTime, 'status' => 'completed'],
+                                        ['title' => 'Persetujuan Dosen Wali', 'time' => $statusValue === 'approved' ? 'Selesai' : 'Sedang diverifikasi', 'status' => $statusValue === 'approved' ? 'completed' : 'active'],
+                                        ['title' => 'Verifikasi Program Studi', 'time' => $statusValue === 'approved' ? 'Selesai' : 'Menunggu penugasan', 'status' => $statusValue === 'approved' ? 'completed' : 'pending'],
+                                    ];
+                                }
+
+                                $attachments = $item->attachments?->map(function ($att) {
+                                    $bytes = (int) ($att->file_size ?? 0);
+                                    $sizeStr = $bytes >= 1048576 ? round($bytes / 1048576, 2) . ' MB' : round($bytes / 1024, 2) . ' KB';
+                                    return [
+                                        'name' => $att->original_filename ?? $att->stored_filename ?? 'Lampiran.pdf',
+                                        'size' => $sizeStr,
+                                        'url' => asset('storage/' . $att->file_path),
+                                    ];
+                                })->values()->all() ?? [];
+
+                                $modalPayload = [
+                                    'id' => $item->id,
+                                    'type' => $letterType,
+                                    'date' => $submittedDate,
+                                    'time' => $submittedDateTime,
+                                    'status' => $statusValue,
+                                    'statusLabel' => $statusLabel,
+                                    'purpose' => $item->purpose ?? 'Pengajuan dokumen akademik',
+                                    'nim' => $nim,
+                                    'prodi' => $prodi,
+                                    'reason' => $rejectionReason,
+                                    'attachments' => $attachments,
+                                    'timeline' => $timeline,
+                                ];
+                            }
                         @endphp
                         <tr class="submission-row hover:bg-surface-container-low/50 transition-colors duration-200 cursor-pointer" 
                             data-type="{{ strtolower($letterType) }}" 
                             data-status="{{ strtolower($statusValue) }}" 
                             data-date="{{ $submittedDate }}"
-                            onclick="openDetailModal('{{ addslashes($letterType) }}', '{{ $submittedDate }}', '{{ addslashes($statusLabel) }}', '{{ addslashes($rejectionReason) }}')">
+                            onclick="openDetailModal({{ json_encode($modalPayload) }})">
                             <td class="px-6 py-4 text-center text-on-surface-variant font-medium">
                                 {{ is_object($submissions) && method_exists($submissions, 'firstItem') ? ($submissions->firstItem() + $index) : ($index + 1) }}
                             </td>
@@ -144,233 +207,12 @@
         </div>
     </section>
 
-    <!-- Status Detail Modal -->
-    <x-modal id="status-detail-modal" title="Status Pengajuan" maxWidth="max-w-lg">
-        <x-slot:subtitle>
-            <span id="modal-title">Surat Persetujuan Tugas Akhir Jalur Non-Reguler</span>
-        </x-slot:subtitle>
-
-        <div class="space-y-6" id="modal-body">
-            <!-- Dynamic Content Rendered via JavaScript -->
-        </div>
-
-        <x-slot:footer>
-            <button class="px-6 py-2 border border-primary text-primary font-label-md rounded-lg hover:bg-primary-fixed/20 transition-colors flex items-center gap-2" id="download-btn">
-                <x-icon name="download" class="w-4 h-4" />
-                Unduh Dokumen
-            </button>
-            <button class="px-6 py-2 bg-primary text-white font-label-md rounded-lg hover:shadow-md transition-shadow" onclick="closeModal('status-detail-modal')">Tutup</button>
-        </x-slot:footer>
-    </x-modal>
+    <!-- Status Detail Modal Component -->
+    <x-student.status-modal id="status-detail-modal" :nim="$nim" :prodi="$prodi" />
 @endsection
 
 @push('scripts')
 <script>
-    function openDetailModal(title, date, status, reason = '') {
-        document.getElementById('modal-title').innerText = title;
-        
-        const modalBody = document.getElementById('modal-body');
-        let timelineHTML = '';
-        let detailsHTML = '';
-        let slaHTML = '';
-        const downloadBtn = document.getElementById('download-btn');
-
-        const checkSvg = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-        const closeSvg = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
-        const infoSvg = `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
-        const warningSvg = `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
-        const syncSvg = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>`;
-        const clockSvg = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
-        const pdfSvg = `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H9"/><path d="M9 13v6"/></svg>`;
-
-        if (status === 'Disetujui') {
-            timelineHTML = `
-                <div class="relative pl-8 space-y-8 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant">
-                    <div class="relative">
-                        <div class="absolute -left-8 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center z-10">
-                            ${checkSvg}
-                        </div>
-                        <div>
-                            <p class="font-label-lg text-label-lg text-deep-black">Pengajuan Terkirim</p>
-                            <p class="text-body-sm text-on-surface-variant">${date}</p>
-                        </div>
-                    </div>
-                    <div class="relative">
-                        <div class="absolute -left-8 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center z-10">
-                            ${checkSvg}
-                        </div>
-                        <div>
-                            <p class="font-label-lg text-label-lg text-deep-black">Persetujuan Dosen Wali</p>
-                            <p class="text-body-sm text-on-surface-variant">Diverifikasi oleh Dr. Heri Setyawan, M.Kom.</p>
-                        </div>
-                    </div>
-                     <div class="relative">
-                        <div class="absolute -left-8 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center z-10">
-                            ${checkSvg}
-                        </div>
-                        <div>
-                            <p class="font-label-lg text-label-lg text-deep-black">Disetujui Kaprodi</p>
-                            <p class="text-body-sm text-on-surface-variant">Disetujui oleh Andi Afandi, M.T.</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-            detailsHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="col-span-1 md:col-span-2 space-y-1">
-                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold">Keperluan</p>
-                        <p class="font-label-lg text-label-lg text-deep-black">Keperluan Umum</p>
-                    </div>
-                    <div class="space-y-1">
-                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold">NIM</p>
-                        <p class="font-label-lg text-label-lg text-deep-black">{{ $nim }}</p>
-                    </div>
-                    <div class="space-y-1">
-                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold">Program Studi</p>
-                        <p class="font-label-lg text-label-lg text-deep-black">{{ $prodi }}</p>
-                    </div>
-                </div>
-            `;
-            slaHTML = `<div class="bg-green-100 p-4 rounded-lg border border-green-200 flex gap-3">${infoSvg}<p class="text-body-sm text-green-700">Pengajuan Anda telah disetujui. Dokumen dapat diunduh.</p></div>`;
-            if (downloadBtn) downloadBtn.classList.remove('hidden');
-        } else if (status === 'Ditolak') {
-            timelineHTML = `
-                <div class="relative pl-8 space-y-8 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant">
-                    <div class="relative">
-                        <div class="absolute -left-8 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center z-10">
-                            ${checkSvg}
-                        </div>
-                        <div>
-                            <p class="font-label-lg text-label-lg text-deep-black">Pengajuan Terkirim</p>
-                            <p class="text-body-sm text-on-surface-variant">${date}</p>
-                        </div>
-                    </div>
-                    <div class="relative">
-                        <div class="absolute -left-8 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center z-10">
-                            ${checkSvg}
-                        </div>
-                        <div>
-                            <p class="font-label-lg text-label-lg text-deep-black">Persetujuan Dosen Wali</p>
-                            <p class="text-body-sm text-on-surface-variant">Diverifikasi oleh Dr. Heri Setyawan, M.Kom.</p>
-                        </div>
-                    </div>
-                    <div class="relative">
-                        <div class="absolute -left-8 w-6 h-6 rounded-full bg-error-container text-error flex items-center justify-center z-10">
-                            ${closeSvg}
-                        </div>
-                        <div>
-                            <p class="font-label-lg text-label-lg text-error">Verifikasi Program Studi Ditolak</p>
-                            <p class="text-body-sm text-on-surface-variant">Ditolak pada proses akhir</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-            detailsHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="col-span-1 md:col-span-2 space-y-1">
-                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold">Keperluan</p>
-                        <p class="font-label-lg text-label-lg text-deep-black">Syarat Beasiswa</p>
-                    </div>
-                    <div class="space-y-1">
-                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold">NIM</p>
-                        <p class="font-label-lg text-label-lg text-deep-black">{{ $nim }}</p>
-                    </div>
-                    <div class="space-y-1">
-                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold">Program Studi</p>
-                        <p class="font-label-lg text-label-lg text-deep-black">{{ $prodi }}</p>
-                    </div>
-                    ${reason ? `
-                    <div class="col-span-1 md:col-span-2 space-y-1 bg-error-container/20 p-3 rounded-lg border border-error/20">
-                        <p class="text-[10px] uppercase tracking-widest text-error font-semibold">Alasan Penolakan</p>
-                        <p class="font-label-lg text-label-lg text-deep-black">${reason}</p>
-                    </div>
-                    ` : ''}
-                </div>
-            `;
-            slaHTML = `<div class="bg-error-container/20 p-4 rounded-lg border border-error/20 flex gap-3">${warningSvg}<p class="text-body-sm text-on-surface-variant">Pengajuan Anda ditolak. Silakan perbaiki data sesuai alasan penolakan dan buat pengajuan baru.</p></div>`;
-            if (downloadBtn) downloadBtn.classList.add('hidden');
-        } else {
-            // Sedang Diproses
-            timelineHTML = `
-                <div class="relative pl-8 space-y-8 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant">
-                    <div class="relative">
-                        <div class="absolute -left-8 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center z-10">
-                            ${checkSvg}
-                        </div>
-                        <div>
-                            <p class="font-label-lg text-label-lg text-deep-black">Pengajuan Terkirim</p>
-                            <p class="text-body-sm text-on-surface-variant">${date}</p>
-                        </div>
-                    </div>
-                    <div class="relative">
-                        <div class="absolute -left-8 w-6 h-6 rounded-full bg-secondary-container text-secondary flex items-center justify-center z-10">
-                            ${syncSvg}
-                        </div>
-                        <div>
-                            <p class="font-label-lg text-label-lg text-deep-black">Persetujuan Dosen Wali</p>
-                            <p class="text-body-sm text-on-surface-variant">SEDANG DIPROSES oleh Dr. Heri Setyawan, M.Kom.</p>
-                        </div>
-                    </div>
-                    <div class="relative">
-                        <div class="absolute -left-8 w-6 h-6 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center z-10">
-                            ${clockSvg}
-                        </div>
-                        <div>
-                            <p class="font-label-lg text-label-lg text-on-surface-variant">Verifikasi Program Studi</p>
-                            <p class="text-body-sm text-on-surface-variant">Akan datang</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-            detailsHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="col-span-1 md:col-span-2 space-y-1">
-                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold">Keperluan</p>
-                        <p class="font-label-lg text-label-lg text-deep-black">Keperluan Umum</p>
-                    </div>
-                    <div class="space-y-1">
-                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold">NIM</p>
-                        <p class="font-label-lg text-label-lg text-deep-black">{{ $nim }}</p>
-                    </div>
-                    <div class="space-y-1">
-                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold">Program Studi</p>
-                        <p class="font-label-lg text-label-lg text-deep-black">{{ $prodi }}</p>
-                    </div>
-                </div>
-            `;
-            slaHTML = `<div class="bg-primary-fixed/30 p-4 rounded-lg border border-primary/10 flex gap-3">${infoSvg}<p class="text-body-sm text-on-surface-variant">Proses verifikasi biasanya memakan waktu 1-2 hari kerja. Jika belum ada pembaruan, Anda dapat menghubungi bagian Akademik.</p></div>`;
-            if (downloadBtn) downloadBtn.classList.add('hidden');
-        }
-
-        modalBody.innerHTML = `
-            ${timelineHTML}
-            <hr class="border-outline-variant">
-            ${detailsHTML}
-            <div class="space-y-2 mt-4">
-                <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold">Lampiran</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div class="flex items-center gap-3 p-3 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors cursor-pointer group">
-                        <div class="w-10 h-10 bg-error-container/20 rounded flex items-center justify-center text-error">
-                            ${pdfSvg}
-                        </div>
-                        <div class="overflow-hidden">
-                            <p class="text-label-sm text-deep-black truncate font-semibold">Dokumen_1.pdf</p>
-                            <p class="text-[10px] text-on-surface-variant">1.2 MB</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            ${slaHTML}
-        `;
-
-        openModal('status-detail-modal');
-    }
-
-    function closeModal(id = 'status-detail-modal') {
-        toggleModal(id, false);
-    }
-
-    // Interactive Client-Side Filters
     const filterType = document.getElementById('filter-type');
     const filterStatus = document.getElementById('filter-status');
     const startDateInput = document.getElementById('filter-start-date');
