@@ -48,12 +48,12 @@
 @endphp
 
 <span {{ $attributes->merge(['class' => "{$badgeClasses} {$sizeClasses} {$colorClasses}"]) }}>
-    @if ($slot->isNotEmpty())
-        {{ $slot }}
-    @else
-        @if ($showIcon)
-            <x-icon :name="$iconType" class="{{ $iconSize }} inline shrink-0" />
-        @endif
-        {{ $label }}
+@if ($slot->isNotEmpty())
+    {{ $slot }}
+@else
+    @if ($showIcon)
+        <x-icon :name="$iconType" class="{{ $iconSize }} inline shrink-0" />
     @endif
+            {{ $label }}
+@endif
 </span>

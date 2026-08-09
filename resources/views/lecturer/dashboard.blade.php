@@ -12,7 +12,7 @@
 
 @extends('layouts.lecturer')
 
-@section('title', 'Dashboard Dosen')
+@section('title', 'Dashboard Dosen - Universitas Amikom')
 
 @section('content')
 <div class="space-y-8 font-body-md">
@@ -30,42 +30,43 @@
     
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <!-- Total Permintaan -->
+        <!-- Total Permintaan Terkait -->
         <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
             <div class="flex justify-between items-start">
                 <div>
-                    <p class="text-sm font-semibold text-gray-500 mb-1">Total Permintaan</p>
+                    <p class="text-sm font-semibold text-gray-500 mb-1">Total Permintaan Terkait</p>
                     <h4 class="text-gray-900 text-4xl font-bold">{{ $totalCount }}</h4>
                 </div>
                 <div class="p-3 bg-amikom-purple-light rounded-lg text-amikom-purple">
                     <x-icon name="folder_shared" class="w-6 h-6" />
                 </div>
             </div>
+            <p class="mt-4 text-xs text-gray-500 italic">Keseluruhan pengajuan terkait peran Anda</p>
         </div>
         
-        <!-- Menunggu -->
+        <!-- Menunggu Persetujuan Saya -->
         <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
             <div class="flex justify-between items-start">
                 <div>
-                    <p class="text-sm font-semibold text-gray-500 mb-1">Menunggu</p>
+                    <p class="text-sm font-semibold text-gray-500 mb-1">Menunggu Persetujuan Saya</p>
                     <h4 class="text-amikom-purple text-4xl font-bold">{{ $pendingCount }}</h4>
                 </div>
                 <div class="p-3 bg-[#FEF3C7] rounded-lg text-amikom-gold">
                     <x-icon name="pending_actions" class="w-6 h-6" />
                 </div>
             </div>
-            <p class="mt-4 text-xs text-gray-500 italic">Membutuhkan tindakan segera</p>
+            <p class="mt-4 text-xs text-gray-500 italic">Membutuhkan tindakan persetujuan Anda</p>
         </div>
         
-        <!-- Selesai Diverifikasi -->
+        <!-- Sudah Saya Proses -->
         <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
             <div class="flex justify-between items-start">
                 <div>
-                    <p class="text-sm font-semibold text-gray-500 mb-1">Selesai Diverifikasi</p>
+                    <p class="text-sm font-semibold text-gray-500 mb-1">Sudah Saya Proses</p>
                     <h4 class="text-gray-900 text-4xl font-bold">{{ $processedCount }}</h4>
                 </div>
                 <div class="p-3 bg-[#D1FAE5] rounded-lg text-amikom-green">
-                    <x-icon name="verified" class="w-6 h-6" />
+                    <x-icon name="task_alt" class="w-6 h-6" />
                 </div>
             </div>
             <div class="mt-4 w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
@@ -98,30 +99,33 @@
                             <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">NIM</th>
                             <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Jenis Surat</th>
                             <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Tanggal Pengajuan</th>
-                            <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Peran</th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Peran Saya</th>
                             <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider text-center">Status</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 text-sm">
-                        @foreach ($latestSubmissions as $submission)
+                        @foreach ($latestSubmissions as $sub)
                             @php
-                                $studentName = $submission->student?->user?->name ?? 'Mahasiswa';
-                                $studentNim = $submission->student?->student_number ?? '-';
-                                $letterType = $submission->letterType?->name ?? 'Surat';
-                                $submittedDate = $submission->created_at?->translatedFormat('d M Y') ?? $submission->created_at?->format('d M Y');
-                                $roleName = $submission->approvalFlowStep?->name ?? 'Dosen';
-                                $statusValue = is_object($submission->status) ? $submission->status->value : (string) $submission->status;
+                                $studentName = $sub->student?->user?->name ?? 'Mahasiswa';
+                                $studentNim = $sub->student?->student_number ?? '-';
+                                $letterType = $sub->letterType?->name ?? 'Surat';
+                                $submittedDate = $sub->created_at?->translatedFormat('d M Y') ?? $sub->created_at?->format('d M Y');
+                                $roleName = $sub->approvalFlowStep?->approval_role?->label() ?? $sub->approvalFlowStep?->name ?? 'Dosen Verifikator';
+                                $statusValue = is_object($sub->status) ? $sub->status->value : (string) $sub->status;
+                                $myRoles = app(\App\Services\LecturerSubmissionService::class)->getLecturerRolesForSubmission($sub, auth()->user());
                             @endphp
-                            <tr class="transition-colors group cursor-pointer hover:bg-gray-50" onclick="window.location='{{ route('lecturer.submissions.detail') }}'">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="font-semibold text-gray-900 text-sm">{{ $studentName }}</span>
-                                </td>
-                                <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $studentNim }}</td>
-                                <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $letterType }}</td>
-                                <td class="px-6 py-4 text-gray-600 font-normal text-sm">{{ $submittedDate }}</td>
+                            <tr class="hover:bg-gray-50 cursor-pointer transition-colors group" onclick="window.location='{{ route('lecturer.submissions.show', $sub->id) }}'">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-900">{{ $studentName }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">{{ $studentNim }}</td>
+                                <td class="px-6 py-4 text-gray-600">{{ $letterType }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">{{ $submittedDate }}</td>
                                 <td class="px-6 py-4">
-                                    <div class="flex flex-col gap-1 items-start">
-                                        <span class="px-3 py-1 rounded-full text-xs font-semibold text-white tracking-wider bg-amikom-purple">{{ $roleName }}</span>
+                                    <div class="flex flex-wrap gap-1">
+                                        @forelse($myRoles as $roleItem)
+                                            <x-role-badge :role="$roleItem" size="sm" />
+                                        @empty
+                                            <x-role-badge :role="$sub->approvalFlowStep?->approval_role ?? $roleName" size="sm" />
+                                        @endforelse
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
@@ -133,15 +137,14 @@
                 </table>
             </div>
         @else
-            <!-- Empty State UI -->
-            <div class="flex flex-col items-center justify-center py-20 px-6 text-center">
-                <div class="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mb-4 text-gray-400">
-                    <x-icon name="task" class="w-12 h-12 text-gray-400" />
+            <div class="py-16 text-center">
+                <div class="flex flex-col items-center justify-center gap-3">
+                    <x-icon name="task" class="w-12 h-12 text-gray-300" />
+                    <div>
+                        <p class="text-base font-bold text-gray-900">Tidak Ada Pengajuan Menunggu Persetujuan</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Semua dokumen telah diverifikasi atau belum ada pengajuan baru.</p>
+                    </div>
                 </div>
-                <h4 class="text-xl font-bold text-gray-900 mb-2">Tidak ada pengajuan pending</h4>
-                <p class="text-gray-600 text-sm max-w-md">
-                    Semua dokumen telah diproses. Anda akan melihat pengajuan baru di sini saat mahasiswa melakukan pengajuan.
-                </p>
             </div>
         @endif
     </section>

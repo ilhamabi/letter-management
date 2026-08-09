@@ -124,21 +124,31 @@ Route::middleware('auth')
                         [LecturerSubmissionController::class, 'index']
                     )->name('lecturer.submissions.index');
 
-                    Route::view(
-                        '/detail',
-                        'lecturer.submissions.detail'
-                    )->name('lecturer.submissions.detail');
-
-                    Route::view(
+                    Route::get(
                         '/history',
-                        'lecturer.submissions.history'
+                        [LecturerSubmissionController::class, 'history']
                     )->name('lecturer.submissions.history');
+
+                    Route::get(
+                        '/{submission}',
+                        [LecturerSubmissionController::class, 'show']
+                    )->name('lecturer.submissions.show');
+
+                    Route::post(
+                        '/{submission}/approve',
+                        [LecturerSubmissionController::class, 'approve']
+                    )->name('lecturer.submissions.approve');
+
+                    Route::post(
+                        '/{submission}/reject',
+                        [LecturerSubmissionController::class, 'reject']
+                    )->name('lecturer.submissions.reject');
                 });
 
                 // Legacy approval aliases
                 Route::get('/approval', [LecturerSubmissionController::class, 'index'])->name('lecturer.approval');
-                Route::view('/approval/detail', 'lecturer.submissions.detail')->name('lecturer.approval-detail');
-                Route::view('/approval-history', 'lecturer.submissions.history')->name('lecturer.approval-history');
+                Route::get('/approval/detail', [LecturerSubmissionController::class, 'show'])->name('lecturer.approval-detail');
+                Route::get('/approval-history', [LecturerSubmissionController::class, 'history'])->name('lecturer.approval-history');
 
                 Route::view(
                     '/settings',

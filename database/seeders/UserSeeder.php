@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'password' => 'password',
         ]);
 
+        // Students
         User::create([
             'name' => 'Budi Santoso',
             'username' => '20210001',
@@ -45,6 +46,7 @@ class UserSeeder extends Seeder
             'password' => 'password',
         ]);
 
+        // Lecturer A: Dosen Wali + Kaprodi
         User::create([
             'name' => 'Dr. Ahmad Wijaya',
             'username' => '19870001',
@@ -53,6 +55,7 @@ class UserSeeder extends Seeder
             'password' => 'password',
         ]);
 
+        // Lecturer B: Dosen Pembimbing + Kaprodi
         User::create([
             'name' => 'Dr. Siti Rahma',
             'username' => '19870002',
@@ -61,10 +64,20 @@ class UserSeeder extends Seeder
             'password' => 'password',
         ]);
 
+        // Lecturer C: Dosen Wali + Dosen Pembimbing
         User::create([
             'name' => 'Dr. Heri Setyawan, M.Kom.',
             'username' => '19870003',
             'email' => 'lecturer3@example.com',
+            'role' => UserRole::LECTURER,
+            'password' => 'password',
+        ]);
+
+        // Lecturer D: Dosen Wali + Dosen Pembimbing + Kaprodi
+        User::create([
+            'name' => 'Dr. Bambang Susilo, M.T.',
+            'username' => '19870004',
+            'email' => 'lecturer4@example.com',
             'role' => UserRole::LECTURER,
             'password' => 'password',
         ]);

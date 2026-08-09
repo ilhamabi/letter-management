@@ -1,14 +1,15 @@
 @php
     $user = auth()->user();
-    $lecturerName = $user?->name ?? 'User';
-    $nidn = $user?->lecturer?->national_lecturer_number ?? $user?->username ?? '-';
+    $lecturer = $user?->lecturer;
+    $lecturerName = $user?->name ?? 'Dosen';
+    $nidn = $lecturer?->national_lecturer_number ?? $user?->username ?? '-';
     $lecturerPhoto = null;
-    $roles = [];
+    $roles = $lecturer ? $lecturer->getActiveRoles() : [];
 @endphp
 
 <x-layouts.dashboard 
     role="lecturer"
-    title="Layanan Dokumen"
+    title="Layanan Dokumen - Dosen"
     headerTitle="Layanan Dokumen"
     customCss="css/dosen-dashboard.css"
     :userName="$lecturerName"

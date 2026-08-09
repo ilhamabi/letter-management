@@ -14,18 +14,37 @@ class LecturerPositionSeeder extends Seeder
      */
     public function run(): void
     {
-        $lecturer = Lecturer::first();
+        $lecturers = Lecturer::all();
 
-        LecturerPosition::create([
-            'lecturer_id' => Lecturer::first()->id,
-            'position' => ApprovalRole::ACADEMIC_ADVISOR,
-            'is_active' => true,
-        ]);
+        $lecturerA = $lecturers->skip(0)->first(); // Dr. Ahmad Wijaya
+        $lecturerB = $lecturers->skip(1)->first(); // Dr. Siti Rahma
+        $lecturerD = $lecturers->skip(3)->first(); // Dr. Bambang Susilo
 
-        LecturerPosition::create([
-            'lecturer_id' => Lecturer::find(2)->id,
-            'position' => ApprovalRole::HEAD_OF_STUDY_PROGRAM,
-            'is_active' => true,
-        ]);
+        // Lecturer A: Kaprodi
+        if ($lecturerA) {
+            LecturerPosition::create([
+                'lecturer_id' => $lecturerA->id,
+                'position' => ApprovalRole::HEAD_OF_STUDY_PROGRAM,
+                'is_active' => true,
+            ]);
+        }
+
+        // Lecturer B: Kaprodi
+        if ($lecturerB) {
+            LecturerPosition::create([
+                'lecturer_id' => $lecturerB->id,
+                'position' => ApprovalRole::HEAD_OF_STUDY_PROGRAM,
+                'is_active' => true,
+            ]);
+        }
+
+        // Lecturer D: Kaprodi
+        if ($lecturerD) {
+            LecturerPosition::create([
+                'lecturer_id' => $lecturerD->id,
+                'position' => ApprovalRole::HEAD_OF_STUDY_PROGRAM,
+                'is_active' => true,
+            ]);
+        }
     }
 }
