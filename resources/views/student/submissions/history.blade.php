@@ -5,13 +5,8 @@
 @php
     $user = auth()->user();
     $studentName = $user?->name ?? 'User';
-<<<<<<< HEAD
     $nim = $nim ?? ($user?->student?->student_number ?? $user?->username ?? '-');
-    $prodi = $prodi ?? ($user?->student?->studyProgram?->name ?? 'D3 Teknik Informatika');
-=======
-    $nim = $user?->student?->student_number ?? $user?->username ?? '-';
-    $prodi = $user?->student?->study_program ?? 'D3 Teknik Informatika';
->>>>>>> origin/dev-wahyu
+    $prodi = $prodi ?? ($user?->student?->study_program ?? 'D3 Teknik Informatika');
     $profilePhoto = null;
 
     $submissions = $submissions ?? [];
@@ -202,22 +197,12 @@
         </div>
     </section>
 
-<<<<<<< HEAD
     <!-- Status Detail Modal Component -->
     <x-student.status-modal id="status-detail-modal" :nim="$nim" :prodi="$prodi" />
-=======
-    <!-- Submission Detail Modal -->
-    @include('student.submissions.partials.submission-detail-modal')
->>>>>>> origin/dev-wahyu
 @endsection
 
 @push('scripts')
 <script>
-<<<<<<< HEAD
-    const filterType = document.getElementById('filter-type');
-    const filterStatus = document.getElementById('filter-status');
-=======
->>>>>>> origin/dev-wahyu
     const startDateInput = document.getElementById('filter-start-date');
     const endDateInput = document.getElementById('filter-end-date');
     const startDateDisplay = document.getElementById('filter-start-date-display');
@@ -259,3 +244,4 @@
     });
 </script>
 @endpush
+

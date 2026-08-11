@@ -6,7 +6,7 @@
     $user = auth()->user();
     $studentName = $user?->name ?? 'User';
     $nim = $user?->student?->student_number ?? $user?->username ?? '-';
-    $prodi = '-';
+    $prodi = $user?->student?->study_program ?? 'D3 Teknik Informatika';
     $studentEmail = $user?->email ?? '-';
     $profilePhoto = null;
 @endphp

@@ -41,6 +41,8 @@ class StudentSubmissionService
                       $g->where('student_id', $student->id);
                   });
             });
+        } else {
+            $query->whereRaw('1 = 0');
         }
 
         // Apply date range filters

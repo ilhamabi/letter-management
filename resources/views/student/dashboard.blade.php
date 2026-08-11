@@ -6,7 +6,7 @@
     $user = auth()->user();
     $studentName = $user?->name ?? 'User';
     $nim = $nim ?? ($user?->student?->student_number ?? $user?->username ?? '-');
-    $prodi = $prodi ?? '-';
+    $prodi = $prodi ?? ($user?->student?->study_program ?? 'D3 Teknik Informatika');
 
     $pendingCount = $pendingCount ?? 0;
     $approvedCount = $approvedCount ?? 0;
@@ -68,6 +68,7 @@
                                 $subType = is_array($sub) ? $sub['type'] : ($sub->letterType?->name ?? 'Surat');
                                 $subDate = is_array($sub) ? $sub['date'] : ($sub->created_at?->translatedFormat('d M Y') ?? '-');
                                 $subIsGroup = is_array($sub) ? ($sub['isGroup'] ?? false) : ((bool) ($sub->letterType?->allow_group_submission || $sub->groupMembers->isNotEmpty()));
+                                $subStatus = is_array($sub) ? $sub['status'] : ($sub->status?->value ?? $sub->status);
                             @endphp
                             <tr class="hover:bg-surface-container-low/50 transition-colors duration-200 cursor-pointer"
                                 onclick="openStatusModal({{ json_encode($sub) }})">
@@ -84,7 +85,7 @@
                                 <td class="py-4 px-6 text-on-surface-variant">
                                     {{ $subDate }}</td>
                                 <td class="py-4 px-6 text-center">
-                                    <x-status-badge :status="$statusValue" size="sm" />
+                                    <x-status-badge :status="$subStatus" size="sm" />
                                 </td>
                             </tr>
                         @endforeach
@@ -109,11 +110,7 @@
         @endif
     </section>
 
-<<<<<<< HEAD
-    <x-student.status-modal id="status-modal" :nim="$nim" :prodi="$prodi" />
+    <!-- Status Detail Modal Component -->
+    <x-student.status-modal id="status-detail-modal" :nim="$nim" :prodi="$prodi" />
 @endsection
-=======
-    <!-- Submission Detail Modal -->
-    @include('student.submissions.partials.submission-detail-modal')
-@endsection
->>>>>>> origin/dev-wahyu
+
