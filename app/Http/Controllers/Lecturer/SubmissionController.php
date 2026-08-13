@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers\Lecturer;
 
-use App\Enums\SubmissionStatus;
 use App\Http\Controllers\Controller;
-use App\Models\LetterType;
-use App\Models\Student;
 use App\Models\Submission;
 use App\Services\LecturerSubmissionService;
 use Illuminate\Http\RedirectResponse;

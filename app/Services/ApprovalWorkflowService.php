@@ -83,6 +83,14 @@ class ApprovalWorkflowService
           'approval_flow_step_id' => null,
         ]);
 
+        // Automatically generate official GeneratedLetter with QR code & letter number
+        try {
+            app(LetterGeneratorService::class)->generateLetterForSubmission($submission);
+        } catch (\Throwable $e) {
+            // Log warning if PDF storage fails while keeping database transaction intact
+            logger()->warning('Auto letter generation warning: ' . $e->getMessage());
+        }
+
         return;
       }
 

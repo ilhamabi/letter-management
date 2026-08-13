@@ -125,7 +125,7 @@ class StudentDashboardService
                     'id' => $attachment->id,
                     'name' => $attachment->original_filename ?? $attachment->stored_filename ?? 'Lampiran.pdf',
                     'size' => $this->formatAttachmentSize((int) ($attachment->file_size ?? 0)),
-                    'url' => asset('storage/' . $attachment->file_path),
+                    'url' => route('attachments.show', $attachment->id),
                 ];
             })
             ->values()
@@ -159,6 +159,10 @@ class StudentDashboardService
         $studentProdi = $submission->student?->study_program ?? 'D3 Teknik Informatika';
         $studentNim = $submission->student?->student_number ?? $creatorNim ?? '-';
 
+        $isApproved = in_array(strtolower((string) $statusValue), ['disetujui', 'approved', 'generated']);
+        $namingService = app(DocumentNamingService::class);
+        $fileName = $namingService->generateFileName($submission);
+
         return [
             'id' => $submission->id,
             'number' => 'SUB-' . str_pad($submission->id, 5, '0', STR_PAD_LEFT),
@@ -168,12 +172,17 @@ class StudentDashboardService
             'statusText' => $statusText,
             'statusBadgeClass' => $statusBadgeClass,
             'isGroup' => $isGroup,
+            'isApproved' => $isApproved,
+            'fileName' => $fileName,
+            'previewUrl' => route('student.submissions.preview', $submission->id),
+            'downloadUrl' => route('student.submissions.download', $submission->id),
             'creatorName' => $creatorName,
             'creatorNim' => $creatorNim,
             'nim' => $studentNim,
             'prodi' => $studentProdi,
             'members' => $members,
             'purpose' => $submission->purpose ?? 'Pengajuan dokumen akademik',
+            'additional_data' => $submission->additional_data,
             'lecturer' => $academicAdvisorName,
             'kaprodi' => $kaprodiName,
             'time' => $submittedTime . ' WIB',

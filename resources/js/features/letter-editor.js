@@ -5,27 +5,60 @@
 
 export const placeholderGroups = [
     {
-        name: 'Data Mahasiswa',
+        name: 'Data Mahasiswa Pemohon / Ketua',
         items: [
-            { text: 'Nama Mahasiswa', value: '{{Nama Mahasiswa}}' },
-            { text: 'NIM', value: '{{NIM}}' },
-            { text: 'Program Studi', value: '{{Program Studi}}' },
-            { text: 'Semester', value: '{{Semester}}' },
+            { text: 'Nama Mahasiswa', value: '{{student_name}}' },
+            { text: 'NIM', value: '{{student_number}}' },
+            { text: 'Program Studi', value: '{{study_program}}' },
+            { text: 'Semester', value: '{{semester}}' },
+            { text: 'IPK', value: '{{gpa}}' },
+            { text: 'Total SKS', value: '{{total_credits}}' },
+            { text: 'Nama Mahasiswa (Alias)', value: '{{Nama Mahasiswa}}' },
+            { text: 'NIM (Alias)', value: '{{NIM}}' },
+            { text: 'Program Studi (Alias)', value: '{{Program Studi}}' },
+            { text: 'Semester (Alias)', value: '{{Semester}}' },
+            { text: 'Total SKS (Alias)', value: '{{total_sks}}' },
         ]
     },
     {
-        name: 'Data Surat',
+        name: 'Data Dosen & Pejabat Institusi',
         items: [
-            { text: 'Nomor Surat', value: '{{Nomor Surat}}' },
-            { text: 'Tanggal', value: '{{Tanggal}}' },
-            { text: 'Tahun Akademik', value: '{{Tahun Akademik}}' },
+            { text: 'Nama Dosen Wali', value: '{{academic_advisor_name}}' },
+            { text: 'NIK/NIDN Dosen Wali', value: '{{academic_advisor_nip}}' },
+            { text: 'Nama Kaprodi', value: '{{head_of_program_name}}' },
+            { text: 'NIK/NIDN Kaprodi', value: '{{head_of_program_nip}}' },
+            { text: 'Nama Dosen Pembimbing', value: '{{supervisor_name}}' },
+            { text: 'NIK/NIDN Pembimbing', value: '{{supervisor_nip}}' },
+            { text: 'Nama Dekan', value: '{{dean_name}}' },
+            { text: 'NIK/NIDN Dekan', value: '{{dean_nip}}' },
+            { text: 'Nama Kaprodi (Alias)', value: '{{Nama Kaprodi}}' },
+            { text: 'NIK/NIDN Kaprodi (Alias)', value: '{{head_of_program_nidn}}' },
         ]
     },
     {
-        name: 'Data Pejabat',
+        name: 'Data Kelompok & Tim',
         items: [
-            { text: 'Nama Kaprodi', value: '{{Nama Kaprodi}}' },
-            { text: 'NIP Kaprodi', value: '{{NIP Kaprodi}}' },
+            { text: 'Nama Kelompok / Tim', value: '{{group_name}}' },
+            { text: 'Nama Ketua Kelompok', value: '{{group_leader_name}}' },
+            { text: 'NIM Ketua Kelompok', value: '{{group_leader_number}}' },
+            { text: 'Daftar Anggota (Tabel)', value: '{{group_members}}' },
+            { text: 'Daftar Anggota (Teks)', value: '{{group_members_list}}' },
+            { text: 'Judul Tugas Akhir / Proyek', value: '{{thesis_title}}' },
+        ]
+    },
+    {
+        name: 'Data Dokumen, Instansi & Kegiatan',
+        items: [
+            { text: 'Nomor Surat', value: '{{letter_number}}' },
+            { text: 'Keperluan Pengajuan', value: '{{purpose}}' },
+            { text: 'Nama Fakultas', value: '{{faculty_name}}' },
+            { text: 'Nama Perusahaan / Instansi', value: '{{company_name}}' },
+            { text: 'Alamat Instansi / Perusahaan', value: '{{company_address}}' },
+            { text: 'Tanggal Mulai Kegiatan', value: '{{start_date}}' },
+            { text: 'Tanggal Selesai Kegiatan', value: '{{end_date}}' },
+            { text: 'Tahun Akademik', value: '{{academic_year}}' },
+            { text: 'Tanggal Pengajuan', value: '{{submission_date}}' },
+            { text: 'Tanggal Cetak', value: '{{print_date}}' },
         ]
     }
 ];
@@ -129,138 +162,103 @@ export function initLetterEditor(editorSelector = '#letter-template-editor', sel
     const editorElement = document.querySelector(editorSelector);
     if (!editorElement) return;
 
-    if (typeof tinymce !== 'undefined') {
-        // Destroy previous instance if re-initializing
-        if (tinymce.get(editorElement.id)) {
-            tinymce.get(editorElement.id).destroy();
-        }
+    if (typeof tinymce === 'undefined') {
+        console.warn('TinyMCE not loaded.');
+        return;
+    }
 
-        tinymce.init({
-            selector: editorSelector,
-            height: 680,
-            menubar: 'file edit view insert format table help',
-            plugins: [
-                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-            ],
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table placeholder_menu | removeformat code preview',
-            font_size_formats: '8pt 10pt 11pt 12pt 14pt 16pt 18pt 24pt 36pt',
-            font_family_formats: 'Times New Roman=Times New Roman,Times,serif; Arial=arial,helvetica,sans-serif; Montserrat=montserrat,sans-serif; Inter=inter,sans-serif',
-            content_style: `
-                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-                
-                html {
-                    background-color: #F8FAFC;
-                    padding: 24px 0;
-                }
+    // Destroy existing instance if present
+    if (tinymce.get(editorSelector.replace('#', ''))) {
+        tinymce.get(editorSelector.replace('#', '')).destroy();
+    }
 
-                body {
-                    background-color: #FFFFFF;
-                    width: 595pt;
-                    max-width: 95%;
-                    min-height: 720pt;
-                    margin: 0 auto;
-                    padding: 48pt 54pt;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-                    border: 1px solid #E2E8F0;
-                    box-sizing: border-box;
-                    font-family: "Times New Roman", Times, serif;
-                    font-size: 12pt;
-                    line-height: 1.35;
-                    color: #000000;
-                }
+    tinymce.init({
+        selector: editorSelector,
+        height: 600,
+        promotion: false,
+        branding: false,
+        menubar: 'file edit view insert format table help',
+        plugins: 'table lists link code wordcount preview help',
+        toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table link | code preview',
+        content_style: `
+            body { 
+                font-family: "Times New Roman", Times, serif; 
+                font-size: 12pt; 
+                line-height: 1.3; 
+                color: #000; 
+                padding: 20px; 
+            }
+            .doc-title-main { 
+                font-size: 15pt; 
+                font-weight: bold; 
+                text-align: center; 
+                margin-bottom: 2pt; 
+            }
+            .doc-title-sub { 
+                font-size: 12pt; 
+                text-align: center; 
+                margin-bottom: 12pt; 
+            }
+            .doc-text-lead { 
+                font-size: 12pt; 
+                margin-bottom: 4pt; 
+            }
+            .doc-text-justify { 
+                font-size: 12pt; 
+                text-align: justify; 
+                margin-bottom: 8pt; 
+            }
+            .info-table { 
+                width: 100%; 
+                border-collapse: collapse; 
+                margin-top: 4pt; 
+                margin-bottom: 8pt; 
+            }
+            .info-table td { 
+                padding: 2pt 4pt; 
+                vertical-align: top; 
+            }
+            .placeholder-pill {
+                display: inline-block;
+                background-color: #f3e8ff;
+                color: #6b21a8;
+                border: 1px dashed #c084fc;
+                border-radius: 9999px;
+                padding: 2px 10px;
+                font-family: monospace;
+                font-size: 11pt;
+                font-weight: 600;
+                user-select: all;
+                cursor: pointer;
+                margin: 0 2px;
+            }
+        `,
+        setup: function (editor) {
+            editor.on('init', function () {
+                processPlaceholderFormatting(editor);
+            });
 
-                p {
-                    margin-top: 0;
-                    margin-bottom: 12pt;
-                    line-height: 1.35;
-                }
+            editor.on('keyup change Undo Redo ExecCommand NodeChange', function () {
+                processPlaceholderFormatting(editor);
+            });
 
-                table {
-                    border-collapse: collapse;
-                    margin-top: 6pt;
-                    margin-bottom: 12pt;
-                    font-size: 12pt;
-                    font-family: "Times New Roman", Times, serif;
-                }
+            // Quick select helper listener
+            const selectEl = document.querySelector(selectSelector);
+            if (selectEl) {
+                selectEl.addEventListener('change', function () {
+                    const val = this.value;
+                    if (!val) return;
 
-                .placeholder-pill {
-                    display: inline-block;
-                    padding: 2px 8px;
-                    border-radius: 12px;
-                    background-color: #F3E8FF;
-                    color: #431E6D;
-                    font-size: 10pt;
-                    font-weight: 600;
-                    font-family: 'Inter', sans-serif;
-                    margin: 0 2px;
-                    border: 1px solid #E9D5FF;
-                    user-select: all;
-                    line-height: 1.2;
-                }
-            `,
-            branding: false,
-            promotion: false,
-            setup: function (editor) {
-                // Register Custom Variable Toolbar Menu Button
-                editor.ui.registry.addMenuButton('placeholder_menu', {
-                    text: '+ Variable Surat',
-                    icon: 'plus',
-                    fetch: function (callback) {
-                        const items = placeholderGroups.map(group => ({
-                            type: 'nestedmenuitem',
-                            text: group.name,
-                            getSubmenuItems: function () {
-                                return group.items.map(item => ({
-                                    type: 'menuitem',
-                                    text: item.text,
-                                    onAction: function () {
-                                        editor.insertContent(`<span class="placeholder-pill" contenteditable="false">${item.value}</span>&nbsp;`);
-                                        editor.focus();
-                                    }
-                                }));
-                            }
-                        }));
-                        callback(items);
-                    }
-                });
-
-                // Auto-detect typed placeholders on keyup, paste, and init
-                editor.on('keyup', function (e) {
-                    if (e.key === '}' || e.key === ' ' || e.key === 'Enter') {
-                        processPlaceholderFormatting(editor);
-                    }
-                });
-
-                editor.on('init SetContent Change', function () {
+                    const pillHtml = `<span class="placeholder-pill" contenteditable="false">${val}</span>&nbsp;`;
+                    editor.insertContent(pillHtml);
+                    this.selectedIndex = 0;
                     processPlaceholderFormatting(editor);
                 });
             }
-        });
-    }
-
-    // Attach listener for Quick Helper Dropdown Select
-    const placeholderSelect = document.querySelector(selectSelector);
-    if (placeholderSelect && !placeholderSelect.dataset.listenerAttached) {
-        placeholderSelect.dataset.listenerAttached = 'true';
-        placeholderSelect.addEventListener('change', function () {
-            const val = this.value;
-            if (!val || val.startsWith('+')) return;
-
-            const pillHtml = `<span class="placeholder-pill" contenteditable="false">${val}</span>&nbsp;`;
-            if (window.tinymce && tinymce.get(editorElement.id)) {
-                const ed = tinymce.get(editorElement.id);
-                ed.insertContent(pillHtml);
-                ed.focus();
-                processPlaceholderFormatting(ed);
-            }
-            this.selectedIndex = 0;
-        });
-    }
+        }
+    });
 }
 
-// Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     initLetterEditor();
 });

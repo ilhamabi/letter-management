@@ -139,10 +139,24 @@ class StudentSubmissionService
         return DB::transaction(function () use ($user, $data, $attachments, $workflowService) {
             $student = $user->student;
 
+            $additionalData = $data['additional_data'] ?? [];
+
+            // Extract any known institution or academic extra fields into additional_data array
+            foreach (['company_name', 'company_address', 'start_date', 'end_date', 'thesis_title', 'total_credits', 'gpa'] as $field) {
+                if (!empty($data[$field]) && !isset($additionalData[$field])) {
+                    $additionalData[$field] = $data[$field];
+                }
+            }
+
+            $letterType = LetterType::find($data['letter_type_id']);
+
             $submission = Submission::create([
                 'student_id' => $student->id,
                 'letter_type_id' => $data['letter_type_id'],
+                'approval_flow_id' => $letterType?->approval_flow_id,
                 'purpose' => $data['purpose'],
+                'group_name' => $data['group_name'] ?? null,
+                'additional_data' => count($additionalData) > 0 ? $additionalData : null,
                 'status' => SubmissionStatus::IN_REVIEW,
                 'submitted_at' => now(),
             ]);

@@ -186,6 +186,14 @@
                                     'notes' => $log->notes,
                                 ];
                             }
+
+                            $attachmentsData = $sub->attachments->map(function($att) {
+                                return [
+                                    'name' => $att->original_filename ?? $att->stored_filename ?? 'Lampiran.pdf',
+                                    'url' => route('attachments.show', $att->id),
+                                    'size' => number_format(($att->file_size ?? 0) / 1024, 1) . ' KB',
+                                ];
+                            })->values()->all();
                         @endphp
                         <tr class="hover:bg-gray-50 cursor-pointer transition-colors group"
                             onclick="openHistoryModal({{ json_encode([
@@ -195,6 +203,7 @@
                                 'letter_type' => $letterType,
                                 'status' => $statusLabel,
                                 'status_badge_class' => $statusBadgeClass,
+                                'attachments' => $attachmentsData,
                                 'logs' => $logsData
                             ]) }})">
                             <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-900">{{ $studentName }}</td>
@@ -272,6 +281,12 @@
         </div>
     </div>
 
+    <!-- Attachments Section -->
+    <div class="mb-6" id="history-modal-attachments-wrapper">
+        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold mb-2">LAMPIRAN</p>
+        <div class="grid grid-cols-2 gap-4" id="history-modal-attachments-container"></div>
+    </div>
+
     <!-- Alternating Timeline Container (Kanan - Kiri - Kanan - Kiri) -->
     <div class="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent" id="history-timeline-container">
         <!-- Dynamic JS items populated here -->
@@ -293,6 +308,29 @@ function openHistoryModal(data) {
     const badge = document.getElementById('history-modal-status-badge');
     badge.innerText = data.status;
     badge.className = `inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase border transition-colors mt-1 ${data.status_badge_class}`;
+
+    // Populate Attachments
+    const attContainer = document.getElementById('history-modal-attachments-container');
+    attContainer.innerHTML = '';
+    if (data.attachments && data.attachments.length > 0) {
+        data.attachments.forEach(att => {
+            attContainer.insertAdjacentHTML('beforeend', `
+                <a href="${att.url}" target="_blank" rel="noopener noreferrer" 
+                   class="flex items-center gap-3 p-3 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors cursor-pointer group col-span-2 sm:col-span-1">
+                    <div class="w-10 h-10 bg-error-container/20 rounded flex items-center justify-center text-error shrink-0">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H9"/><path d="M9 13v6"/></svg>
+                    </div>
+                    <div class="overflow-hidden font-body-sm flex-1">
+                        <p class="text-label-sm text-deep-black truncate font-semibold" title="${att.name}">${att.name}</p>
+                        <p class="text-[10px] text-on-surface-variant">${att.size}</p>
+                    </div>
+                    <svg class="w-4 h-4 text-on-surface-variant group-hover:text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+            `);
+        });
+    } else {
+        attContainer.innerHTML = '<p class="text-body-sm text-on-surface-variant italic col-span-2">Tidak ada lampiran</p>';
+    }
 
     const container = document.getElementById('history-timeline-container');
     container.innerHTML = '';

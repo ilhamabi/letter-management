@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('approval_flow_step_id')->nullable()->constrained('approval_flow_steps')->onDelete('set null');
             $table->string('status', 50);
             $table->text('purpose')->nullable();
+            $table->string('group_name')->nullable();
+            $table->json('additional_data')->nullable();
             $table->text('notes')->nullable();
             $table->timestamp('submitted_at')->nullable();
             $table->timestamps();

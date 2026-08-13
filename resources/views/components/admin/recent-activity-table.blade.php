@@ -18,7 +18,7 @@
                 <tr>
                     <th class="px-6 py-4 font-label-sm text-xs font-bold uppercase text-gray-500 tracking-wider">Jenis Surat</th>
                     <th class="px-6 py-4 font-label-sm text-xs font-bold uppercase text-gray-500 tracking-wider">Tanggal</th>
-                    <th class="px-6 py-4 font-label-sm text-xs font-bold uppercase text-gray-500 tracking-wider w-32">Perubahan</th>
+                    <th class="px-6 py-4 font-label-sm text-xs font-bold uppercase text-gray-500 tracking-wider w-32">Aktivitas</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -30,7 +30,7 @@
                         <td class="px-6 py-4 text-gray-600 text-sm whitespace-nowrap font-body-sm">{{ $activity['date'] ?? '' }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border font-label-sm {{ $activity['badge_class'] ?? 'bg-gray-100 text-gray-700 border-gray-200' }}">
-                                {{ $activity['change'] ?? '' }}
+                                {{ $activity['activity'] ?? $activity['change'] ?? '' }}
                             </span>
                         </td>
                     </tr>

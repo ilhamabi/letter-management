@@ -46,6 +46,16 @@ enum ApprovalRole: string
         return "text-white {$this->bg()}";
     }
 
+    public function icon(): string
+    {
+        return match ($this) {
+            self::ACADEMIC_ADVISOR => 'school',
+            self::HEAD_OF_STUDY_PROGRAM => 'workspace_premium',
+            self::INTERNSHIP_SUPERVISOR => 'work',
+            self::THESIS_SUPERVISOR => 'menu_book',
+        };
+    }
+
     public static function values(): array
     {
         return array_column(self::cases(), 'value');

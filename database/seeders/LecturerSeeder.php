@@ -13,32 +13,26 @@ class LecturerSeeder extends Seeder
      */
     public function run(): void
     {
-        // Lecturer A (19870001)
-        Lecturer::create([
-            'user_id' => User::where('username', '19870001')->first()->id,
-            'employee_number' => '19870001',
-            'national_lecturer_number' => '0123456789',
-        ]);
+        $lecturers = [
+            ['username' => '19870001', 'nidn' => '0123456789'], // Dr. Ahmad Wijaya
+            ['username' => '19870002', 'nidn' => '9876543210'], // Dr. Siti Rahma
+            ['username' => '19870003', 'nidn' => '5554443322'], // Dr. Heri Setyawan
+            ['username' => '19870004', 'nidn' => '7778889999'], // Dr. Bambang Susilo
+            ['username' => '19870005', 'nidn' => '1122334455'], // Dr. Eko Prasetyo
+            ['username' => '19870006', 'nidn' => '2233445566'], // Dra. Fitriani
+            ['username' => '19870007', 'nidn' => '3344556677'], // Dr. Ginanjar Utama
+            ['username' => '19870008', 'nidn' => '4455667788'], // Dr. Hendra Wijaya
+        ];
 
-        // Lecturer B (19870002)
-        Lecturer::create([
-            'user_id' => User::where('username', '19870002')->first()->id,
-            'employee_number' => '19870002',
-            'national_lecturer_number' => '9876543210',
-        ]);
-
-        // Lecturer C (19870003)
-        Lecturer::create([
-            'user_id' => User::where('username', '19870003')->first()->id,
-            'employee_number' => '19870003',
-            'national_lecturer_number' => '5554443322',
-        ]);
-
-        // Lecturer D (19870004)
-        Lecturer::create([
-            'user_id' => User::where('username', '19870004')->first()->id,
-            'employee_number' => '19870004',
-            'national_lecturer_number' => '7778889999',
-        ]);
+        foreach ($lecturers as $item) {
+            $user = User::where('username', $item['username'])->first();
+            if ($user) {
+                Lecturer::create([
+                    'user_id' => $user->id,
+                    'employee_number' => $item['username'],
+                    'national_lecturer_number' => $item['nidn'],
+                ]);
+            }
+        }
     }
 }

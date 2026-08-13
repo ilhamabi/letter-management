@@ -3,7 +3,7 @@
     'title' => '',
     'subtitle' => null,
     'maxWidth' => 'max-w-2xl',
-    'zIndex' => 'z-50',
+    'zIndex' => 'z-[9999]',
     'showHeader' => true,
     'showClose' => true,
     'padding' => 'p-6',
@@ -11,14 +11,16 @@
 ])
 
 <div id="{{ $id }}" 
-     class="fixed inset-0 {{ $zIndex }} flex items-center justify-center p-4 bg-deep-black/60 backdrop-blur-sm hidden animate-fade-in" 
+     class="fixed inset-0 !top-0 !left-0 !right-0 !bottom-0 !m-0 !p-0 w-screen h-screen min-h-screen {{ $zIndex }} flex items-center justify-center bg-black/60 backdrop-blur-sm hidden animate-fade-in" 
+     style="top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; margin: 0 !important; padding: 0 !important; position: fixed !important;"
      @if($backdropClickClose) 
         onclick="if (event.target === this) (typeof closeModal === 'function' ? closeModal('{{ $id }}') : this.classList.add('hidden'))" 
      @endif
      {{ $attributes }}>
 
-    <!-- Modal Content Card -->
-    <div class="relative bg-pure-white rounded-2xl max-h-[90vh] w-full {{ $maxWidth }} overflow-hidden flex flex-col shadow-2xl animate-scale-up z-10 my-auto mx-auto border border-outline-variant" onclick="event.stopPropagation()">
+    <!-- Modal Content Card Wrapper -->
+    <div class="p-4 w-full flex items-center justify-center my-auto mx-auto pointer-events-none" onclick="event.stopPropagation()">
+        <div class="relative bg-pure-white rounded-2xl max-h-[88vh] w-full {{ $maxWidth }} overflow-hidden flex flex-col shadow-2xl animate-scale-up z-10 pointer-events-auto border border-outline-variant">
         <!-- Modal Header -->
         @if ($showHeader)
             <div class="{{ $padding }} border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
@@ -52,4 +54,5 @@
             </div>
         @endif
     </div>
+</div>
 </div>

@@ -26,6 +26,16 @@ enum SubmissionStatus: string
     return array_column(self::cases(), 'value');
   }
 
+  public function icon(): string
+  {
+    return match ($this) {
+      self::APPROVED, self::GENERATED => 'check_circle',
+      self::REJECTED => 'cancel',
+      self::IN_REVIEW => 'hourglass_top',
+      self::PENDING => 'clock',
+    };
+  }
+
   public function badgeClass(): string
   {
     return match ($this) {

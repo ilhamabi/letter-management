@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
     'approval_flow_step_id',
     'status',
     'purpose',
+    'group_name',
+    'additional_data',
     'notes',
     'submitted_at',
 ])]
@@ -23,6 +25,7 @@ class Submission extends Model
         return [
             'submitted_at' => 'datetime',
             'status' => SubmissionStatus::class,
+            'additional_data' => 'array',
         ];
     }
 

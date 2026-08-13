@@ -12,14 +12,28 @@
     $createLetterOptions = [];
     if (isset($letterTypes)) {
         foreach ($letterTypes as $type) {
+            $bodyContent = strtolower($type->activeTemplate?->body_content ?? '');
+            $hasCompanyFields = str_contains($bodyContent, 'company_name') 
+                || str_contains($bodyContent, 'company_address') 
+                || str_contains($bodyContent, 'start_date') 
+                || str_contains($bodyContent, 'end_date');
+
+            $hasThesisFields = str_contains($bodyContent, 'thesis_title');
+
             $createLetterOptions[] = [
                 'value' => (string) $type->id,
                 'label' => $type->name,
+                'code' => $type->code,
                 'badge' => $type->allow_group_submission ? 'Kelompok' : 'Individu',
                 'badgeClass' => $type->allow_group_submission 
                     ? 'bg-indigo-50 text-indigo-700 border-indigo-200' 
                     : 'bg-gray-50 text-gray-600 border-gray-200',
-                'allowGroup' => $type->allow_group_submission ? 'true' : 'false'
+                'allowGroup' => $type->allow_group_submission ? 'true' : 'false',
+                'hasCompanyFields' => $hasCompanyFields ? 'true' : 'false',
+                'hasThesisFields' => $hasThesisFields ? 'true' : 'false',
+                'minGpa' => (float) ($type->minimum_gpa ?? 0),
+                'minCredits' => (int) ($type->minimum_credits ?? 0),
+                'requiresAttachment' => $type->requires_attachment ? 'true' : 'false',
             ];
         }
     }
@@ -36,10 +50,37 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full">
         <div class="lg:col-span-8 bg-pure-white border border-outline-variant rounded-xl shadow-sm overflow-hidden">
             <div class="pt-1 px-8 pb-8">
-                <form class="space-y-8" id="request-form" action="{{ route('student.submissions.store') }}" method="POST" enctype="multipart/form-data">
+                <form class="space-y-6" id="request-form" action="{{ route('student.submissions.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
+
+                    @if ($errors->any())
+                        <div class="p-4 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3 text-red-700 animate-fade-in shadow-xs">
+                            <x-icon name="error" class="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                            <div class="text-sm">
+                                <p class="font-bold text-red-800 mb-1">Pengajuan Belum Dapat Dikirim!</p>
+                                <p class="text-xs text-red-600 mb-2">Mohon lengkapi atau perbaiki kolom berikut:</p>
+                                <ul class="list-disc list-inside space-y-1 text-xs font-medium">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Client-side error alert container (for JS validation) -->
+                    <div id="js-validation-alert" class="hidden p-4 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3 text-red-700 animate-fade-in shadow-xs">
+                        <x-icon name="error" class="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                        <div class="text-sm">
+                            <p class="font-bold text-red-800 mb-1">Mohon Lengkapi Formulir Pengajuan!</p>
+                            <ul id="js-validation-list" class="list-disc list-inside space-y-1 text-xs font-medium"></ul>
+                        </div>
+                    </div>
+
                     <div class="space-y-2">
-                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="letter_type_id">Jenis Surat</label>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="letter_type_id">
+                            Jenis Surat <span class="text-red-500">*</span>
+                        </label>
                         <x-select-input 
                             name="letter_type_id" 
                             id="letter_type_id" 
@@ -47,11 +88,143 @@
                             :options="$createLetterOptions" 
                             onchange="if(typeof toggleGroupMembersSection === 'function') toggleGroupMembersSection();"
                         />
+                        <p id="error-letter_type_id" class="hidden text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                            <x-icon name="error" class="w-3.5 h-3.5" />
+                            <span id="error-letter_type_id-text">Jenis Surat wajib dipilih.</span>
+                        </p>
+                        @error('letter_type_id')
+                            <p class="text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                                <x-icon name="error" class="w-3.5 h-3.5" />
+                                <span>{{ $message }}</span>
+                            </p>
+                        @enderror
                     </div>
+
                     <div class="space-y-2">
-                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="purpose">Keperluan</label>
-                        <textarea name="purpose" id="purpose" class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface text-sm resize-none" placeholder="Contoh: Pengajuan Beasiswa PPA, Persyaratan Magang di PT. Telkom..." rows="3" required>{{ old('purpose') }}</textarea>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="purpose">
+                            Keperluan / Alasan Pengajuan <span class="text-red-500">*</span>
+                        </label>
+                        <textarea name="purpose" id="purpose" class="w-full bg-surface-container-lowest border @error('purpose') border-red-500 @else border-outline-variant @enderror rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface text-sm resize-none" placeholder="Contoh: Pengajuan Beasiswa PPA, Persyaratan Magang di PT. Telkom, Pendaftaran Pendadaran..." rows="3">{{ old('purpose') }}</textarea>
                         <p class="text-xs text-on-surface-variant">Jelaskan secara singkat tujuan penggunaan dokumen ini.</p>
+                        <p id="error-purpose" class="hidden text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                            <x-icon name="error" class="w-3.5 h-3.5" />
+                            <span id="error-purpose-text">Keperluan / Alasan Pengajuan wajib diisi.</span>
+                        </p>
+                        @error('purpose')
+                            <p class="text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                                <x-icon name="error" class="w-3.5 h-3.5" />
+                                <span>{{ $message }}</span>
+                            </p>
+                        @enderror
+                    </div>
+
+                    <!-- Dynamic Group Name Input -->
+                    <div id="group-name-wrapper" class="hidden space-y-2 pt-1">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="group_name">Nama Kelompok / Tim</label>
+                        <input type="text" name="group_name" id="group_name" value="{{ old('group_name') }}" class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="Contoh: Tim Stronger Production">
+                    </div>
+
+                    <!-- Dynamic Thesis Title Input -->
+                    <div id="thesis-fields-wrapper" class="hidden space-y-2 pt-1">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="thesis_title">
+                            Judul Tugas Akhir / Proyek <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="thesis_title" id="thesis_title" value="{{ old('thesis_title') }}" class="w-full bg-surface-container-lowest border @error('thesis_title') border-red-500 @else border-outline-variant @enderror focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-xl px-4 py-3 text-sm text-on-surface" placeholder="Contoh: Rancang Bangun Aplikasi Manajemen Produksi di STRONGER MANUFACTURE">
+                        <p id="error-thesis_title" class="hidden text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                            <x-icon name="error" class="w-3.5 h-3.5" />
+                            <span id="error-thesis_title-text">Judul Tugas Akhir / Proyek wajib diisi.</span>
+                        </p>
+                        @error('thesis_title')
+                            <p class="text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                                <x-icon name="error" class="w-3.5 h-3.5" />
+                                <span>{{ $message }}</span>
+                            </p>
+                        @enderror
+                    </div>
+
+                    <!-- Dynamic Internship / Institution Information Inputs -->
+                    <div id="company-fields-wrapper" class="hidden space-y-4 pt-2 border-t border-outline-variant/60">
+                        <div class="flex items-center gap-2 text-primary font-bold text-sm">
+                            <x-icon name="business" class="w-5 h-5" />
+                            <span>Informasi Perusahaan / Instansi Tujuan Magang</span>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="company_name">
+                                Nama Perusahaan / Instansi <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="company_name" id="company_name" value="{{ old('company_name') }}" class="w-full bg-surface-container-lowest border @error('company_name') border-red-500 @else border-outline-variant @enderror focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-xl px-4 py-3 text-sm text-on-surface" placeholder="Contoh: PT Telkom Indonesia (Persero) Tbk">
+                            <p id="error-company_name" class="hidden text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                                <x-icon name="error" class="w-3.5 h-3.5" />
+                                <span id="error-company_name-text">Nama Perusahaan / Instansi wajib diisi.</span>
+                            </p>
+                            @error('company_name')
+                                <p class="text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                                    <x-icon name="error" class="w-3.5 h-3.5" />
+                                    <span>{{ $message }}</span>
+                                </p>
+                            @enderror
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="company_address">
+                                Alamat Instansi / Perusahaan <span class="text-red-500">*</span>
+                            </label>
+                            <textarea name="company_address" id="company_address" rows="2" class="w-full bg-surface-container-lowest border @error('company_address') border-red-500 @else border-outline-variant @enderror focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-xl px-4 py-3 text-sm text-on-surface resize-none" placeholder="Contoh: Jl. Jend. Sudirman No. 52, Jakarta">{{ old('company_address') }}</textarea>
+                            <p id="error-company_address" class="hidden text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                                <x-icon name="error" class="w-3.5 h-3.5" />
+                                <span id="error-company_address-text">Alamat Instansi / Perusahaan wajib diisi.</span>
+                            </p>
+                            @error('company_address')
+                                <p class="text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                                    <x-icon name="error" class="w-3.5 h-3.5" />
+                                    <span>{{ $message }}</span>
+                                </p>
+                            @enderror
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Start Date Picker -->
+                            <div class="space-y-2">
+                                <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="start_date_display">
+                                    Tanggal Mulai Kegiatan <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative cursor-pointer" onclick="try{document.getElementById('start_date_input').showPicker()}catch(e){}">
+                                    <input id="start_date_display" type="text" placeholder="Pilih tanggal mulai..." readonly class="w-full bg-surface-container-lowest border @error('start_date') border-red-500 @else border-outline-variant @enderror focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-xl pl-4 pr-10 py-3 text-sm text-on-surface transition-all cursor-pointer">
+                                    <input id="start_date_input" name="start_date" type="date" value="{{ old('start_date') }}" onchange="updateCreateDateDisplays()" class="sr-only">
+                                    <x-icon name="calendar_today" class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" />
+                                </div>
+                                <p id="error-start_date" class="hidden text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                                    <x-icon name="error" class="w-3.5 h-3.5" />
+                                    <span id="error-start_date-text">Tanggal Mulai Kegiatan wajib diisi.</span>
+                                </p>
+                                @error('start_date')
+                                    <p class="text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                                        <x-icon name="error" class="w-3.5 h-3.5" />
+                                        <span>{{ $message }}</span>
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <!-- End Date Picker -->
+                            <div class="space-y-2">
+                                <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1" for="end_date_display">
+                                    Tanggal Selesai Kegiatan <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative cursor-pointer" onclick="try{document.getElementById('end_date_input').showPicker()}catch(e){}">
+                                    <input id="end_date_display" type="text" placeholder="Pilih tanggal selesai..." readonly class="w-full bg-surface-container-lowest border @error('end_date') border-red-500 @else border-outline-variant @enderror focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-xl pl-4 pr-10 py-3 text-sm text-on-surface transition-all cursor-pointer">
+                                    <input id="end_date_input" name="end_date" type="date" value="{{ old('end_date') }}" onchange="updateCreateDateDisplays()" class="sr-only">
+                                    <x-icon name="calendar_today" class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" />
+                                </div>
+                                <p id="error-end_date" class="hidden text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                                    <x-icon name="error" class="w-3.5 h-3.5" />
+                                    <span id="error-end_date-text">Tanggal Selesai Kegiatan wajib diisi.</span>
+                                </p>
+                                @error('end_date')
+                                    <p class="text-xs text-red-600 font-semibold mt-1 flex items-center gap-1">
+                                        <x-icon name="error" class="w-3.5 h-3.5" />
+                                        <span>{{ $message }}</span>
+                                    </p>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Optional Group Members Input (Hidden by default, shown if type allows group submission) -->
@@ -67,7 +240,7 @@
                         <div id="group-members-container" class="space-y-2"></div>
                     </div>
 
-                    <div class="space-y-4">
+                    <div class="space-y-4 pt-2">
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1">Lampiran Pendukung</label>
                             <p class="text-xs text-on-surface-variant mb-3">Unggah dokumen pendukung (KTM, Transkrip, atau Bukti Bayar) dalam format PDF (Maks. 2MB)</p>
@@ -93,6 +266,13 @@
                             <x-icon name="error" class="w-4 h-4 shrink-0" />
                             <span id="file-error-text">Hanya berkas format PDF yang diperbolehkan!</span>
                         </div>
+
+                        @error('attachments')
+                            <div class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs flex items-center gap-2 font-medium">
+                                <x-icon name="error" class="w-4 h-4 text-red-600 shrink-0" />
+                                <span>{{ $message }}</span>
+                            </div>
+                        @enderror
 
                         <!-- File Item List Container (Dynamic Multi-File Rendering) -->
                         <div class="space-y-2" id="file-list-container"></div>
@@ -212,7 +392,143 @@
     const closeBtn = document.getElementById('close-modal-btn');
     const confirmBtn = document.getElementById('confirm-submit-btn');
 
-    if (openBtn) openBtn.addEventListener('click', () => openModal('confirmation-modal'));
+    const studentGpa = {{ (float) ($student->gpa ?? 0) }};
+    const studentCredits = {{ (int) ($student->total_credits ?? 0) }};
+
+    function validateCreateForm() {
+        let isValid = true;
+        const errors = [];
+
+        // Reset previous inline errors
+        document.querySelectorAll('[id^="error-"]').forEach(el => el.classList.add('hidden'));
+        document.getElementById('js-validation-alert')?.classList.add('hidden');
+
+        const letterTypeIdInput = document.getElementById('letter_type_id');
+        const purposeInput = document.getElementById('purpose');
+        const thesisTitleInput = document.getElementById('thesis_title');
+        const companyNameInput = document.getElementById('company_name');
+        const companyAddressInput = document.getElementById('company_address');
+        const startDateInput = document.getElementById('start_date_input');
+        const endDateInput = document.getElementById('end_date_input');
+
+        const companyWrapper = document.getElementById('company-fields-wrapper');
+        const thesisWrapper = document.getElementById('thesis-fields-wrapper');
+
+        const val = letterTypeIdInput ? letterTypeIdInput.value : '';
+        const letterOptions = @json($createLetterOptions);
+        const selectedOpt = letterOptions.find(o => String(o.value) === String(val));
+
+        // 1. Validate Jenis Surat Selection
+        if (!letterTypeIdInput || !val.trim()) {
+            isValid = false;
+            errors.push('Jenis Surat wajib dipilih');
+            document.getElementById('error-letter_type_id')?.classList.remove('hidden');
+        } else if (selectedOpt) {
+            // Validate Minimum SKS & GPA Academic Requirements
+            const minGpa = parseFloat(selectedOpt.minGpa || 0);
+            const minCredits = parseInt(selectedOpt.minCredits || 0, 10);
+            const reqAttachment = selectedOpt.requiresAttachment === 'true';
+
+            if (minGpa > 0 && studentGpa < minGpa) {
+                isValid = false;
+                errors.push(`IPK Anda (${studentGpa.toFixed(2)}) belum memenuhi syarat minimal IPK (${minGpa.toFixed(2)})`);
+                document.getElementById('error-letter_type_id')?.classList.remove('hidden');
+            }
+
+            if (minCredits > 0 && studentCredits < minCredits) {
+                isValid = false;
+                errors.push(`Total SKS Anda (${studentCredits} SKS) belum memenuhi syarat minimal SKS (${minCredits} SKS)`);
+                document.getElementById('error-letter_type_id')?.classList.remove('hidden');
+            }
+
+            if (reqAttachment && selectedFiles.length === 0) {
+                isValid = false;
+                errors.push('Jenis surat ini mewajibkan pengunggahan setidaknya 1 berkas lampiran pendukung');
+                showError('Wajib mengunggah minimal 1 berkas lampiran pendukung dalam format PDF!');
+            }
+        }
+
+        // 2. Validate Keperluan
+        if (!purposeInput || !purposeInput.value.trim()) {
+            isValid = false;
+            errors.push('Keperluan / Alasan Pengajuan wajib diisi');
+            purposeInput?.classList.add('border-red-500');
+            document.getElementById('error-purpose')?.classList.remove('hidden');
+        } else {
+            purposeInput?.classList.remove('border-red-500');
+        }
+
+        // 3. Validate Thesis Title if wrapper is visible
+        if (thesisWrapper && !thesisWrapper.classList.contains('hidden')) {
+            if (!thesisTitleInput || !thesisTitleInput.value.trim()) {
+                isValid = false;
+                errors.push('Judul Tugas Akhir / Proyek wajib diisi');
+                thesisTitleInput?.classList.add('border-red-500');
+                document.getElementById('error-thesis_title')?.classList.remove('hidden');
+            } else {
+                thesisTitleInput?.classList.remove('border-red-500');
+            }
+        }
+
+        // 4. Validate Company Fields if wrapper is visible
+        if (companyWrapper && !companyWrapper.classList.contains('hidden')) {
+            if (!companyNameInput || !companyNameInput.value.trim()) {
+                isValid = false;
+                errors.push('Nama Perusahaan / Instansi wajib diisi');
+                companyNameInput?.classList.add('border-red-500');
+                document.getElementById('error-company_name')?.classList.remove('hidden');
+            } else {
+                companyNameInput?.classList.remove('border-red-500');
+            }
+
+            if (!companyAddressInput || !companyAddressInput.value.trim()) {
+                isValid = false;
+                errors.push('Alamat Instansi / Perusahaan wajib diisi');
+                companyAddressInput?.classList.add('border-red-500');
+                document.getElementById('error-company_address')?.classList.remove('hidden');
+            } else {
+                companyAddressInput?.classList.remove('border-red-500');
+            }
+
+            if (!startDateInput || !startDateInput.value.trim()) {
+                isValid = false;
+                errors.push('Tanggal Mulai Kegiatan wajib diisi');
+                document.getElementById('start_date_display')?.classList.add('border-red-500');
+                document.getElementById('error-start_date')?.classList.remove('hidden');
+            } else {
+                document.getElementById('start_date_display')?.classList.remove('border-red-500');
+            }
+
+            if (!endDateInput || !endDateInput.value.trim()) {
+                isValid = false;
+                errors.push('Tanggal Selesai Kegiatan wajib diisi');
+                document.getElementById('end_date_display')?.classList.add('border-red-500');
+                document.getElementById('error-end_date')?.classList.remove('hidden');
+            } else {
+                document.getElementById('end_date_display')?.classList.remove('border-red-500');
+            }
+        }
+
+        if (!isValid) {
+            const alertBox = document.getElementById('js-validation-alert');
+            const alertList = document.getElementById('js-validation-list');
+            if (alertBox && alertList) {
+                alertList.innerHTML = errors.map(e => `<li>${e}</li>`).join('');
+                alertBox.classList.remove('hidden');
+                alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        return isValid;
+    }
+
+    if (openBtn) {
+        openBtn.addEventListener('click', (e) => {
+            if (validateCreateForm()) {
+                openModal('confirmation-modal');
+            }
+        });
+    }
     if (closeBtn) closeBtn.addEventListener('click', () => closeModal('confirmation-modal'));
     
     if (confirmBtn) {
@@ -232,6 +548,17 @@
     const fileListContainer = document.getElementById('file-list-container');
 
     let selectedFiles = [];
+
+    const syncFileInput = () => {
+        if (!fileInput) return;
+        try {
+            const dt = new DataTransfer();
+            selectedFiles.forEach(file => dt.items.add(file));
+            fileInput.files = dt.files;
+        } catch (e) {
+            console.warn('DataTransfer sync warning:', e);
+        }
+    };
 
     const showError = (message) => {
         errorText.innerText = message;
@@ -272,6 +599,8 @@
             `;
             fileListContainer.insertAdjacentHTML('beforeend', itemHtml);
         });
+
+        syncFileInput();
     };
 
     window.deleteSelectedFile = (index) => {
@@ -352,24 +681,49 @@
         });
     }
 
-    // Dynamic Group Members Input Handler & Show/Hide Listener
+    // Dynamic Group Members & Letter Type Specific Field Handler
     const letterTypeSelect = document.getElementById('letter_type_id');
     const groupMembersWrapper = document.getElementById('group-members-wrapper');
+    const groupNameWrapper = document.getElementById('group-name-wrapper');
+    const thesisFieldsWrapper = document.getElementById('thesis-fields-wrapper');
+    const companyFieldsWrapper = document.getElementById('company-fields-wrapper');
     const btnAddMember = document.getElementById('btn-add-member');
     const groupMembersContainer = document.getElementById('group-members-container');
 
     function toggleGroupMembersSection() {
-        if (!letterTypeSelect || !groupMembersWrapper) return;
+        if (!letterTypeSelect) return;
         const val = letterTypeSelect.value;
         const letterOptions = @json($createLetterOptions);
         const selectedOpt = letterOptions.find(o => String(o.value) === String(val));
+        
         const allowGroup = selectedOpt && selectedOpt.allowGroup === 'true';
+        const code = selectedOpt ? (selectedOpt.code || '').toUpperCase() : '';
+        const name = selectedOpt ? (selectedOpt.label || '').toUpperCase() : '';
 
-        if (allowGroup) {
-            groupMembersWrapper.classList.remove('hidden');
+        // Toggle Group Members & Group Name
+        if (allowGroup || code.includes('NONREG') || code.includes('KELOMPOK')) {
+            if (groupMembersWrapper) groupMembersWrapper.classList.remove('hidden');
+            if (groupNameWrapper) groupNameWrapper.classList.remove('hidden');
         } else {
-            groupMembersWrapper.classList.add('hidden');
+            if (groupMembersWrapper) groupMembersWrapper.classList.add('hidden');
+            if (groupNameWrapper) groupNameWrapper.classList.add('hidden');
             if (groupMembersContainer) groupMembersContainer.innerHTML = '';
+        }
+
+        // Toggle Thesis Title Fields (for Non-Reg TA, Pendadaran, Skripsi)
+        const hasThesis = selectedOpt && (selectedOpt.hasThesisFields === 'true' || code === 'SP-TA-NONREG' || code === 'SR-PENDADARAN' || code.includes('PENDADARAN') || code.includes('TA') || name.includes('PENDADARAN') || name.includes('TUGAS AKHIR'));
+        if (hasThesis) {
+            if (thesisFieldsWrapper) thesisFieldsWrapper.classList.remove('hidden');
+        } else {
+            if (thesisFieldsWrapper) thesisFieldsWrapper.classList.add('hidden');
+        }
+
+        // Toggle Internship / Company / Research Fields (for Magang, Penelitian, Riset, Observasi, or templates with company placeholders)
+        const hasCompany = selectedOpt && (selectedOpt.hasCompanyFields === 'true' || code === 'SR-MAGANG' || code === 'SR-PENELITIAN' || code.includes('MAGANG') || code.includes('PENELITIAN') || code.includes('RISET') || code.includes('OBSERVASI') || code.includes('IZIN') || name.includes('MAGANG') || name.includes('PENELITIAN') || name.includes('RISET') || name.includes('IZIN') || name.includes('UJI COBA'));
+        if (hasCompany) {
+            if (companyFieldsWrapper) companyFieldsWrapper.classList.remove('hidden');
+        } else {
+            if (companyFieldsWrapper) companyFieldsWrapper.classList.add('hidden');
         }
     }
 
@@ -392,5 +746,36 @@
             groupMembersContainer.insertAdjacentHTML('beforeend', inputHtml);
         });
     }
+    // Create Form Date Picker Display Formatter
+    function formatToIndonesianDate(isoDateStr) {
+        if (!isoDateStr) return '';
+        const parts = isoDateStr.split('-');
+        if (parts.length === 3) {
+            const year = parts[0];
+            const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            const monthIndex = parseInt(parts[1], 10) - 1;
+            const day = parseInt(parts[2], 10);
+            return `${day} ${monthNames[monthIndex]} ${year}`;
+        }
+        return isoDateStr;
+    }
+
+    function updateCreateDateDisplays() {
+        const startInput = document.getElementById('start_date_input');
+        const startDisplay = document.getElementById('start_date_display');
+        const endInput = document.getElementById('end_date_input');
+        const endDisplay = document.getElementById('end_date_display');
+
+        if (startInput && startDisplay) {
+            startDisplay.value = formatToIndonesianDate(startInput.value);
+        }
+        if (endInput && endDisplay) {
+            endDisplay.value = formatToIndonesianDate(endInput.value);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCreateDateDisplays();
+    });
 </script>
 @endpush

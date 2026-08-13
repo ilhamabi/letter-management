@@ -18,196 +18,92 @@ class SubmissionSeeder extends Seeder
 {
     public function run(): void
     {
-        $budi = Student::whereHas('user', fn($q) => $q->where('username', '20210001'))->first() ?? Student::first();
-        $andi = Student::whereHas('user', fn($q) => $q->where('username', '20210002'))->first();
-        $citra = Student::whereHas('user', fn($q) => $q->where('username', '20210003'))->first();
-
         $workflowService = app(ApprovalWorkflowService::class);
 
-        // Fetch Letter Types
-        $ska = LetterType::where('code', 'SKA')->first();
-        $skm = LetterType::where('code', 'SKM')->first();
-        $skl = LetterType::where('code', 'SKL')->first();
-        $spp = LetterType::where('code', 'SPP')->first();
-        $spkp = LetterType::where('code', 'SPKP')->first();
-        $srmk = LetterType::where('code', 'SRMK')->first();
-        $spta = LetterType::where('code', 'SPTA')->first();
-        $sppkm = LetterType::where('code', 'SPPKM')->first();
-        $sppk = LetterType::where('code', 'SPPK')->first();
+        $budi = Student::where('student_number', '21.01.0001')->first() ?? Student::first();
+        $andi = Student::where('student_number', '21.01.0002')->first();
+        $citra = Student::where('student_number', '22.01.0003')->first();
+        $doni = Student::where('student_number', '22.01.0004')->first();
+        $eka = Student::where('student_number', '23.01.0005')->first();
 
-        // -------------------------------------------------------------
-        // WORKFLOW 1-TINGKAT
-        // -------------------------------------------------------------
+        // 3 Official Seeded Letter Types
+        $typeNonReg = LetterType::where('code', 'SP-TA-NONREG')->first();
+        $typeMagang = LetterType::where('code', 'SR-MAGANG')->first();
+        $typePendadaran = LetterType::where('code', 'SR-PENDADARAN')->first();
 
-        // 1. SKA (1-Tingkat) - PENDING LEVEL 1
+        if (!$typeNonReg || !$typeMagang || !$typePendadaran) {
+            return;
+        }
+
+        // 1. Pengajuan Magang (Individu) - APPROVED
         $this->createSubmission([
             'student' => $budi,
-            'letter_type' => $ska,
-            'purpose' => 'Persyaratan pembuatan Kartu Tanda Mahasiswa (KTM) pengganti',
-            'created_at' => now()->subDays(1),
-            'workflowService' => $workflowService,
-            'stepsToApprove' => 0,
-        ]);
-
-        // 2. SKM (1-Tingkat) - APPROVED
-        $this->createSubmission([
-            'student' => $budi,
-            'letter_type' => $skm,
-            'purpose' => 'Persyaratan pengajuan beasiswa prestasi akademik kampus',
+            'letter_type' => $typeMagang,
+            'purpose' => 'Pelaksanaan kegiatan magang/kerja praktik di PT Telkom Indonesia',
+            'additional_data' => [
+                'company_name' => 'PT Telkom Indonesia (Persero) Tbk',
+                'company_address' => 'Jl. Jend. Sudirman No. 52, Jakarta',
+                'start_date' => '1 September 2026',
+                'end_date' => '31 Desember 2026',
+                'total_credits' => '92 SKS',
+                'gpa' => '3.83',
+            ],
             'created_at' => now()->subDays(5),
-            'workflowService' => $workflowService,
-            'stepsToApprove' => 1,
-            'notesPerStep' => ['Penyelenggara beasiswa resmi. Pengajuan disetujui.'],
-        ]);
-
-        // 3. SKL (1-Tingkat) - REJECTED LEVEL 1
-        $this->createSubmission([
-            'student' => $budi,
-            'letter_type' => $skl,
-            'purpose' => 'Persyaratan melamar pekerjaan di instansi BUMN',
-            'created_at' => now()->subDays(7),
-            'workflowService' => $workflowService,
-            'rejectAtStep' => 1,
-            'rejectNote' => 'Transkrip nilai bebas tanggungan perpustakaan belum terverifikasi.',
-        ]);
-
-        // -------------------------------------------------------------
-        // WORKFLOW 2-TINGKAT
-        // -------------------------------------------------------------
-
-        // 4. SPP (2-Tingkat) - PENDING LEVEL 1
-        $this->createSubmission([
-            'student' => $budi,
-            'letter_type' => $spp,
-            'purpose' => 'Pengantar penelitian mandiri di Dinas Komunikasi dan Informatika',
-            'created_at' => now()->subDays(2),
-            'workflowService' => $workflowService,
-            'stepsToApprove' => 0,
-        ]);
-
-        // 5. SPKP (2-Tingkat) - PENDING LEVEL 2 (KELOMPOK)
-        $this->createSubmission([
-            'student' => $budi,
-            'letter_type' => $spkp,
-            'purpose' => 'Izin pelaksanaan Kerja Praktik (KP) tim di PT Sentosa Teknologi',
-            'created_at' => now()->subDays(3),
-            'members' => [$andi],
-            'workflowService' => $workflowService,
-            'stepsToApprove' => 1,
-            'notesPerStep' => ['Berkas kelayakan KP tim lengkap. Direkomendasikan.'],
-        ]);
-
-        // 6. SRMK (2-Tingkat) - APPROVED (KELOMPOK)
-        $this->createSubmission([
-            'student' => $budi,
-            'letter_type' => $srmk,
-            'purpose' => 'Surat permohonan rekomendasi magang industri kelompok di PT Bukalapak',
-            'created_at' => now()->subDays(10),
-            'members' => [$citra],
             'workflowService' => $workflowService,
             'stepsToApprove' => 2,
             'notesPerStep' => [
-                'Persyaratan SKS dan IPK seluruh anggota memenuhi kualifikasi.',
-                'Surat rekomendasi magang disetujui dan dapat diterbitkan.'
+                'IPK dan SKS memenuhi syarat. Disetujui Dosen Wali.',
+                'Rekomendasi magang disetujui Kaprodi dan terbit.'
             ],
         ]);
 
-        // 7. SPKP (2-Tingkat) - REJECTED LEVEL 2 (KELOMPOK)
-        $this->createSubmission([
-            'student' => $budi,
-            'letter_type' => $spkp,
-            'purpose' => 'Izin pelaksanaan Kerja Praktik tim di CV Digital Kreatif',
-            'created_at' => now()->subDays(8),
-            'members' => [$andi],
-            'workflowService' => $workflowService,
-            'rejectAtStep' => 2,
-            'notesPerStep' => ['Berkas proposal awal disetujui Dosen Wali.'],
-            'rejectNote' => 'Instansi tujuan Kerja Praktik belum terdaftar dalam sistem kemitraan prodi.',
-        ]);
-
-        // -------------------------------------------------------------
-        // WORKFLOW 3-TINGKAT
-        // -------------------------------------------------------------
-
-        // 8. SPTA (3-Tingkat) - PENDING LEVEL 1
-        $this->createSubmission([
-            'student' => $budi,
-            'letter_type' => $spta,
-            'purpose' => 'Permohonan persetujuan judul dan pelaksanaan Tugas Akhir (Sistem Informasi Manajemen)',
-            'created_at' => now()->subHours(6),
-            'workflowService' => $workflowService,
-            'stepsToApprove' => 0,
-        ]);
-
-        // 9. SPPKM (3-Tingkat) - PENDING LEVEL 2 (KELOMPOK)
-        $this->createSubmission([
-            'student' => $budi,
-            'letter_type' => $sppkm,
-            'purpose' => 'Surat pengantar pengajuan proposal PKM-KC ke Kemendikbudristek',
-            'created_at' => now()->subDays(2),
-            'members' => [$citra],
-            'workflowService' => $workflowService,
-            'stepsToApprove' => 1,
-            'notesPerStep' => ['Draft gagasan PKM sangat potensial. Disetujui Pembimbing.'],
-        ]);
-
-        // 10. SPPK (3-Tingkat) - PENDING LEVEL 3 (KELOMPOK)
-        $this->createSubmission([
-            'student' => $budi,
-            'letter_type' => $sppk,
-            'purpose' => 'Pengantar proposal proyek mata kuliah Rekayasa Perangkat Lunak ke UMKM Mitra',
-            'created_at' => now()->subDays(5),
-            'members' => [$andi],
-            'workflowService' => $workflowService,
-            'stepsToApprove' => 2,
-            'notesPerStep' => [
-                'Proyek sesuai dengan capaian pembelajaran mata kuliah.',
-                'Dosen Wali menyetujui lokasi dan alokasi tim.'
-            ],
-        ]);
-
-        // 11. SPTA (3-Tingkat) - APPROVED
-        $this->createSubmission([
-            'student' => $budi,
-            'letter_type' => $spta,
-            'purpose' => 'Persetujuan judul Tugas Akhir: Perancangan Aplikasi Manajemen Surat Berbasis Microservices',
-            'created_at' => now()->subDays(14),
-            'workflowService' => $workflowService,
-            'stepsToApprove' => 3,
-            'notesPerStep' => [
-                'Rumusan masalah dan metodologi penelitian Tugas Akhir disetujui Pembimbing.',
-                'Syarat kelayakan akademik dan SKS dipenuhi. Disetujui Dosen Wali.',
-                'Judul Tugas Akhir resmi disetujui dan dicatat oleh Prodi.'
-            ],
-        ]);
-
-        // 12. SPPKM (3-Tingkat) - REJECTED LEVEL 3 (KELOMPOK)
-        $this->createSubmission([
-            'student' => $budi,
-            'letter_type' => $sppkm,
-            'purpose' => 'Surat pengantar pengajuan proposal PKM-RE kelompok ke Ditbelmawa',
-            'created_at' => now()->subDays(12),
-            'members' => [$citra],
-            'workflowService' => $workflowService,
-            'rejectAtStep' => 3,
-            'notesPerStep' => [
-                'Substansi riset PKM disetujui Pembimbing.',
-                'Anggota tim dan administrasi disetujui Dosen Wali.'
-            ],
-            'rejectNote' => 'Format tata tulis proposal PKM belum sesuai dengan Pedoman Teknis Ditbelmawa 2026.',
-        ]);
-
-        // 13. SRMK (2-Tingkat) - PENDING LEVEL 2 (ANDI SEBAGAI KETUA, BUDI SEBAGAI ANGGOTA)
+        // 2. Pengajuan Pendadaran (Individu) - PENDING LEVEL 1
         if ($andi) {
             $this->createSubmission([
                 'student' => $andi,
-                'letter_type' => $srmk,
-                'purpose' => 'Pengantar magang kelompok bidang Cyber Security di PT Cyber Defense Indonesia',
+                'letter_type' => $typePendadaran,
+                'purpose' => 'Mengikuti pendaftaran pendadaran / ujian tugas akhir semester berjalan',
+                'additional_data' => [
+                    'thesis_title' => 'Implementasi Machine Learning untuk Klasifikasi Dokumen Akademik',
+                ],
                 'created_at' => now()->subDays(2),
-                'members' => [$budi],
+                'workflowService' => $workflowService,
+                'stepsToApprove' => 0,
+            ]);
+        }
+
+        // 3. Pengajuan TA Non-Reguler (Kelompok) - PENDING LEVEL 2
+        if ($budi && $citra) {
+            $this->createSubmission([
+                'student' => $budi,
+                'letter_type' => $typeNonReg,
+                'purpose' => 'Rancang Bangun Aplikasi Manajemen Produksi di STRONGER MANUFACTURE',
+                'group_name' => 'Tim Stronger Production',
+                'additional_data' => [
+                    'thesis_title' => 'Rancang Bangun Aplikasi Manajemen Produksi di STRONGER MANUFACTURE',
+                ],
+                'created_at' => now()->subDays(3),
+                'members' => [$citra, $doni],
                 'workflowService' => $workflowService,
                 'stepsToApprove' => 1,
-                'notesPerStep' => ['Kualifikasi anggota tim Magang Cyber Defense terverifikasi.'],
+                'notesPerStep' => ['Persyaratan akademik kelompok disetujui Dosen Wali.'],
+            ]);
+        }
+
+        // 4. Pengajuan Magang (Individu) - REJECTED LEVEL 1
+        if ($eka) {
+            $this->createSubmission([
+                'student' => $eka,
+                'letter_type' => $typeMagang,
+                'purpose' => 'Kegiatan magang mandiri di Startup XYZ',
+                'additional_data' => [
+                    'company_name' => 'Startup XYZ Indonesia',
+                    'company_address' => 'Jl. Kaliurang Km 5, Yogyakarta',
+                ],
+                'created_at' => now()->subDays(7),
+                'workflowService' => $workflowService,
+                'rejectAtStep' => 1,
+                'rejectNote' => 'Jumlah SKS belum mencapai batas minimal 50 SKS.',
             ]);
         }
     }
@@ -217,6 +113,7 @@ class SubmissionSeeder extends Seeder
         $student = $config['student'];
         $letterType = $config['letter_type'];
         $purpose = $config['purpose'];
+        $groupName = $config['group_name'] ?? null;
         $createdAt = $config['created_at'];
         $members = array_filter($config['members'] ?? []);
         $workflowService = $config['workflowService'];
@@ -225,8 +122,10 @@ class SubmissionSeeder extends Seeder
         $notesPerStep = $config['notesPerStep'] ?? [];
         $rejectNote = $config['rejectNote'] ?? 'Pengajuan tidak memenuhi kelayakan.';
 
+        $additionalData = $config['additional_data'] ?? null;
+
         return DB::transaction(function () use (
-            $student, $letterType, $purpose, $createdAt, $members,
+            $student, $letterType, $purpose, $groupName, $additionalData, $createdAt, $members,
             $workflowService, $stepsToApprove, $rejectAtStep, $notesPerStep, $rejectNote
         ) {
             $isGroup = count($members) > 0;
@@ -236,6 +135,8 @@ class SubmissionSeeder extends Seeder
                 'student_id' => $student->id,
                 'letter_type_id' => $letterType->id,
                 'purpose' => $purpose,
+                'group_name' => $groupName,
+                'additional_data' => $additionalData,
                 'status' => SubmissionStatus::PENDING,
                 'submitted_at' => $createdAt,
                 'created_at' => $createdAt,
@@ -256,7 +157,7 @@ class SubmissionSeeder extends Seeder
                 }
             }
 
-            // 3. Create Initial Submission Log (Creation log)
+            // 3. Create Initial Submission Log
             SubmissionLog::create([
                 'submission_id' => $submission->id,
                 'approval_flow_step_id' => null,
@@ -288,13 +189,10 @@ class SubmissionSeeder extends Seeder
                 $approverUserId = $submission->assigned_to_user_id;
                 $approverUser = $approverUserId ? User::find($approverUserId) : User::where('role', 'LECTURER')->first();
 
-                // Increment timestamp for realistic timeline gap
                 $logTime = (clone $logTime)->addHours(12);
 
-                // Check if this step should reject or approve
                 if ($rejectAtStep !== null && ($i + 1) === $rejectAtStep) {
                     $workflowService->reject($submission, $approverUser, $rejectNote);
-                    // Backdate the generated rejection log
                     SubmissionLog::where('submission_id', $submission->id)
                         ->where('approval_flow_step_id', $step->id)
                         ->update(['created_at' => $logTime, 'updated_at' => $logTime]);
@@ -302,7 +200,6 @@ class SubmissionSeeder extends Seeder
                 } else {
                     $note = $notesPerStep[$i] ?? 'Persetujuan verifikasi kelayakan dokumen.';
                     $workflowService->approve($submission, $approverUser, $note);
-                    // Backdate the generated approval log
                     SubmissionLog::where('submission_id', $submission->id)
                         ->where('approval_flow_step_id', $step->id)
                         ->update(['created_at' => $logTime, 'updated_at' => $logTime]);

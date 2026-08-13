@@ -4,60 +4,18 @@
 
 @php
     $studentName = $submission->student?->user?->name ?? 'Budi Santoso';
-    $studentNim = $submission->student?->student_number ?? '19.11.1234';
-    $prodi = $submission->student?->study_program ?? 'D3 Teknik Informatika';
-    $academicStatus = $submission->student?->academic_status ?? 'Aktif';
-    $creditsEarned = $submission->student?->credits_earned ?? 110;
-    $gpa = $submission->student?->gpa ?? '3.85';
+    $studentNim = $submission->student?->student_number ?? '20210001';
+    $prodi = $submission->student?->department ?? $submission->student?->study_program ?? 'D3 Teknik Informatika';
+    $academicStatus = $submission->student?->academic_status ?? 'Aktif Kuliah';
+    $creditsEarned = $submission->student?->total_credits ?? $submission->student?->credits_earned ?? 115;
+    $gpa = number_format((float)($submission->student?->gpa ?? 3.85), 2);
     $letterTypeName = $submission->letterType?->name ?? 'Surat Persetujuan Tugas Akhir';
     $submittedDate = $submission->submitted_at?->translatedFormat('d M Y H:i') ?? $submission->created_at?->format('d M Y H:i');
     $statusValue = is_object($submission->status) ? $submission->status->value : (string) $submission->status;
     $statusText = $submission->status?->label() ?? 'Diproses';
 
-    // HTML Letter Preview setup
-    $letterHtmlPath = resource_path('views/letter/surat_persetujuan_non_reguler_ahmad_doni.html');
-    $letterCssPath = resource_path('views/letter/letter-style.css');
-
-    $bodyContent = '';
-    $scopedCss = '';
-
-    if (file_exists($letterHtmlPath)) {
-        $htmlContent = file_get_contents($letterHtmlPath);
-        if (preg_match('/<body[^>]*>(.*?)<\/body>/is', $htmlContent, $matches)) {
-            $bodyContent = $matches[1];
-        } else {
-            $bodyContent = $htmlContent;
-        }
-
-        $bodyContent = preg_replace('/src=["\']([^"\']+\.(png|webp|svg|jpg|jpeg|gif))["\']/i', 'src="' . url('/letter') . '/$1"', $bodyContent);
-    }
-
-    if (file_exists($letterCssPath)) {
-        $cssContent = file_get_contents($letterCssPath);
-        $blocks = explode('}', $cssContent);
-        foreach ($blocks as &$block) {
-            if (trim($block) === '')
-                continue;
-            $parts = explode('{', $block);
-            if (count($parts) === 2) {
-                $selectors = explode(',', $parts[0]);
-                foreach ($selectors as &$selector) {
-                    $selector = trim($selector);
-                    if ($selector === 'body') {
-                        $selector = '.letter-preview-wrapper';
-                    } elseif ($selector === '*') {
-                        $selector = '.letter-preview-wrapper *';
-                    } elseif (str_starts_with($selector, '@media') || str_starts_with($selector, '@page')) {
-                    } else {
-                        $selector = '.letter-preview-wrapper ' . $selector;
-                    }
-                }
-                $parts[0] = implode(', ', $selectors);
-                $block = implode('{', $parts);
-            }
-        }
-        $scopedCss = implode('}', $blocks);
-    }
+    // Dynamic Letter Preview & File Naming prepared by LecturerSubmissionService
+    $previewFileName = $previewFileName ?? ('Surat_' . strtoupper($submission->letterType?->code ?? 'AKADEMIK') . '_' . $studentNim . '.pdf');
 @endphp
 
 @section('content')
@@ -115,46 +73,36 @@
 
         <!-- Bento Grid Layout -->
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
-            <!-- Left Column: Document Viewer -->
+            <!-- Left Column: Document Viewer (Preview Surat Dosen) -->
             <div class="xl:col-span-8 flex flex-col gap-6">
                 <div class="bg-white border border-gray-200 rounded-xl flex flex-col shadow-sm">
-                    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white">
+                    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white flex-wrap gap-3">
                         <div class="flex items-center gap-3">
                             <x-icon name="description" class="w-5 h-5 text-primary" />
                             <div>
-                                <h3 class="font-label-lg text-label-lg text-gray-900">
-                                    SURAT_{{ Str::upper($submission->letterType?->code ?? 'AKADEMIK') }}_{{ $studentNim }}.pdf
+                                <h3 class="font-label-lg text-label-lg text-gray-900 font-bold">
+                                    {{ $previewFileName }}
                                 </h3>
-                                <p class="text-[12px] text-gray-400 font-body-sm">Pratinjau Otomatis Sistem</p>
+                                <p class="text-[12px] text-gray-400 font-body-sm">Preview Surat dengan Data Submission Aktual</p>
                             </div>
                         </div>
-                        <div class="flex gap-2">
-                            <a href="{{ url('/letter/surat_persetujuan_non_reguler_ahmad_doni.html') }}" target="_blank"
-                                class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center gap-1">
-                                <x-icon name="download" class="w-5 h-5" />
-                                <span class="font-label-sm text-label-sm hidden sm:inline font-semibold">Pratinjau
-                                    Cetak</span>
-                            </a>
+                        <div class="flex items-center gap-2">
+                            <button 
+                                type="button" 
+                                onclick="openModal('full-preview-modal')"
+                                class="px-3.5 py-2 text-primary hover:bg-primary/10 border border-primary/20 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer text-xs font-bold font-label-sm">
+                                <x-icon name="visibility" class="w-4 h-4" />
+                                <span>Buka Preview Ukuran Penuh</span>
+                            </button>
                         </div>
                     </div>
-                    <style>
-                        {!! $scopedCss !!}
-                        .letter-preview-wrapper .sheet-wrap {
-                            margin: 0 !important;
-                            box-shadow: none !important;
-                            width: 100% !important;
-                        }
-
-                        .letter-preview-wrapper .page {
-                            width: 100% !important;
-                            height: auto !important;
-                            min-height: 842pt !important;
-                        }
-                    </style>
-                    <div class="flex-1 bg-white overflow-x-auto p-0 rounded-b-xl border-t border-gray-100 min-h-[500px]">
-                        <div class="letter-preview-wrapper">
-                            {!! $bodyContent !!}
-                        </div>
+                    
+                    <div class="flex-1 bg-[#888888] overflow-hidden rounded-b-xl min-h-[760px] flex justify-center items-center p-4">
+                        <iframe 
+                            srcdoc="{!! e($previewHtml) !!}" 
+                            class="w-full h-[760px] border-0 shadow-lg bg-white rounded-sm"
+                            title="Preview Surat Dosen">
+                        </iframe>
                     </div>
                 </div>
             </div>
@@ -171,8 +119,8 @@
                     <div class="flex items-center gap-4 mb-8">
                         <div class="relative">
                             <div
-                                class="w-20 h-20 rounded-xl bg-gray-100 flex items-center justify-center border-2 border-primary/10 shadow-sm overflow-hidden text-gray-400 font-bold text-2xl">
-                                {{ Str::upper(substr($studentName, 0, 2)) }}
+                                class="w-16 h-16 rounded-xl bg-purple-50 flex items-center justify-center border border-purple-200 shadow-xs text-amikom-purple shrink-0">
+                                <x-icon name="person" class="w-9 h-9 text-amikom-purple" />
                             </div>
                         </div>
                         <div>
@@ -289,6 +237,58 @@
                             </p>
                             <p class="text-body-md font-medium text-gray-900">{{ $subDto['purpose'] }}</p>
                         </div>
+                        @if(!empty($submission->additional_data) && is_array($submission->additional_data))
+                            <div class="mt-3 pt-3 border-t border-gray-100 space-y-2">
+                                <p class="text-label-sm text-gray-500 uppercase tracking-wider font-semibold">Informasi Tambahan / Instansi</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                    @php
+                                        $preferredOrder = ['thesis_title', 'company_name', 'company_address', 'start_date', 'end_date', 'group_name', 'academic_year', 'total_credits', 'gpa', 'purpose'];
+                                        $sortedData = $submission->additional_data;
+                                        uksort($sortedData, function($a, $b) use ($preferredOrder) {
+                                            $idxA = array_search($a, $preferredOrder);
+                                            $idxB = array_search($b, $preferredOrder);
+                                            $idxA = ($idxA === false) ? 999 : $idxA;
+                                            $idxB = ($idxB === false) ? 999 : $idxB;
+                                            return $idxA <=> $idxB;
+                                        });
+                                    @endphp
+                                    @foreach($sortedData as $key => $val)
+                                        @if(!empty($val) && !is_array($val))
+                                            @php
+                                                $labelMap = [
+                                                    'thesis_title' => 'Judul Tugas Akhir / Proyek',
+                                                    'company_name' => 'Nama Instansi / Perusahaan',
+                                                    'company_address' => 'Alamat Instansi / Perusahaan',
+                                                    'start_date' => 'Tanggal Mulai',
+                                                    'end_date' => 'Tanggal Selesai',
+                                                    'total_credits' => 'Total SKS',
+                                                    'gpa' => 'IPK Kumulatif',
+                                                    'group_name' => 'Nama Kelompok / Tim',
+                                                    'academic_year' => 'Tahun Akademik',
+                                                    'purpose' => 'Keperluan / Alasan',
+                                                ];
+                                                $label = $labelMap[$key] ?? ucwords(str_replace('_', ' ', $key));
+
+                                                $displayValue = $val;
+                                                if (in_array($key, ['start_date', 'end_date']) && !empty($val)) {
+                                                    try {
+                                                        $months = [1=>'Januari', 2=>'Februari', 3=>'Maret', 4=>'April', 5=>'Mei', 6=>'Juni', 7=>'Juli', 8=>'Agustus', 9=>'September', 10=>'Oktober', 11=>'November', 12=>'Desember'];
+                                                        $dt = \Carbon\Carbon::parse($val);
+                                                        $displayValue = $dt->format('j') . ' ' . $months[(int)$dt->format('n')] . ' ' . $dt->format('Y');
+                                                    } catch (\Throwable $e) {
+                                                        $displayValue = $val;
+                                                    }
+                                                }
+                                            @endphp
+                                            <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+                                                <span class="text-gray-500 font-semibold block uppercase text-[10px] tracking-wider mb-0.5">{{ $label }}</span>
+                                                <span class="text-gray-900 font-bold text-xs">{{ $displayValue }}</span>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
                     </div>
 
                     @if(!empty($subDto['members']) && count($subDto['members']) > 0)
@@ -303,28 +303,49 @@
                         </div>
                     @endif
 
+                    <div class="pb-4 border-b border-gray-100">
+                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold mb-2">LAMPIRAN</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            @forelse($subDto['attachments'] ?? [] as $att)
+                                <a href="{{ $att['url'] }}" target="_blank" rel="noopener noreferrer" 
+                                   class="flex items-center gap-3 p-3 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors cursor-pointer group col-span-2 sm:col-span-1">
+                                    <div class="w-10 h-10 bg-error-container/20 rounded flex items-center justify-center text-error shrink-0">
+                                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H9"/><path d="M9 13v6"/></svg>
+                                    </div>
+                                    <div class="overflow-hidden font-body-sm flex-1">
+                                        <p class="text-label-sm text-deep-black truncate font-semibold" title="{{ $att['name'] }}">{{ $att['name'] }}</p>
+                                        <p class="text-[10px] text-on-surface-variant">{{ $att['size'] }}</p>
+                                    </div>
+                                    <svg class="w-4 h-4 text-on-surface-variant group-hover:text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </a>
+                            @empty
+                                <p class="text-body-sm text-on-surface-variant italic col-span-2">Tidak ada lampiran</p>
+                            @endforelse
+                        </div>
+                    </div>
+
                     <div>
                         <h3 class="font-title-lg text-title-lg text-gray-900 mb-6 flex items-center gap-2"><x-icon
                                 name="history" class="w-5 h-5 text-primary" />Riwayat Audit Trail</h3>
-                        <div class="space-y-4">
+                        <div class="space-y-6">
                             @foreach ($subDto['timeline'] as $t)
                                 @php
-                                    $badgeClass = match ($t['status']) {
-                                        'completed' => 'bg-green-100 text-green-800',
-                                        'rejected' => 'bg-red-100 text-red-800',
-                                        'active' => 'bg-amber-100 text-amber-800 animate-pulse',
-                                        default => 'bg-gray-100 text-gray-600',
+                                    $circleStyle = match ($t['status']) {
+                                        'completed' => 'bg-emerald-500 ring-4 ring-emerald-100',
+                                        'rejected' => 'bg-rose-500 ring-4 ring-rose-100',
+                                        'active' => 'bg-amber-500 ring-4 ring-amber-100 animate-pulse',
+                                        default => 'bg-slate-300 ring-4 ring-slate-100',
                                     };
                                 @endphp
-                                <div class="relative pl-6 border-l-2 border-gray-200">
+                                <div class="relative pl-7 border-l-2 border-slate-300">
                                     <div
-                                        class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm {{ $badgeClass }}">
+                                        class="absolute -left-[9px] top-0.5 w-4 h-4 rounded-full border-2 border-white shadow-md {{ $circleStyle }}">
                                     </div>
                                     <div class="flex flex-col">
-                                        <span class="text-label-lg text-gray-900 font-bold">{{ $t['title'] }}</span>
-                                        <span class="text-body-sm text-gray-500">{{ $t['time'] }}</span>
+                                        <span class="text-label-lg text-gray-900 font-bold leading-tight">{{ $t['title'] }}</span>
+                                        <span class="text-body-sm text-gray-500 font-medium mt-0.5">{{ $t['time'] }}</span>
                                         @if(!empty($t['notes']))
-                                            <p class="mt-1 text-xs bg-gray-50 p-2 rounded border border-gray-200 text-gray-700">
+                                            <p class="mt-1.5 text-xs bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-slate-700 font-medium">
                                                 Catatan: {{ $t['notes'] }}</p>
                                         @endif
                                     </div>
@@ -547,5 +568,34 @@
                 </button>
             </div>
         </form>
+    </x-modal>
+
+    <!-- Full-Screen Letter Preview Modal -->
+    <x-modal id="full-preview-modal" title="Preview Surat Ukuran Penuh: {{ $previewFileName }}" maxWidth="max-w-5xl" padding="p-6">
+        <x-slot:subtitle>
+            Verifikasi tampilan dokumen resmi A4 yang akan dihasilkan sistem sebelum memberikan persetujuan.
+        </x-slot:subtitle>
+
+        <div class="bg-[#888888] p-6 rounded-xl flex justify-center shadow-inner">
+            <iframe 
+                srcdoc="{!! e($previewHtml) !!}" 
+                class="w-[600pt] h-[860pt] border-0 shadow-2xl bg-white rounded"
+                style="overflow: hidden;"
+                scrolling="no"
+                title="Preview Surat Dosen Full Screen">
+            </iframe>
+        </div>
+
+        <x-slot:footer>
+            <div class="flex items-center justify-between w-full flex-wrap gap-3">
+                <span class="text-xs text-gray-500 font-medium">Nama File Hasil: <strong class="text-gray-900 font-bold">{{ $previewFileName }}</strong></span>
+                <button 
+                    type="button" 
+                    class="py-2.5 px-6 bg-primary text-white rounded-xl font-bold hover:bg-primary-container transition-colors shadow-sm cursor-pointer"
+                    onclick="typeof closeModal === 'function' ? closeModal('full-preview-modal') : document.getElementById('full-preview-modal').classList.add('hidden')">
+                    Tutup Preview
+                </button>
+            </div>
+        </x-slot:footer>
     </x-modal>
 @endsection

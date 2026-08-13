@@ -7,7 +7,8 @@ export function toggleModal(id, show) {
 
     if (show) {
         modal.classList.remove('hidden');
-        
+        document.body.classList.add('overflow-hidden');
+
         if (id === 'reject-modal') {
             const checkboxes = modal.querySelectorAll('.role-checkbox');
             checkboxes.forEach(cb => {
@@ -25,6 +26,11 @@ export function toggleModal(id, show) {
         if (window.updateApproveButtonState) window.updateApproveButtonState();
     } else {
         modal.classList.add('hidden');
+        // Only remove overflow-hidden if no other modals are visible
+        const visibleModals = document.querySelectorAll('[id*="modal"]:not(.hidden)');
+        if (visibleModals.length === 0) {
+            document.body.classList.remove('overflow-hidden');
+        }
     }
 }
 

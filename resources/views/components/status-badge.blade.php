@@ -6,6 +6,13 @@
 
 @php
     use App\Enums\SubmissionStatus;
+    use App\Enums\LetterTypeStatus;
+
+    $letterStatusEnum = match (true) {
+        $status instanceof LetterTypeStatus => $status,
+        is_bool($status) => LetterTypeStatus::fromBoolean($status),
+        default => null,
+    };
 
     $statusEnum = match (true) {
         $status instanceof SubmissionStatus => $status,
@@ -17,32 +24,36 @@
     $sizeClasses = $size === 'sm' ? 'px-2.5 py-1 text-xs' : 'px-3.5 py-1.5 text-sm';
     $iconSize = $size === 'sm' ? 'w-3.5 h-3.5 mr-1' : 'w-4 h-4 mr-1.5';
 
-    if ($statusEnum) {
+    if ($letterStatusEnum) {
+        $colorClasses = $letterStatusEnum->badgeClass();
+        $label = $letterStatusEnum->label();
+        $iconType = $letterStatusEnum->icon();
+    } elseif ($statusEnum) {
         $colorClasses = $statusEnum->badgeClass();
         $label = $statusEnum->label();
-        $iconType = match ($statusEnum) {
-            SubmissionStatus::APPROVED, SubmissionStatus::GENERATED => 'check_circle',
-            SubmissionStatus::REJECTED => 'cancel',
-            default => 'clock',
-        };
+        $iconType = $statusEnum->icon();
     } else {
         $normalized = strtolower(trim((string) $status));
-        if (in_array($normalized, ['disetujui', 'approved', 'verified', 'completed', 'selesai', 'aktif', 'active'])) {
-            $colorClasses = 'bg-green-100 text-green-800 border-green-200';
-            $label = in_array($normalized, ['aktif', 'active']) ? 'Aktif' : 'Disetujui';
-            $iconType = 'check_circle';
-        } elseif (in_array($normalized, ['ditolak', 'rejected', 'non-aktif', 'nonaktif', 'inactive'])) {
-            $colorClasses = in_array($normalized, ['non-aktif', 'nonaktif', 'inactive']) ? 'bg-gray-100 text-gray-500 border-gray-200' : 'bg-red-100 text-red-800 border-red-200';
-            $label = in_array($normalized, ['non-aktif', 'nonaktif', 'inactive']) ? 'Non-Aktif' : 'Ditolak';
-            $iconType = 'cancel';
-        } elseif (in_array($normalized, ['revisi', 'revision', 'perlu revisi', 'needs_revision'])) {
-            $colorClasses = 'bg-amber-100 text-amber-800 border-amber-200';
-            $label = 'Perlu Revisi';
-            $iconType = 'warning';
+        if (in_array($normalized, ['disetujui', 'approved', 'verified', 'completed', 'selesai'])) {
+            $statusEnum = SubmissionStatus::APPROVED;
+        } elseif (in_array($normalized, ['ditolak', 'rejected'])) {
+            $statusEnum = SubmissionStatus::REJECTED;
+        } elseif (in_array($normalized, ['aktif', 'active'])) {
+            $letterStatusEnum = LetterTypeStatus::ACTIVE;
+        } elseif (in_array($normalized, ['non-aktif', 'nonaktif', 'inactive'])) {
+            $letterStatusEnum = LetterTypeStatus::INACTIVE;
         } else {
-            $colorClasses = 'bg-gray-100 text-gray-700 border-gray-200';
-            $label = in_array($normalized, ['menunggu', 'pending', 'menunggu persetujuan', 'sedang diproses', 'proses']) ? 'Menunggu' : ucwords((string) $status);
-            $iconType = 'clock';
+            $statusEnum = SubmissionStatus::PENDING;
+        }
+
+        if ($letterStatusEnum) {
+            $colorClasses = $letterStatusEnum->badgeClass();
+            $label = $letterStatusEnum->label();
+            $iconType = $letterStatusEnum->icon();
+        } else {
+            $colorClasses = $statusEnum->badgeClass();
+            $label = $statusEnum->label();
+            $iconType = $statusEnum->icon();
         }
     }
 @endphp
@@ -57,3 +68,4 @@
             {{ $label }}
 @endif
 </span>
+

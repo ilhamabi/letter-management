@@ -1,0 +1,304 @@
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #e2e8f0;
+  font-family: "Times New Roman", Times, serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  margin: 0;
+  padding: 20px 0;
+}
+
+.sheet-wrap {
+  width: 595.28pt;
+  margin: 0 auto;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+}
+
+.page {
+  position: relative;
+  width: 595.28pt;
+  min-height: 841.89pt;
+  height: auto;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+/* Header Component (Kop Surat) */
+.letter-header {
+  position: absolute;
+  top: 20pt;
+  left: 72pt;
+  width: 471.28pt;
+  height: 65pt;
+}
+
+.logo-header {
+  position: absolute;
+  left: 0;
+  top: 4pt;
+  width: 145pt;
+  height: 52pt;
+  object-fit: contain;
+}
+
+.divider {
+  position: absolute;
+  left: 152pt;
+  top: 0;
+  width: 0;
+  border-left: 1pt solid #7a6a94;
+  height: 64pt;
+}
+
+.prodi-text {
+  position: absolute;
+  left: 160pt;
+  top: 0;
+  width: 311.28pt;
+  font-family: Arial, Helvetica, "Liberation Sans", sans-serif;
+  font-size: 6.4pt;
+  line-height: 8.3pt;
+  color: #6b2f66;
+  text-align: justify;
+  font-weight: 700;
+}
+
+.prodi-text b {
+  font-weight: 900;
+}
+
+/* Content Body Container */
+.doc-content {
+  position: relative;
+  width: 471.28pt;
+  margin-left: 72pt;
+  margin-right: 52pt;
+  padding-top: 102pt;
+  padding-bottom: 75pt;
+  font-size: 12pt;
+  line-height: 1.25;
+  font-family: "Times New Roman", Times, serif;
+  text-align: left;
+  color: #000000;
+  box-sizing: border-box;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12pt;
+  line-height: 13.8pt;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.info-table td {
+  vertical-align: top;
+  padding: 0;
+  color: #000000;
+}
+
+.info-table .lbl {
+  width: 108pt;
+}
+
+/* Custom Data Table with Grid Borders */
+.member-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 4pt;
+  margin-bottom: 4pt;
+  font-size: 11pt;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.member-table th,
+.member-table td {
+  border: 1px solid #000000;
+  padding: 5pt 8pt;
+  color: #000000;
+}
+
+.member-table th {
+  font-weight: bold;
+  background-color: #f8fafc;
+  text-align: center;
+}
+
+/* Document Typography & Section Styles */
+.doc-title-main {
+  text-align: center;
+  font-size: 15.96pt;
+  font-weight: bold;
+  letter-spacing: 0.3pt;
+  font-family: 'Times New Roman', Times, serif;
+  margin-bottom: 2pt;
+  color: #000;
+}
+
+.doc-title-sub {
+  text-align: center;
+  font-size: 15.96pt;
+  font-weight: bold;
+  letter-spacing: 0.3pt;
+  font-family: 'Times New Roman', Times, serif;
+  margin-bottom: 12pt;
+  color: #000;
+}
+
+.doc-text-lead {
+  line-height: 1.2;
+}
+
+.doc-text-justify {
+  text-align: justify;
+  text-justify: inter-word;
+  line-height: 14.4pt;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+/* Signature Component */
+.sign-block {
+  margin-top: 15pt;
+  line-height: 1.3;
+  width: 220pt;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.sign-block.text-right {
+  margin-left: auto;
+  text-align: right;
+}
+
+.sign-block.text-left {
+  margin-right: auto;
+  text-align: left;
+}
+
+.sign-block.text-center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.qr-code-img {
+  display: inline-block !important;
+  width: 52pt !important;
+  height: 52pt !important;
+  border: 1px solid #cbd5e1;
+  padding: 2pt;
+  background: #ffffff;
+  border-radius: 4pt;
+  box-sizing: border-box !important;
+}
+
+.qr-code-img svg,
+.qr-code-img img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+/* Footer Component (Attached to bottom of sheet) */
+.letter-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 595.28pt;
+  height: 55pt;
+  pointer-events: none;
+}
+
+.footer-badges {
+  position: absolute;
+  left: 72pt;
+  bottom: 14pt;
+  width: 140pt;
+  height: 38pt;
+}
+
+.footer-badges img {
+  display: inline-block;
+  vertical-align: middle;
+  height: 34pt;
+  width: auto;
+  margin-right: 4pt;
+  object-fit: contain;
+}
+
+.footer-text {
+  position: absolute;
+  left: 240pt;
+  bottom: 14pt;
+  width: 303.28pt;
+  font-family: Arial, Helvetica, "Liberation Sans", sans-serif;
+  font-size: 7.5pt;
+  line-height: 10.5pt;
+  color: #6b2f66;
+  font-weight: 700;
+  text-align: left;
+}
+
+.footer-text b {
+  font-weight: 900;
+}
+
+.footer-text .tagline {
+  font-weight: 900;
+  font-style: italic;
+  font-size: 10pt;
+  margin-top: 1pt;
+  display: block;
+}
+
+.colorbar-table {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 595.28pt;
+  height: 8pt;
+  border-collapse: collapse;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.colorbar-table td {
+  height: 8pt;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+tr,
+table,
+blockquote {
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
+
+.doc-title-main,
+.doc-title-sub,
+.doc-text-lead,
+h1,
+h2,
+h3,
+h4 {
+  page-break-after: avoid !important;
+  break-after: avoid !important;
+}

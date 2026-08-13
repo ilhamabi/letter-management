@@ -1,8 +1,12 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\LetterTypeController;
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\Lecturer\DashboardController as LecturerDashboardController;
 use App\Http\Controllers\Lecturer\SubmissionController as LecturerSubmissionController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PublicVerificationController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\SubmissionController as StudentSubmissionController;
 use Illuminate\Support\Facades\Route;
@@ -11,11 +15,22 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+// Public Letter Verification Route (Scan QR Code)
+Route::get('/verify/{token}', [PublicVerificationController::class, 'verify'])->name('verify.letter');
+
 Route::middleware('auth')
     ->group(function () {
 
+        Route::get('/attachments/{attachment}', [AttachmentController::class, 'show'])->name('attachments.show');
+
         Route::get('/letter/{filename}', function ($filename) {
-            $path = resource_path('views/letter/' . $filename);
+            $path = public_path('letter/' . $filename);
+            if (!file_exists($path)) {
+                $path = resource_path('views/components/letter/' . $filename);
+            }
+            if (!file_exists($path)) {
+                $path = resource_path('views/letter/' . $filename);
+            }
             if (!file_exists($path)) {
                 abort(404);
             }
@@ -37,30 +52,21 @@ Route::middleware('auth')
             ->middleware('role:ADMIN')
             ->group(function () {
 
-                Route::view(
+                Route::get(
                     '/dashboard',
-                    'admin.dashboard'
+                    [AdminDashboardController::class, 'index']
                 )->name('admin.dashboard');
 
                 Route::prefix('letters')->group(function () {
-                    Route::view(
-                        '/',
-                        'admin.letters.index'
-                    )->name('admin.letters.index');
-
-                    Route::view(
-                        '/create',
-                        'admin.letters.create'
-                    )->name('admin.letters.create');
-
-                    Route::view(
-                        '/edit',
-                        'admin.letters.edit'
-                    )->name('admin.letters.edit');
+                    Route::get('/', [LetterTypeController::class, 'index'])->name('admin.letters.index');
+                    Route::get('/create', [LetterTypeController::class, 'create'])->name('admin.letters.create');
+                    Route::post('/', [LetterTypeController::class, 'store'])->name('admin.letters.store');
+                    Route::get('/{letterType}/edit', [LetterTypeController::class, 'edit'])->name('admin.letters.edit');
+                    Route::get('/{letterType}/preview', [LetterTypeController::class, 'preview'])->name('admin.letters.preview');
+                    Route::put('/{letterType}', [LetterTypeController::class, 'update'])->name('admin.letters.update');
+                    Route::delete('/{letterType}', [LetterTypeController::class, 'destroy'])->name('admin.letters.destroy');
                 });
 
-                // Legacy route name alias
-                Route::view('/letters-legacy', 'admin.letters.index')->name('admin.letters');
 
                 Route::view(
                     '/settings',
@@ -97,11 +103,18 @@ Route::middleware('auth')
                         '/{submission}',
                         [StudentSubmissionController::class, 'detail']
                     )->name('student.submissions.detail');
+
+                    Route::get(
+                        '/{submission}/preview',
+                        [StudentSubmissionController::class, 'preview']
+                    )->name('student.submissions.preview');
+
+                    Route::get(
+                        '/{submission}/download',
+                        [StudentSubmissionController::class, 'download']
+                    )->name('student.submissions.download');
                 });
 
-                // Legacy aliases
-                Route::get('/submission-history', [StudentSubmissionController::class, 'index'])->name('student.submission-history');
-                Route::get('/submission', [StudentSubmissionController::class, 'create'])->name('student.submission');
 
                 Route::view(
                     '/settings',
@@ -145,23 +158,16 @@ Route::middleware('auth')
                     )->name('lecturer.submissions.reject');
                 });
 
-                // Legacy approval aliases
-                Route::get('/approval', [LecturerSubmissionController::class, 'index'])->name('lecturer.approval');
-                Route::get('/approval/detail', [LecturerSubmissionController::class, 'show'])->name('lecturer.approval-detail');
-                Route::get('/approval-history', [LecturerSubmissionController::class, 'history'])->name('lecturer.approval-history');
 
                 Route::view(
                     '/settings',
                     'lecturer.settings'
                 )->name('lecturer.settings');
             });
+
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
-
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__ . '/auth.php';

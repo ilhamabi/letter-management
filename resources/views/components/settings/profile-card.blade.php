@@ -8,7 +8,13 @@
 
 <div class="bg-white border border-gray-200 rounded-xl p-6 flex flex-col items-center text-center gap-4 shadow-sm">
     <div class="mb-1">
-        <img class="w-32 h-32 rounded-xl object-cover border border-gray-200 shadow-sm" src="{{ $photo }}" alt="{{ $name }}">
+        @if(!empty($photo) && filter_var($photo, FILTER_VALIDATE_URL))
+            <img class="w-28 h-28 rounded-2xl object-cover border border-gray-200 shadow-sm" src="{{ $photo }}" alt="{{ $name }}">
+        @else
+            <div class="w-28 h-28 rounded-2xl bg-purple-50 text-amikom-purple flex items-center justify-center border border-purple-200 shadow-sm">
+                <x-icon name="person" class="w-16 h-16 text-amikom-purple" />
+            </div>
+        @endif
     </div>
     <div class="flex flex-col items-center gap-1">
         <h4 class="text-lg font-bold text-gray-900 font-title-lg">{{ $name }}</h4>

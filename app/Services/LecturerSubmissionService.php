@@ -18,7 +18,10 @@ class LecturerSubmissionService
 {
     public function __construct(
         protected ApprovalWorkflowService $workflowService,
-        protected StudentDashboardService $studentDashboardService
+        protected StudentDashboardService $studentDashboardService,
+        protected DocumentNamingService $namingService,
+        protected TemplateRendererService $templateRenderer,
+        protected LetterGeneratorService $letterGeneratorService
     ) {}
 
     /**
@@ -316,8 +319,9 @@ class LecturerSubmissionService
      */
     public function getSubmissionDetailData(User $user, Submission $submission): array
     {
-        $submission->load([
+        $submission->loadMissing([
             'student.user',
+            'letterType.activeTemplate',
             'letterType.approvalFlow.steps',
             'approvalFlowStep',
             'assignedToUser',
@@ -325,6 +329,7 @@ class LecturerSubmissionService
             'logs.approvalFlowStep',
             'logs.user',
             'groupMembers.student.user',
+            'generatedLetter',
         ]);
 
         $subDto = $this->studentDashboardService->formatSubmissionDto($submission);
@@ -386,12 +391,21 @@ class LecturerSubmissionService
         // Determine if logged-in lecturer has consecutive approval steps
         $consecutiveStepIds = $this->detectConsecutiveStepsForUser($submission, $user);
 
+        // Render actual HTML document preview using LetterPreviewService for 100% consistent context data binding
+        $letterPreviewService = app(LetterPreviewService::class);
+        $previewView = $letterPreviewService->renderSubmissionView($submission);
+
+        $previewHtml = $previewView->render();
+        $previewFileName = $this->namingService->generateFileName($submission);
+
         return [
             'submission' => $submission,
             'subDto' => $subDto,
             'formattedSteps' => $formattedSteps,
             'consecutiveStepIds' => $consecutiveStepIds,
             'canApprove' => $submission->assigned_to_user_id === $user->id && $submission->status === SubmissionStatus::IN_REVIEW,
+            'previewHtml' => $previewHtml,
+            'previewFileName' => $previewFileName,
         ];
     }
 
