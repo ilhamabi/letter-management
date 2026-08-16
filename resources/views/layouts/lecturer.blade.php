@@ -2,7 +2,7 @@
     $user = auth()->user();
     $lecturer = $user?->lecturer;
     $lecturerName = $user?->name ?? 'Dosen';
-    $nidn = $lecturer?->national_lecturer_number ?? $user?->username ?? '-';
+    $nik = $lecturer?->employee_number ?? $user?->username ?? '-';
     $lecturerPhoto = null;
     $roles = $lecturer ? $lecturer->getActiveRoles() : [];
 @endphp
@@ -13,7 +13,7 @@
     headerTitle="Layanan Dokumen"
     customCss="css/dosen-dashboard.css"
     :userName="$lecturerName"
-    :userSubtext="'NIDN: ' . $nidn"
+    :userSubtext="'NIK: ' . $nik"
     :userPhoto="$lecturerPhoto"
     :roles="$roles"
     mainPadding="p-8"

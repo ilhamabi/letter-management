@@ -1,6 +1,6 @@
 @props([
     'title' => 'Keamanan Akun',
-    'description' => 'Pastikan kata sandi Anda kuat dan panjang kata sandi minimal 6 karakter.',
+    'description' => 'Untuk memperbaharui kata sandi, silakan isi form di bawah ini. Ketentuan: minimal 6 karakter, mengandung kombinasi huruf dan angka.',
     'actionUrl' => null,
 ])
 
@@ -9,26 +9,20 @@
         <h4 class="text-lg font-bold text-gray-900 font-title-lg">{{ $title }}</h4>
         <p class="text-sm text-gray-500 mt-1 font-body-sm">{{ $description }}</p>
     </div>
-    <form @if($actionUrl) action="{{ $actionUrl }}" method="POST" @else type="button" @endif class="flex flex-col gap-4">
+    <form action="{{ route('password.update') }}" method="POST" class="flex flex-col gap-4">
         @csrf
+        @method('PUT')
         
-        <x-input-password 
-            id="current-password" 
-            name="current_password" 
-            label="Kata Sandi Saat Ini" 
-            placeholder="••••••••" 
-        />
-
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <x-input-password 
                 id="new-password" 
-                name="new_password" 
+                name="password" 
                 label="Kata Sandi Baru" 
                 placeholder="••••••••" 
             />
             <x-input-password 
                 id="confirm-password" 
-                name="new_password_confirmation" 
+                name="password_confirmation" 
                 label="Konfirmasi Kata Sandi Baru" 
                 placeholder="••••••••" 
             />

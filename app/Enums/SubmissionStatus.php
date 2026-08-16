@@ -14,7 +14,7 @@ enum SubmissionStatus: string
   {
     return match ($this) {
       self::PENDING => 'Menunggu',
-      self::IN_REVIEW => 'Sedang Diproses',
+      self::IN_REVIEW => 'Diproses',
       self::REJECTED => 'Ditolak',
       self::APPROVED => 'Disetujui',
       self::GENERATED => 'Selesai',

@@ -36,8 +36,9 @@ enum ApprovalRole: string
     {
         return match ($this) {
             self::HEAD_OF_STUDY_PROGRAM => 'bg-amikom-purple',
-            self::ACADEMIC_ADVISOR => 'bg-blue-600',
-            self::INTERNSHIP_SUPERVISOR, self::THESIS_SUPERVISOR => 'bg-emerald-600',
+            self::ACADEMIC_ADVISOR => 'bg-amikom-gold',
+            self::INTERNSHIP_SUPERVISOR, self::THESIS_SUPERVISOR => 'bg-amikom-green',
+            self::THESIS_SUPERVISOR => 'bg-amikom-green',
         };
     }
 

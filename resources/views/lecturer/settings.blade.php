@@ -1,10 +1,10 @@
 @php
     $user = auth()->user();
     $lecturerName = $user?->name ?? 'User';
-    $nidn = $user?->lecturer?->national_lecturer_number ?? $user?->username ?? '-';
+    $nip = $user?->lecturer?->employee_number ?? '-';
     $lecturerEmail = $user?->email ?? '-';
     $lecturerPhoto = null;
-    $roles = $roles ?? [];
+    $roles = $user?->lecturer?->getActiveRoles() ?? [];
 @endphp
 
 @extends('layouts.lecturer')
@@ -27,7 +27,6 @@
         <div class="lg:col-span-1 flex flex-col gap-6">
             <x-settings.profile-card 
                 :name="$lecturerName" 
-                subtext="Dosen Universitas Amikom" 
                 :photo="$lecturerPhoto" 
             />
         </div>
@@ -45,8 +44,8 @@
                         <p class="text-sm font-semibold text-gray-900 py-2">{{ $lecturerName }}</p>
                     </div>
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-xs font-bold uppercase tracking-wider text-gray-500">NIDN</label>
-                        <p class="text-sm font-semibold text-gray-900 py-2">{{ $nidn }}</p>
+                        <label class="text-xs font-bold uppercase tracking-wider text-gray-500">NIP</label>
+                        <p class="text-sm font-semibold text-gray-900 py-2">{{ $nip }}</p>
                     </div>
                     <div class="flex flex-col gap-1.5">
                         <label class="text-xs font-bold uppercase tracking-wider text-gray-500">Alamat Email</label>
@@ -55,9 +54,13 @@
                     <div class="flex flex-col gap-1.5">
                         <label class="text-xs font-bold uppercase tracking-wider text-gray-500">Peran Akademik</label>
                         <div class="flex flex-wrap gap-2 mt-1">
-                            @foreach ($roles as $role)
-                                <span class="text-[10px] font-semibold text-white tracking-wider px-2.5 py-1 rounded-full {{ $role['bg'] }}">{{ $role['name'] }}</span>
-                            @endforeach
+                            @if(!empty($roles))
+                                @foreach ($roles as $role)
+                                    <span class="text-[10px] font-semibold text-white tracking-wider px-2.5 py-1 rounded-full {{ $role['bg'] }}">{{ $role['name'] }}</span>
+                                @endforeach
+                            @else
+                                <span class="text-sm text-gray-500">Tidak ada peran aktif</span>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -92,15 +92,15 @@
         
         @if (count($latestSubmissions) > 0)
             <div class="overflow-x-auto">
-                <table class="w-full text-left">
+                <table class="w-full text-left table-fixed">
                     <thead class="bg-[#F8F9FA] border-b border-gray-200">
-                        <tr>
-                            <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Nama Mahasiswa</th>
-                            <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">NIM</th>
-                            <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Jenis Surat</th>
-                            <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Tanggal Pengajuan</th>
-                            <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Peran Saya</th>
-                            <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider text-center">Status</th>
+<tr>
+                            <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[28%]">Nama Mahasiswa</th>
+                            <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[10%]">NIM</th>
+                            <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[20%]">Jenis Surat</th>
+                            <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[14%]">Tanggal Pengajuan</th>
+                            <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[18%]">Peran Saya</th>
+                            <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[10%] text-center">Status</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 text-sm">
@@ -115,11 +115,11 @@
                                 $myRoles = app(\App\Services\LecturerSubmissionService::class)->getLecturerRolesForSubmission($sub, auth()->user());
                             @endphp
                             <tr class="hover:bg-gray-50 cursor-pointer transition-colors group" onclick="window.location='{{ route('lecturer.submissions.show', $sub->id) }}'">
-                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-900">{{ $studentName }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">{{ $studentNim }}</td>
-                                <td class="px-6 py-4 text-gray-600">{{ $letterType }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">{{ $submittedDate }}</td>
-                                <td class="px-6 py-4">
+                                <td class="px-4 py-3 whitespace-nowrap font-semibold text-gray-900">{{ $studentName }}</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-gray-600">{{ $studentNim }}</td>
+                                <td class="px-4 py-3 text-gray-600 break-words">{{ $letterType }}</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-gray-600">{{ $submittedDate }}</td>
+                                <td class="px-4 py-3">
                                     <div class="flex flex-wrap gap-1">
                                         @forelse($myRoles as $roleItem)
                                             <x-role-badge :role="$roleItem" size="sm" />
@@ -128,7 +128,7 @@
                                         @endforelse
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-center">
+                                <td class="px-4 py-4 text-center">
                                     <x-status-badge :status="$statusValue" size="sm" />
                                 </td>
                             </tr>

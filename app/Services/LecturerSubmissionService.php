@@ -276,8 +276,6 @@ class LecturerSubmissionService
             $roleOptions[] = [
                 'value' => $r['code'],
                 'label' => $r['name'],
-                'badge' => $r['name'],
-                'badgeClass' => 'bg-primary/10 text-primary border-primary/20',
             ];
         }
 
@@ -292,9 +290,9 @@ class LecturerSubmissionService
 
         $statusOptions = [
             ['value' => '', 'label' => 'Semua Status'],
-            ['value' => 'diproses', 'label' => 'Diproses', 'badge' => 'Sedang Diproses', 'badgeClass' => SubmissionStatus::IN_REVIEW->badgeClass()],
-            ['value' => 'disetujui', 'label' => 'Disetujui', 'badge' => 'Disetujui', 'badgeClass' => SubmissionStatus::APPROVED->badgeClass()],
-            ['value' => 'ditolak', 'label' => 'Ditolak', 'badge' => 'Ditolak', 'badgeClass' => SubmissionStatus::REJECTED->badgeClass()],
+            ['value' => 'diproses', 'label' => 'Diproses'],
+            ['value' => 'disetujui', 'label' => 'Disetujui'],
+            ['value' => 'ditolak', 'label' => 'Ditolak'],
         ];
 
         $sortOptions = [

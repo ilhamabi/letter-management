@@ -10,7 +10,7 @@
     </div>
 
     <!-- BEGIN: Combined Filters (Symmetrical 3 Columns x 2 Rows Layout) -->
-    <form action="{{ route('lecturer.submissions.history') }}" method="GET" id="filter-form" class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col gap-5 mb-6">
+    <form action="{{ route('lecturer.submissions.history') }}" method="GET" id="filter-form" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col gap-3 mb-4">
         <div class="flex items-center justify-between border-b border-gray-200/80 pb-3">
             <div class="flex items-center gap-2 text-gray-900 font-semibold text-sm">
                 <x-icon name="filter_list" class="w-5 h-5 text-amikom-purple" />
@@ -29,11 +29,12 @@
             @endif
         </div>
 
-        <!-- Symmetrical 3x2 Filter Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+ <!-- Two-row Filter Layout: Row 1 (Search=5, Peran=2, Jenis=5), Row 2 (Status=4, Angkatan=4, Urutan=4) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-end">
+            <!-- Row 1: Search, Peran, Jenis Surat -->
             <!-- 1. Search Student (Nama / NIM) -->
-            <div class="flex flex-col gap-1.5">
-                <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider" for="searchHistory">Cari Mahasiswa (Nama / NIM)</label>
+            <div class="lg:col-span-5 flex flex-col gap-1">
+                <label class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider" for="searchHistory">Cari Mahasiswa (Nama / NIM)</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                         <x-icon name="search" class="w-4 h-4 text-gray-400" />
@@ -43,8 +44,8 @@
             </div>
 
             <!-- 2. Peran Saya -->
-            <div class="flex flex-col gap-1.5">
-                <label for="filter-role" class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Peran Saya</label>
+            <div class="lg:col-span-2 flex flex-col gap-1">
+                <label for="filter-role" class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Peran Saya</label>
                 <x-select-input 
                     id="filter-role" 
                     name="role" 
@@ -55,8 +56,8 @@
             </div>
 
             <!-- 3. Jenis Surat -->
-            <div class="flex flex-col gap-1.5">
-                <label for="filter-type" class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Jenis Surat</label>
+            <div class="lg:col-span-5 flex flex-col gap-1">
+                <label for="filter-type" class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Jenis Surat</label>
                 <x-select-input 
                     id="filter-type" 
                     name="letter_type_id" 
@@ -66,9 +67,10 @@
                 />
             </div>
 
+            <!-- Row 2: Status, Angkatan, Urutan -->
             <!-- 4. Status Pengajuan -->
-            <div class="flex flex-col gap-1.5">
-                <label for="filter-status" class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Status Pengajuan</label>
+            <div class="lg:col-span-4 flex flex-col gap-1">
+                <label for="filter-status" class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Status Pengajuan</label>
                 <x-select-input 
                     id="filter-status" 
                     name="status" 
@@ -79,8 +81,8 @@
             </div>
 
             <!-- 5. Angkatan -->
-            <div class="flex flex-col gap-1.5">
-                <label for="filter-batch" class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Angkatan</label>
+            <div class="lg:col-span-4 flex flex-col gap-1">
+                <label for="filter-batch" class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Angkatan</label>
                 <x-select-input 
                     id="filter-batch" 
                     name="batch" 
@@ -91,8 +93,8 @@
             </div>
 
             <!-- 6. Urutan Data -->
-            <div class="flex flex-col gap-1.5">
-                <label for="filter-sort" class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Urutan Data</label>
+            <div class="lg:col-span-4 flex flex-col gap-1">
+                <label for="filter-sort" class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Urutan Data</label>
                 <x-select-input 
                     id="filter-sort" 
                     name="sort" 
@@ -108,15 +110,15 @@
     <!-- BEGIN: Data Table -->
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden" data-purpose="data-table">
         <div class="overflow-x-auto min-h-[300px]">
-            <table class="w-full text-left divide-y divide-gray-200">
+            <table class="w-full text-left table-fixed divide-y divide-gray-200">
                 <thead class="bg-[#F8F9FA] border-b border-gray-200">
                     <tr>
-                        <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Nama Mahasiswa</th>
-                        <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">NIM</th>
-                        <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Jenis Surat</th>
-                        <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Tanggal Pengajuan</th>
-                        <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Peran Saya</th>
-                        <th class="px-6 py-4 text-xs font-bold uppercase text-gray-500 tracking-wider text-center">Status</th>
+                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[28%]">Nama Mahasiswa</th>
+                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[10%]">NIM</th>
+                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[20%]">Jenis Surat</th>
+                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[14%]">Tanggal Pengajuan</th>
+                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[18%]">Peran Saya</th>
+                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[10%] text-center">Status</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200 text-sm">
@@ -206,11 +208,11 @@
                                 'attachments' => $attachmentsData,
                                 'logs' => $logsData
                             ]) }})">
-                            <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-900">{{ $studentName }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-gray-600">{{ $studentNim }}</td>
-                            <td class="px-6 py-4 text-gray-600">{{ $letterType }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-gray-600">{{ $submittedDate }}</td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3 whitespace-nowrap font-semibold text-gray-900">{{ $studentName }}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-gray-600">{{ $studentNim }}</td>
+                            <td class="px-4 py-3 text-gray-600 break-words">{{ $letterType }}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-gray-600">{{ $submittedDate }}</td>
+                            <td class="px-4 py-3">
                                 <div class="flex flex-wrap gap-1">
                                     @forelse($myRoles as $roleItem)
                                         <x-role-badge :role="$roleItem" size="sm" />
@@ -219,7 +221,7 @@
                                     @endforelse
                                 </div>
                             </td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-4 py-3 text-center">
                                 <x-status-badge :status="$statusValue" size="sm" />
                             </td>
                         </tr>

@@ -82,8 +82,8 @@
         $subhead = 'Lecturer Services';
         $user = auth()->user();
         $name = $userName ?? ($user?->name ?? 'Heri Setyawan, M.Kom.');
-        $nidn = $user?->lecturer?->national_lecturer_number ?? $user?->username ?? '123456789';
-        $subtext = $userSubtext ?? ('NIDN: ' . $nidn);
+        $nik = $user?->lecturer?->employee_number ?? $user?->username ?? '-';
+        $subtext = $userSubtext ?? ('NIK: ' . $nik);
         $photo = $userPhoto ?? null;
 
         $navItems = [
