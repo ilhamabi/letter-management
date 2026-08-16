@@ -12,6 +12,27 @@ export default {
     theme: {
         extend: {
             colors: {
+                // Material Notification Color Tokens
+                "notification-success": {
+                    bg: "rgb(240 253 244)",
+                    border: "rgb(167 243 208)",
+                    text: "rgb(6 95 70)"
+                },
+                "notification-error": {
+                    bg: "rgb(254 242 242)",
+                    border: "rgb(254 202 202)",
+                    text: "rgb(153 27 27)"
+                },
+                "notification-warning": {
+                    bg: "rgb(254 243 199)",
+                    border: "rgb(252 211 150)",
+                    text: "rgb(120 53 15)"
+                },
+                "notification-info": {
+                    bg: "rgb(239 246 255)",
+                    border: "rgb(191 219 254)",
+                    text: "rgb(30 64 175)"
+                },
                 "amikom-purple": "#431E6D",
                 "amikom-purple-light": "#F3E8FF",
                 "amikom-gold": "#E28800",

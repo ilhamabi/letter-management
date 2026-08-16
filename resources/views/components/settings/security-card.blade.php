@@ -34,4 +34,11 @@
             </button>
         </div>
     </form>
+
+    @if (session('status') === 'password-updated')
+        <x-notification 
+            type="success" 
+            message="Kata sandi berhasil diperbarui! Anda dapat menggunakan kata sandi baru untuk masuk selanjutnya." 
+        />
+    @endif
 </div>
