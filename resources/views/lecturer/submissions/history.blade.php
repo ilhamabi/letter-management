@@ -39,7 +39,7 @@
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                         <x-icon name="search" class="w-4 h-4 text-gray-400" />
                     </div>
-                    <input name="search" value="{{ request('search') }}" onchange="document.getElementById('filter-form').submit()" class="block w-full pl-10 pr-3.5 h-11 text-sm border border-gray-300 rounded-xl bg-gray-50/50 placeholder-gray-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amikom-purple/20 focus:border-amikom-purple transition-all" id="searchHistory" placeholder="Nama atau NIM..." type="text">
+                    <input name="search" value="{{ request('search') }}" oninput="debouncedSearch()" class="block w-full pl-10 pr-3.5 h-11 text-sm border border-gray-300 rounded-xl bg-gray-50/50 placeholder-gray-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amikom-purple/20 focus:border-amikom-purple transition-all" id="searchHistory" placeholder="Nama atau NIM..." type="text">
                 </div>
             </div>
 
@@ -109,9 +109,9 @@
 
     <!-- BEGIN: Data Table -->
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden" data-purpose="data-table">
-        <div class="overflow-x-auto min-h-[300px]">
+        <div class="overflow-x-auto overflow-y-auto max-h-[calc(100vh-22rem)]">
             <table class="w-full text-left table-fixed divide-y divide-gray-200">
-                <thead class="bg-[#F8F9FA] border-b border-gray-200">
+                <thead class="bg-[#F8F9FA] border-b border-gray-200 sticky top-0 z-10">
                     <tr>
                         <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[28%]">Nama Mahasiswa</th>
                         <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[10%]">NIM</th>
@@ -380,6 +380,16 @@ function openHistoryModal(data) {
     } else {
         document.getElementById('history-modal').classList.remove('hidden');
     }
+}
+</script>
+
+<script>
+let searchTimer;
+function debouncedSearch() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+        document.getElementById('filter-form').submit();
+    }, 500);
 }
 </script>
 @endsection

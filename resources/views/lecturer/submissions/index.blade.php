@@ -37,7 +37,7 @@
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                         <x-icon name="search" class="w-4 h-4 text-gray-400" />
                     </div>
-                    <input name="search" value="{{ request('search') }}" onchange="document.getElementById('filter-form').submit()" class="block w-full pl-10 pr-3.5 h-11 text-sm border border-gray-300 rounded-xl bg-gray-50/50 placeholder-gray-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amikom-purple/20 focus:border-amikom-purple transition-all" id="searchStudent" placeholder="Nama atau NIM..." type="text">
+                    <input name="search" value="{{ request('search') }}" oninput="debouncedSearch()" class="block w-full pl-10 pr-3.5 h-11 text-sm border border-gray-300 rounded-xl bg-gray-50/50 placeholder-gray-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amikom-purple/20 focus:border-amikom-purple transition-all" id="searchStudent" placeholder="Nama atau NIM..." type="text">
                 </div>
             </div>
 
@@ -168,4 +168,14 @@
     </div>
     <!-- END: Data Table -->
 </div>
+
+<script>
+let searchTimer;
+function debouncedSearch() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+        document.getElementById('filter-form').submit();
+    }, 500);
+}
+</script>
 @endsection
