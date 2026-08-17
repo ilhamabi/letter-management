@@ -11,6 +11,7 @@ use App\Models\Student;
 use App\Models\StudentLecturer;
 use App\Models\Submission;
 use App\Models\SubmissionAttachment;
+use App\Services\SubmissionAssignmentService;
 use App\Models\SubmissionGroupMember;
 use App\Models\SubmissionLog;
 use App\Models\User;
@@ -112,6 +113,7 @@ class StudentSubmissionService
 
         $letterTypes = LetterType::query()
             ->where('is_active', true)
+            ->with('approvalFlow.steps')
             ->orderBy('name', 'asc')
             ->get();
 
@@ -128,7 +130,43 @@ class StudentSubmissionService
             ->with('lecturer.user')
             ->first()?->lecturer;
 
-        return compact('student', 'letterTypes', 'academicAdvisor', 'kaprodi');
+        $letterTypesWithApprovers = [];
+        foreach ($letterTypes as $type) {
+            $approvers = [];
+            if ($type->approvalFlow && $type->approvalFlow->steps) {
+                $steps = $type->approvalFlow->steps->sortBy('step_order');
+                foreach ($steps as $step) {
+                    try {
+                        $tempSubmission = new Submission([
+                            'student_id' => $student?->id,
+                            'letter_type_id' => $type->id,
+                        ]);
+                        if ($student) {
+                            $tempSubmission->setRelation('student', $student);
+                        }
+                        $approverId = app(SubmissionAssignmentService::class)->resolveApprover($tempSubmission, $step);
+                        $approverUser = User::find($approverId);
+                        $approverName = $approverUser?->name ?? 'Belum Ditentukan';
+                        $lecturer = $approverUser?->lecturer;
+                        $nik = $lecturer?->employee_number ?? '—';
+                        $email = $approverUser?->email ?? '—';
+                    } catch (\Exception $e) {
+                        $approverName = 'Belum Ditentukan';
+                        $nik = '—';
+                        $email = '—';
+                    }
+                    $approvers[] = [
+                        'role' => $step->approval_role?->label() ?? $step->name,
+                        'name' => $approverName,
+                        'nik' => $nik,
+                        'email' => $email,
+                    ];
+                }
+            }
+            $letterTypesWithApprovers[$type->id] = $approvers;
+        }
+
+        return compact('student', 'letterTypes', 'letterTypesWithApprovers', 'academicAdvisor', 'kaprodi');
     }
 
     /**

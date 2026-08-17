@@ -6,8 +6,9 @@
     $user = auth()->user();
     $studentName = $user?->name ?? 'User';
     $nim = $user?->student?->student_number ?? $user?->username ?? '-';
-    $prodi = '-';
+    $prodi = $student?->study_program ?? 'D3 Teknik Informatika';
     $profilePhoto = null;
+    $letterTypesApproversJson = json_encode($letterTypesWithApprovers ?? []);
 
     $createLetterOptions = [];
     if (isset($letterTypes)) {
@@ -331,26 +332,14 @@
                             </div>
                         </div>
                         <div class="pt-4 border-t border-secondary/10">
-                            <p class="text-xs text-on-secondary-container/80 font-bold uppercase tracking-wider mb-2">Dosen Wali</p>
-                            <div class="flex items-start gap-3">
-                                <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
-                                    <x-icon name="person" class="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-on-secondary-container text-[14px]">{{ $academicAdvisor?->user?->name ?? 'Belum Ditentukan' }}</p>
-                                    <p class="text-[12px] text-on-secondary-container/70">NIDN: {{ $academicAdvisor?->national_lecturer_number ?? '—' }}</p>
-                                </div>
-                            </div>
-                            <div class="pt-4 border-t border-secondary/10 mt-4">
-                                <p class="text-xs text-on-secondary-container/80 font-bold uppercase tracking-wider mb-2">Ketua Program Studi</p>
-                                <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
-                                        <x-icon name="person" class="w-5 h-5" />
+                            <p class="text-xs text-on-secondary-container/80 font-bold uppercase tracking-wider mb-2">Dosen Yang Akan Mereview</p>
+                            
+                            <div id="lecturers-list-container" class="space-y-3">
+                                <div class="flex items-center gap-3 p-3 bg-pure-white/20 rounded-lg border border-secondary/10">
+                                    <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary/50 shrink-0">
+                                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
                                     </div>
-                                    <div>
-                                        <p class="font-semibold text-on-secondary-container text-[14px]">{{ $kaprodi?->user?->name ?? 'Belum Ditentukan' }}</p>
-                                        <p class="text-[12px] text-on-secondary-container/70">NIDN: {{ $kaprodi?->national_lecturer_number ?? '—' }}</p>
-                                    </div>
+                                    <p class="text-xs text-on-secondary-container/70 italic">Silakan pilih jenis surat terlebih dahulu untuk melihat dosen yang akan mereview pengajuan Anda.</p>
                                 </div>
                             </div>
                         </div>
@@ -730,6 +719,74 @@
     if (letterTypeSelect) {
         letterTypeSelect.addEventListener('change', toggleGroupMembersSection);
         toggleGroupMembersSection();
+    }
+
+    // Dynamic Lecturer List based on selected letter type
+    const letterTypesApprovers = {!! $letterTypesApproversJson !!};
+    
+    function updateLecturersList() {
+        const selectedLetterTypeId = letterTypeSelect ? letterTypeSelect.value : '';
+        const lecturersContainer = document.getElementById('lecturers-list-container');
+        
+        if (!lecturersContainer) return;
+        
+        lecturersContainer.innerHTML = '';
+        
+        if (!selectedLetterTypeId || selectedLetterTypeId === '') {
+            lecturersContainer.innerHTML = `
+                <div class="flex items-center gap-3 p-3 bg-pure-white/20 rounded-lg border border-secondary/10">
+                    <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary/50 shrink-0">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    </div>
+                    <p class="text-xs text-on-secondary-container/70 italic">Silakan pilih jenis surat terlebih dahulu untuk melihat dosen yang akan mereview pengajuan Anda.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        const approvers = letterTypesApprovers[selectedLetterTypeId] || [];
+        
+        if (approvers.length === 0) {
+            lecturersContainer.innerHTML = `
+                <div class="flex items-center gap-3 p-3 bg-pure-white/20 rounded-lg border border-secondary/10">
+                    <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary/50 shrink-0">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    </div>
+                    <p class="text-xs text-on-secondary-container/70 italic">Belum ada dosen yang ditugaskan untuk jenis surat ini.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        approvers.forEach((approver, index) => {
+            const isFirst = index === 0;
+            const dividerClass = isFirst ? '' : 'border-t border-secondary/10 pt-3 mt-3';
+            
+            const approverHtml = `
+                <div class="${dividerClass}">
+                    <p class="text-[10px] text-on-secondary-container/70 font-bold uppercase tracking-wider mb-2">${approver.role}</p>
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-on-secondary-container text-[14px]">${approver.name}</p>
+                            <p class="text-[11px] text-on-secondary-container/60 mt-0.5">NIP/NIK: ${approver.nik || '—'}</p>
+                            <p class="text-[11px] text-on-secondary-container/60">Email: ${approver.email || '—'}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lecturersContainer.insertAdjacentHTML('beforeend', approverHtml);
+        });
+    }
+    
+    if (letterTypeSelect) {
+        const originalChangeHandler = letterTypeSelect.onchange;
+        letterTypeSelect.addEventListener('change', function() {
+            updateLecturersList();
+        });
+        updateLecturersList();
     }
 
     if (btnAddMember && groupMembersContainer) {

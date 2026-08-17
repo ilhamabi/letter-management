@@ -290,6 +290,8 @@
                             <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
                                 <p class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-0.5">${approver.role}</p>
                                 <p class="text-xs font-bold text-gray-900">${approver.name}</p>
+                                <p class="text-[10px] text-gray-500 mt-0.5">NIP/NIK: ${approver.nik || '—'}</p>
+                                <p class="text-[10px] text-gray-500">Email: ${approver.email || '—'}</p>
                             </div>
                         `;
                         approversGrid.insertAdjacentHTML('beforeend', approverCard);

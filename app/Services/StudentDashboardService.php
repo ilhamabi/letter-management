@@ -135,19 +135,26 @@ class StudentDashboardService
         if ($approvalFlow && $approvalFlow->steps && $approvalFlow->steps->isNotEmpty()) {
             $flowSteps = $approvalFlow->steps->sortBy('step_order');
             foreach ($flowSteps as $step) {
-                try {
-                    $approverId = app(SubmissionAssignmentService::class)->resolveApprover($submission, $step);
-                    $approverUser = User::find($approverId);
-                    $approverName = $approverUser?->name ?? 'Belum Ditentukan';
-                } catch (\Exception $e) {
-                    $approverName = 'Belum Ditentukan';
-                }
-                $approvers[] = [
-                    'role' => $step->approval_role?->label() ?? $step->name,
-                    'name' => $approverName,
-                    'source' => $step->approver_source?->value ?? 'UNKNOWN',
-                    'step_order' => $step->step_order ?? 0,
-                ];
+                    try {
+                        $approverId = app(SubmissionAssignmentService::class)->resolveApprover($submission, $step);
+                        $approverUser = User::find($approverId);
+                        $approverName = $approverUser?->name ?? 'Belum Ditentukan';
+                        $lecturer = $approverUser?->lecturer;
+                        $nik = $lecturer?->employee_number ?? '—';
+                        $email = $approverUser?->email ?? '—';
+                    } catch (\Exception $e) {
+                        $approverName = 'Belum Ditentukan';
+                        $nik = '—';
+                        $email = '—';
+                    }
+                    $approvers[] = [
+                        'role' => $step->approval_role?->label() ?? $step->name,
+                        'name' => $approverName,
+                        'nik' => $nik,
+                        'email' => $email,
+                        'source' => $step->approver_source?->value ?? 'UNKNOWN',
+                        'step_order' => $step->step_order ?? 0,
+                    ];
             }
         }
 
