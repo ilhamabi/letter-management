@@ -35,6 +35,13 @@
         </div>
     </form>
 
+    @if ($errors->updatePassword->any())
+        <x-notification 
+            type="error" 
+            message="{{ $errors->updatePassword->first() }}" 
+        />
+    @endif
+
     @if (session('status') === 'password-updated')
         <x-notification 
             type="success" 
