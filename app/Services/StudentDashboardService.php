@@ -2,11 +2,8 @@
 
 namespace App\Services;
 
-use App\Enums\ApprovalRole;
 use App\Enums\SubmissionLogStatus;
 use App\Enums\SubmissionStatus;
-use App\Models\LecturerPosition;
-use App\Models\StudentLecturer;
 use App\Models\Submission;
 use App\Models\User;
 
@@ -133,26 +130,24 @@ class StudentDashboardService
 
         $timeline = $this->buildTimeline($submission);
 
-        $academicAdvisorName = 'Dosen Wali';
-        $kaprodiName = 'Kaprodi';
-        if ($submission->student) {
-            $advisor = StudentLecturer::query()
-                ->where('student_id', $submission->student->id)
-                ->where('lecturer_role', ApprovalRole::ACADEMIC_ADVISOR->value)
-                ->where('is_active', true)
-                ->with('lecturer.user')
-                ->first()?->lecturer;
-            if ($advisor?->user?->name) {
-                $academicAdvisorName = $advisor->user->name;
-            }
-
-            $kaprodi = LecturerPosition::query()
-                ->where('position', ApprovalRole::HEAD_OF_STUDY_PROGRAM->value)
-                ->where('is_active', true)
-                ->with('lecturer.user')
-                ->first()?->lecturer;
-            if ($kaprodi?->user?->name) {
-                $kaprodiName = $kaprodi->user->name;
+        $approvers = [];
+        $approvalFlow = $submission->letterType?->approvalFlow;
+        if ($approvalFlow && $approvalFlow->steps && $approvalFlow->steps->isNotEmpty()) {
+            $flowSteps = $approvalFlow->steps->sortBy('step_order');
+            foreach ($flowSteps as $step) {
+                try {
+                    $approverId = app(SubmissionAssignmentService::class)->resolveApprover($submission, $step);
+                    $approverUser = User::find($approverId);
+                    $approverName = $approverUser?->name ?? 'Belum Ditentukan';
+                } catch (\Exception $e) {
+                    $approverName = 'Belum Ditentukan';
+                }
+                $approvers[] = [
+                    'role' => $step->approval_role?->label() ?? $step->name,
+                    'name' => $approverName,
+                    'source' => $step->approver_source?->value ?? 'UNKNOWN',
+                    'step_order' => $step->step_order ?? 0,
+                ];
             }
         }
 
@@ -183,8 +178,7 @@ class StudentDashboardService
             'members' => $members,
             'purpose' => $submission->purpose ?? 'Pengajuan dokumen akademik',
             'additional_data' => $submission->additional_data,
-            'lecturer' => $academicAdvisorName,
-            'kaprodi' => $kaprodiName,
+            'approvers' => $approvers,
             'time' => $submittedTime . ' WIB',
             'attachments' => $attachments,
             'timeline' => $timeline,

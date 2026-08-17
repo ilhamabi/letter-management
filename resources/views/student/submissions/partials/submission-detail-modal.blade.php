@@ -30,15 +30,8 @@
 
         <div>
             <p class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold mb-2">DOSEN DITUJU</p>
-            <div class="grid grid-cols-2 gap-3">
-                <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
-                    <p class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-0.5">Dosen Wali</p>
-                    <p class="text-xs font-bold text-gray-900" id="modal-lecturer">Heri Setyawan, M.Kom.</p>
-                </div>
-                <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
-                    <p class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-0.5">Kaprodi</p>
-                    <p class="text-xs font-bold text-gray-900" id="modal-kaprodi">Andi Afandi, M.T.</p>
-                </div>
+            <div id="modal-approvers-grid" class="grid grid-cols-2 gap-3">
+                <!-- Will be populated dynamically by JS -->
             </div>
         </div>
 
@@ -287,10 +280,25 @@
 
             // Update Details
             document.getElementById('modal-purpose').innerText = data.purpose || 'Pengajuan dokumen akademik';
-            document.getElementById('modal-lecturer').innerText = data.lecturer || 'Belum Ditentukan';
-            if (document.getElementById('modal-kaprodi')) {
-                document.getElementById('modal-kaprodi').innerText = data.kaprodi || 'Belum Ditentukan';
+            
+            const approversGrid = document.getElementById('modal-approvers-grid');
+            if (approversGrid) {
+                if (data.approvers && data.approvers.length > 0) {
+                    approversGrid.innerHTML = '';
+                    data.approvers.forEach(approver => {
+                        const approverCard = `
+                            <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+                                <p class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-0.5">${approver.role}</p>
+                                <p class="text-xs font-bold text-gray-900">${approver.name}</p>
+                            </div>
+                        `;
+                        approversGrid.insertAdjacentHTML('beforeend', approverCard);
+                    });
+                } else {
+                    approversGrid.innerHTML = '<p class="text-xs text-gray-500 italic col-span-2">Belum ada dosen dituju</p>';
+                }
             }
+            
             if (document.getElementById('modal-nim')) {
                 document.getElementById('modal-nim').innerText = data.nim || data.creatorNim || '-';
             }
