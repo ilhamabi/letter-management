@@ -58,13 +58,16 @@ class LetterPreviewService
         $signers = $this->letterGenerator->extractSignersContext($submission);
         $qrToken = $submission->generatedLetter?->qr_token ?? ('PREVIEW-SR-' . $submission->id);
 
+        $embeddedCss = 'body { background: #ffffff !important; padding: 0 !important; overflow: hidden !important; } .sheet-wrap { box-shadow: none !important; margin: 0 auto !important; max-width: 100% !important; }';
+
         return $this->renderer->renderFullDocumentView(
             $bodyTemplateHtml,
             $contextData,
             [],
             $submission->letterType?->name ?? 'Surat Resmi AMIKOM',
             $signers,
-            $qrToken
+            $qrToken,
+            $embeddedCss
         );
     }
 

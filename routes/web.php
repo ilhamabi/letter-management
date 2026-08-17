@@ -12,8 +12,8 @@ use App\Http\Controllers\Student\SubmissionController as StudentSubmissionContro
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('auth.login');
-});
+    return redirect()->route('login');
+})->middleware('guest');
 
 // Public Letter Verification Route (Scan QR Code)
 Route::get('/verify/{token}', [PublicVerificationController::class, 'verify'])->name('verify.letter');

@@ -3,6 +3,7 @@
     :signers="$signers ?? null" 
     :signatureProps="$signatureProps ?? null" 
     :qrToken="$qrToken ?? 'DEMO-TOKEN-2026'"
-    :isPlaceholder="$isPlaceholderMode ?? false">
+    :isPlaceholder="$isPlaceholderMode ?? false"
+    :customCss="$customCss ?? null">
     {!! $bodyContent !!}
 </x-letter.layout>

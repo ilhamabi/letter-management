@@ -3,7 +3,7 @@
 ])
 
 @php
-    $logo = $logoUrl ?? url('/letter/logo-amikom.png');
+    $logo = $logoUrl ?? 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('letter/images/logo-amikom.png')));
 @endphp
 
 <!-- ===== KOP SURAT (HEADER) ===== -->

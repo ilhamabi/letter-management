@@ -5,16 +5,16 @@
 ])
 
 @php
-    $isoLogo = $isoLogoUrl ?? url('/letter/ISO9001.webp');
-    $jasAnzLogo = $jasAnzLogoUrl ?? url('/letter/jas-anz.svg');
-    $iafLogo = $iafLogoUrl ?? url('/letter/IAF.svg');
+    $isoLogo = $isoLogoUrl ?? 'data:image/webp;base64,' . base64_encode(file_get_contents(public_path('letter/images/ISO9001.webp')));
+    $jasAnzLogo = $jasAnzLogoUrl ?? 'data:image/svg+xml;base64,' . base64_encode(file_get_contents(public_path('letter/images/jas-anz.svg')));
+    $iafLogo = $iafLogoUrl ?? 'data:image/svg+xml;base64,' . base64_encode(file_get_contents(public_path('letter/images/IAF.svg')));
 @endphp
 
 <!-- ===== FOOTER SURAT ===== -->
 <div class="letter-footer">
     <div class="footer-badges">
         <img src="{{ $isoLogo }}" alt="ISO 9001 Logo" style="height: 38pt; width: auto; display: inline-block;">
-        <img src="{{ $jasAnzLogo }}" alt="JAS-ANZ Logo" style="height: 38pt; width: auto; display: inline-block;">
+        <img src="{{ $jasAnzLogo }}" alt="JAS-ANZ Logo" style="height: 38pt; width: 38pt; display: inline-block;">
         <img src="{{ $iafLogo }}" alt="IAF Logo" style="height: 24pt; width: auto; display: inline-block;">
     </div>
 

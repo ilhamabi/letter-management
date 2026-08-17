@@ -78,29 +78,24 @@
                 <div class="bg-white border border-gray-200 rounded-xl flex flex-col shadow-sm">
                     <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white flex-wrap gap-3">
                         <div class="flex items-center gap-3">
-                            <x-icon name="description" class="w-5 h-5 text-primary" />
+                            <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-amikom-purple border border-purple-100 shrink-0">
+                                <x-icon name="description" class="w-5 h-5 text-primary" />
+                            </div>
                             <div>
                                 <h3 class="font-label-lg text-label-lg text-gray-900 font-bold">
                                     {{ $previewFileName }}
                                 </h3>
-                                <p class="text-[12px] text-gray-400 font-body-sm">Preview Surat dengan Data Submission Aktual</p>
+                                <p class="text-[12px] text-gray-400 font-body-sm">Pratinjau Dokumen Resmi (A4)</p>
                             </div>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button 
-                                type="button" 
-                                onclick="openModal('full-preview-modal')"
-                                class="px-3.5 py-2 text-primary hover:bg-primary/10 border border-primary/20 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer text-xs font-bold font-label-sm">
-                                <x-icon name="visibility" class="w-4 h-4" />
-                                <span>Buka Preview Ukuran Penuh</span>
-                            </button>
                         </div>
                     </div>
                     
-                    <div class="flex-1 bg-[#888888] overflow-hidden rounded-b-xl min-h-[760px] flex justify-center items-center p-4">
+                    <div class="flex-1 bg-white overflow-x-auto rounded-b-xl p-2 sm:p-4 flex justify-center items-start">
                         <iframe 
                             srcdoc="{!! e($previewHtml) !!}" 
-                            class="w-full h-[760px] border-0 shadow-lg bg-white rounded-sm"
+                            class="w-[596pt] max-w-full h-[1140px] border border-gray-100 shadow-sm bg-white rounded-sm"
+                            style="overflow: hidden;"
+                            scrolling="no"
                             title="Preview Surat Dosen">
                         </iframe>
                     </div>
@@ -570,32 +565,4 @@
         </form>
     </x-modal>
 
-    <!-- Full-Screen Letter Preview Modal -->
-    <x-modal id="full-preview-modal" title="Preview Surat Ukuran Penuh: {{ $previewFileName }}" maxWidth="max-w-5xl" padding="p-6">
-        <x-slot:subtitle>
-            Verifikasi tampilan dokumen resmi A4 yang akan dihasilkan sistem sebelum memberikan persetujuan.
-        </x-slot:subtitle>
-
-        <div class="bg-[#888888] p-6 rounded-xl flex justify-center shadow-inner">
-            <iframe 
-                srcdoc="{!! e($previewHtml) !!}" 
-                class="w-[600pt] h-[860pt] border-0 shadow-2xl bg-white rounded"
-                style="overflow: hidden;"
-                scrolling="no"
-                title="Preview Surat Dosen Full Screen">
-            </iframe>
-        </div>
-
-        <x-slot:footer>
-            <div class="flex items-center justify-between w-full flex-wrap gap-3">
-                <span class="text-xs text-gray-500 font-medium">Nama File Hasil: <strong class="text-gray-900 font-bold">{{ $previewFileName }}</strong></span>
-                <button 
-                    type="button" 
-                    class="py-2.5 px-6 bg-primary text-white rounded-xl font-bold hover:bg-primary-container transition-colors shadow-sm cursor-pointer"
-                    onclick="typeof closeModal === 'function' ? closeModal('full-preview-modal') : document.getElementById('full-preview-modal').classList.add('hidden')">
-                    Tutup Preview
-                </button>
-            </div>
-        </x-slot:footer>
-    </x-modal>
 @endsection

@@ -30,16 +30,8 @@ class AuthenticatedSessionController extends Controller
 
         $user = $request->user();
 
-        if ($user->isAdmin()) {
-            return redirect()->route('admin.dashboard');
-        }
-
-        if ($user->isStudent()) {
-            return redirect()->route('student.dashboard');
-        }
-
-        if ($user->isLecturer()) {
-            return redirect()->route('lecturer.dashboard');
+        if ($user) {
+            return redirect()->intended($user->getDashboardUrl());
         }
 
         abort(403);

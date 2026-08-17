@@ -39,7 +39,8 @@ class TemplateRendererService
         array $signatureProps = [], 
         string $documentTitle = 'Surat Resmi - Universitas AMIKOM Yogyakarta',
         ?array $signers = null,
-        ?string $qrToken = null
+        ?string $qrToken = null,
+        ?string $customCss = null
     ) {
         $renderedBody = $this->bodyRenderer->render($bodyHtml, $contextData);
 
@@ -49,6 +50,7 @@ class TemplateRendererService
             'signers' => $signers,
             'qrToken' => $qrToken ?? 'VERIFY-TOKEN-2026',
             'documentTitle' => $documentTitle,
+            'customCss' => $customCss,
         ]);
     }
 }

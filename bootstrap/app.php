@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,6 +15,15 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);
+
+        $middleware->redirectTo(
+            guests: '/login',
+            users: function (Request $request) {
+                /** @var \App\Models\User|null $user */
+                $user = $request->user();
+                return $user ? $user->getDashboardUrl() : route('login');
+            }
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

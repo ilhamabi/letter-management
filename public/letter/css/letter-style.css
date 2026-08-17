@@ -11,7 +11,7 @@
 
 body {
   background: #e2e8f0;
-  font-family: "Times New Roman", Times, serif;
+  font-family: Times, serif;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
   margin: 0;
@@ -39,8 +39,8 @@ body {
 .letter-header {
   position: absolute;
   top: 20pt;
-  left: 72pt;
-  width: 471.28pt;
+  left: 108pt;
+  width: 380pt;
   height: 65pt;
 }
 
@@ -66,17 +66,17 @@ body {
   position: absolute;
   left: 160pt;
   top: 0;
-  width: 311.28pt;
-  font-family: Arial, Helvetica, "Liberation Sans", sans-serif;
+  width: 220pt;
+  font-family: sans-serif;
   font-size: 6.4pt;
   line-height: 8.3pt;
   color: #6b2f66;
   text-align: justify;
-  font-weight: 700;
+  font-weight: normal;
 }
 
 .prodi-text b {
-  font-weight: 900;
+  font-weight: bold;
 }
 
 /* Content Body Container */
@@ -89,7 +89,7 @@ body {
   padding-bottom: 75pt;
   font-size: 12pt;
   line-height: 1.25;
-  font-family: "Times New Roman", Times, serif;
+  font-family: Times, serif;
   text-align: left;
   color: #000000;
   box-sizing: border-box;
@@ -100,7 +100,7 @@ body {
   border-collapse: collapse;
   font-size: 12pt;
   line-height: 13.8pt;
-  font-family: "Times New Roman", Times, serif;
+  font-family: Times, serif;
 }
 
 .info-table td {
@@ -120,7 +120,7 @@ body {
   margin-top: 4pt;
   margin-bottom: 4pt;
   font-size: 11pt;
-  font-family: "Times New Roman", Times, serif;
+  font-family: Times, serif;
 }
 
 .member-table th,
@@ -142,7 +142,7 @@ body {
   font-size: 15.96pt;
   font-weight: bold;
   letter-spacing: 0.3pt;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: Times, serif;
   margin-bottom: 2pt;
   color: #000;
 }
@@ -152,7 +152,7 @@ body {
   font-size: 15.96pt;
   font-weight: bold;
   letter-spacing: 0.3pt;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: Times, serif;
   margin-bottom: 12pt;
   color: #000;
 }
@@ -246,20 +246,20 @@ body {
   left: 240pt;
   bottom: 14pt;
   width: 303.28pt;
-  font-family: Arial, Helvetica, "Liberation Sans", sans-serif;
+  font-family: sans-serif;
   font-size: 7.5pt;
   line-height: 10.5pt;
   color: #6b2f66;
-  font-weight: 700;
+  font-weight: normal;
   text-align: left;
 }
 
 .footer-text b {
-  font-weight: 900;
+  font-weight: bold;
 }
 
 .footer-text .tagline {
-  font-weight: 900;
+  font-weight: bold;
   font-style: italic;
   font-size: 10pt;
   margin-top: 1pt;
@@ -301,4 +301,15 @@ h3,
 h4 {
   page-break-after: avoid !important;
   break-after: avoid !important;
+}
+
+@media print {
+  body {
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  .sheet-wrap {
+    box-shadow: none !important;
+    margin: 0 !important;
+  }
 }

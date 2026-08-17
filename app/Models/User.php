@@ -47,6 +47,20 @@ class User extends Authenticatable
         return $this->role === UserRole::LECTURER;
     }
 
+    public function getDashboardRouteName(): string
+    {
+        return match ($this->role) {
+            UserRole::ADMIN => 'admin.dashboard',
+            UserRole::STUDENT => 'student.dashboard',
+            UserRole::LECTURER => 'lecturer.dashboard',
+        };
+    }
+
+    public function getDashboardUrl(): string
+    {
+        return route($this->getDashboardRouteName());
+    }
+
     public function student()
     {
         return $this->hasOne(Student::class);
