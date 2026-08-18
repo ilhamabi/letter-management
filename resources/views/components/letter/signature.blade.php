@@ -43,10 +43,10 @@
 
 <!-- ===== BLOK TANDA TANGAN UNIVERSAL (ADMIN PLACEHOLDER & ACTUAL MODE) ===== -->
 @if($isPlaceholder)
-    <!-- MODE ADMIN PREVIEW (MURNI PLACEHOLDER VARS) -->
+    <!-- MODE ADMIN PREVIEW (SAMPLE DATA) -->
     <div class="sign-block text-right" style="margin-top: 10pt; width: 220pt;">
-        <div>&#123;&#123;approval_city&#125;&#125;, &#123;&#123;approval_date&#125;&#125;</div>
-        <div style="font-weight: bold;">&#123;&#123;final_approver_role&#125;&#125;</div>
+        <div>Yogyakarta, 11 September 2025</div>
+        <div style="font-weight: bold;">Ketua Program Studi</div>
 
         <!-- Placeholder QR Code Box -->
         <div style="margin-top: 3pt; margin-bottom: 3pt; display: inline-block; text-align: center;">
@@ -58,8 +58,8 @@
             </div>
         </div>
 
-        <div style="font-weight: bold; margin-top: 2pt; white-space: normal; word-break: break-word;">&#123;&#123;final_approver_name&#125;&#125;</div>
-        <div>NIK/NIDN. &#123;&#123;final_approver_nidn&#125;&#125;</div>
+        <div style="font-weight: bold; margin-top: 2pt; white-space: normal; word-break: break-word;">Dr. Barka Satya, M.Kom</div>
+        <div>NIK/NIDN. 190302126</div>
     </div>
 @elseif(!$isMultiSigner)
     <!-- MODE SURAT ACTUAL (SINGLE SIGNER) -->

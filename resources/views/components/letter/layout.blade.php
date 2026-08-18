@@ -6,6 +6,7 @@
     'isPlaceholder' => false,
     'includePrintScript' => true,
     'customCss' => null,
+    'enableToggle' => false,
 ])
 
 <!DOCTYPE html>
@@ -24,6 +25,25 @@
     @endif
 </head>
 <body>
+    @if($enableToggle)
+        <!-- Toggle Button (Sticky Top-Right) -->
+        <div id="preview-mode-toggle" class="preview-toggle">
+            <span class="preview-toggle-title">Mode Preview:</span>
+            <div class="preview-toggle-group">
+                <span class="preview-toggle-label" id="toggle-label-sample">Sample Data</span>
+                <button 
+                    type="button"
+                    id="toggle-switch"
+                    class="preview-switch"
+                    role="switch"
+                    aria-checked="true"
+                    aria-labelledby="toggle-label">
+                    <span class="preview-switch-indicator" id="toggle-indicator"></span>
+                </button>
+                <span class="preview-toggle-label" id="toggle-label-raw">Raw Placeholder</span>
+            </div>
+        </div>
+    @endif
     <div class="sheet-wrap">
         <div class="page">
             <!-- Kop Surat Component -->
@@ -68,6 +88,174 @@
                     }, 500);
                 }
             });
+        </script>
+    @endif
+
+    @if($enableToggle)
+        <style>
+            /* ===== Toggle Button Container ===== */
+            .preview-toggle {
+                position: fixed;
+                top: 24px;
+                right: 24px;
+                z-index: 50;
+                background: #ffffff;
+                border-radius: 12px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+                border: 1px solid #e5e7eb;
+                padding: 16px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-family: Arial, sans-serif;
+                animation: fadeInDown 0.3s ease-out;
+            }
+
+            .preview-toggle-title {
+                font-size: 14px;
+                font-weight: 600;
+                color: #374151;
+            }
+
+            .preview-toggle-group {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .preview-toggle-label {
+                font-size: 12px;
+                font-weight: 500;
+                color: #6b7280;
+            }
+
+            /* ===== Toggle Switch ===== */
+            .preview-switch {
+                position: relative;
+                display: inline-flex;
+                height: 24px;
+                width: 44px;
+                align-items: center;
+                border-radius: 9999px;
+                background-color: #431E6D;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.2s;
+                outline: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .preview-switch:focus {
+                box-shadow: 0 0 0 2px #431E6D, 0 0 0 4px #ffffff;
+            }
+
+            .preview-switch[aria-checked="false"] {
+                background-color: #9ca3af;
+            }
+
+            .preview-switch-indicator {
+                display: inline-block;
+                height: 16px;
+                width: 16px;
+                border-radius: 9999px;
+                background-color: #ffffff;
+                transition: transform 0.2s;
+                transform: translateX(24px);
+            }
+
+            .preview-switch[aria-checked="false"] .preview-switch-indicator {
+                transform: translateX(4px);
+            }
+
+            /* ===== Body Version Visibility ===== */
+            .body-version { transition: none; }
+            .body-version.active { display: block; }
+            .body-version.hidden { display: none; }
+
+            /* ===== Raw Mode Placeholder Pill (Blue) ===== */
+            #body-raw .placeholder-pill {
+                background-color: #dbeafe;
+                border: 1px solid #3b82f6;
+                color: #1e40af;
+                padding: 0.125rem 0.375rem;
+                border-radius: 0.25rem;
+                font-family: 'Courier New', monospace;
+                font-size: 0.875em;
+                font-weight: 600;
+                white-space: nowrap;
+                display: inline-block;
+            }
+
+            @keyframes fadeInDown {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            @media (max-width: 640px) {
+                .preview-toggle { top: 16px; right: 16px; padding: 12px; }
+            }
+
+            @media print {
+                .preview-toggle { display: none !important; }
+            }
+        </style>
+
+        <script>
+            (function() {
+                const toggleSwitch = document.getElementById('toggle-switch');
+                const toggleIndicator = document.getElementById('toggle-indicator');
+                const bodySample = document.getElementById('body-sample');
+                const bodyRaw = document.getElementById('body-raw');
+
+                if (!toggleSwitch || !bodySample || !bodyRaw) return;
+
+                let isSampleMode = true;
+
+                function togglePreviewMode() {
+                    isSampleMode = !isSampleMode;
+
+                    toggleSwitch.setAttribute('aria-checked', isSampleMode);
+
+                    if (isSampleMode) {
+                        toggleIndicator.style.transform = 'translateX(1.5rem)';
+                        toggleSwitch.style.backgroundColor = '#431E6D';
+                    } else {
+                        toggleIndicator.style.transform = 'translateX(0.25rem)';
+                        toggleSwitch.style.backgroundColor = '#9ca3af';
+                    }
+
+                    if (isSampleMode) {
+                        bodySample.classList.remove('hidden');
+                        bodySample.classList.add('active');
+                        bodyRaw.classList.remove('active');
+                        bodyRaw.classList.add('hidden');
+                    } else {
+                        bodyRaw.classList.remove('hidden');
+                        bodyRaw.classList.add('active');
+                        bodySample.classList.remove('active');
+                        bodySample.classList.add('hidden');
+                    }
+
+                    try {
+                        localStorage.setItem('adminPreviewMode', isSampleMode ? 'sample' : 'raw');
+                    } catch (e) {}
+                }
+
+                try {
+                    const savedMode = localStorage.getItem('adminPreviewMode');
+                    if (savedMode === 'raw') togglePreviewMode();
+                } catch (e) {}
+
+                toggleSwitch.addEventListener('click', togglePreviewMode);
+
+                toggleSwitch.addEventListener('keydown', function(e) {
+                    if (e.key === ' ' || e.key === 'Enter') {
+                        e.preventDefault();
+                        togglePreviewMode();
+                    }
+                });
+            })();
         </script>
     @endif
 </body>

@@ -21,12 +21,16 @@ class TemplateRendererService
      */
     public function renderAdminPreview(string $bodyHtml, string $documentTitle = 'Preview Template Surat (Mode Admin)')
     {
-        $renderedBody = $this->bodyRenderer->render($bodyHtml, []);
+        // Generate both versions
+        $bodySample = $this->bodyRenderer->render($bodyHtml, ['is_admin_preview' => true]);
+        $bodyRaw = $bodyHtml;
 
         return view('letter.preview', [
-            'bodyContent' => $renderedBody,
+            'bodyContentSample' => $bodySample,
+            'bodyContentRaw' => $bodyRaw,
             'isPlaceholderMode' => true,
             'documentTitle' => $documentTitle,
+            'enableToggle' => true,
         ]);
     }
 
