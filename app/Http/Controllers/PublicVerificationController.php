@@ -29,24 +29,6 @@ class PublicVerificationController extends Controller
         ->first();
 
         if (!$generatedLetter || !$generatedLetter->submission) {
-            $submissionId = null;
-            if (preg_match('/PREVIEW-.*?(\d+)$/i', $token, $matches)) {
-                $submissionId = (int)$matches[1];
-            }
-
-            if ($submissionId) {
-                $submission = \App\Models\Submission::with(['student.user', 'letterType'])->find($submissionId);
-                if ($submission) {
-                    return view('verify.show', [
-                        'isValid' => false,
-                        'isPending' => true,
-                        'token' => $token,
-                        'submission' => $submission,
-                        'message' => 'Dokumen surat ini masih dalam tahap pratinjau / verifikasi persetujuan dosen dan belum diterbitkan secara resmi.',
-                    ]);
-                }
-            }
-
             return view('verify.show', [
                 'isValid' => false,
                 'isPending' => false,
@@ -59,7 +41,7 @@ class PublicVerificationController extends Controller
 
         // Verify that submission is actually approved
         $isApproved = $submission->status === SubmissionStatus::APPROVED 
-            || $submission->status->value === 'APPROVED';
+            || $submission->status === SubmissionStatus::GENERATED;
 
         if (!$isApproved) {
             return view('verify.show', [

@@ -22,9 +22,9 @@ class RoleMiddleware
             abort(403);
         }
 
-        $requiredRole = UserRole::from($role);
+        $requiredRole = UserRole::tryFrom($role);
 
-        if ($user->role->value !== $requiredRole->value) {
+        if (! $requiredRole || $user->role->value !== $requiredRole->value) {
             abort(403);
         }
 

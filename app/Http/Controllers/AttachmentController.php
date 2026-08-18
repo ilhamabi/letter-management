@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SubmissionAttachment;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,6 +14,8 @@ class AttachmentController extends Controller
      */
     public function show(SubmissionAttachment $attachment): Response
     {
+        Gate::authorize('view', $attachment);
+
         $path = $attachment->file_path;
 
         if (Storage::disk('public')->exists($path)) {

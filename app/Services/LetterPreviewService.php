@@ -39,7 +39,7 @@ class LetterPreviewService
      * @param array<string, mixed> $extraContext
      * @return View
      */
-    public function renderSubmissionView(Submission $submission, array $extraContext = []): View
+    public function renderSubmissionView(Submission $submission, array $extraContext = [], bool $isIframeMode = false): View
     {
         $submission->loadMissing([
             'letterType.activeTemplate',
@@ -58,7 +58,10 @@ class LetterPreviewService
         $signers = $this->letterGenerator->extractSignersContext($submission);
         $qrToken = $submission->generatedLetter?->qr_token ?? ('PREVIEW-SR-' . $submission->id);
 
-        $embeddedCss = 'body { background: #ffffff !important; padding: 0 !important; overflow: hidden !important; } .sheet-wrap { box-shadow: none !important; margin: 0 auto !important; max-width: 100% !important; }';
+        $embeddedCss = null;
+        if ($isIframeMode || !empty($extraContext['is_iframe'])) {
+            $embeddedCss = 'body { background: #ffffff !important; padding: 0 !important; overflow: hidden !important; } .sheet-wrap { box-shadow: none !important; margin: 0 auto !important; max-width: 100% !important; }';
+        }
 
         return $this->renderer->renderFullDocumentView(
             $bodyTemplateHtml,
@@ -204,36 +207,38 @@ class LetterPreviewService
      */
     protected function resolveLecturers($student): array
     {
-        $academicAdvisor = StudentLecturer::query()
-            ->where('student_id', $student?->id)
-            ->where('lecturer_role', ApprovalRole::ACADEMIC_ADVISOR->value)
+        $studentLecturers = collect();
+        if ($student?->id) {
+            $studentLecturers = StudentLecturer::query()
+                ->where('student_id', $student->id)
+                ->where('is_active', true)
+                ->with('lecturer.user')
+                ->get();
+        }
+
+        $positions = LecturerPosition::query()
             ->where('is_active', true)
             ->with('lecturer.user')
-            ->first()?->lecturer;
+            ->get();
 
-        $supervisor = StudentLecturer::query()
-            ->where('student_id', $student?->id)
-            ->whereIn('lecturer_role', [
+        $academicAdvisor = $studentLecturers->firstWhere('lecturer_role', ApprovalRole::ACADEMIC_ADVISOR->value)?->lecturer;
+
+        $supervisor = $studentLecturers->first(function ($sl) {
+            $role = is_object($sl->lecturer_role) ? $sl->lecturer_role->value : (string) $sl->lecturer_role;
+            return in_array($role, [
                 ApprovalRole::THESIS_SUPERVISOR->value,
                 ApprovalRole::INTERNSHIP_SUPERVISOR->value,
                 'THESIS_SUPERVISOR',
                 'INTERNSHIP_SUPERVISOR',
-            ])
-            ->where('is_active', true)
-            ->with('lecturer.user')
-            ->first()?->lecturer;
+            ], true);
+        })?->lecturer;
 
-        $kaprodi = LecturerPosition::query()
-            ->where('position', ApprovalRole::HEAD_OF_STUDY_PROGRAM->value)
-            ->where('is_active', true)
-            ->with('lecturer.user')
-            ->first()?->lecturer;
+        $kaprodi = $positions->firstWhere('position', ApprovalRole::HEAD_OF_STUDY_PROGRAM->value)?->lecturer;
 
-        $dekan = LecturerPosition::query()
-            ->whereIn('position', ['DEAN', 'DEKAN', 'dekan', ApprovalRole::HEAD_OF_STUDY_PROGRAM->value])
-            ->where('is_active', true)
-            ->with('lecturer.user')
-            ->first()?->lecturer;
+        $dekan = $positions->first(function ($pos) {
+            $p = is_object($pos->position) ? $pos->position->value : (string) $pos->position;
+            return in_array($p, ['DEAN', 'DEKAN', 'dekan', ApprovalRole::HEAD_OF_STUDY_PROGRAM->value], true);
+        })?->lecturer;
 
         return [
             'academicAdvisor' => $academicAdvisor,

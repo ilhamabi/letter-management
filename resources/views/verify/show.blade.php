@@ -19,7 +19,7 @@
     <header class="bg-white border-b border-gray-200 shadow-xs">
         <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <img src="{{ url('/letter/logo-amikom.png') }}" alt="Logo AMIKOM" class="h-10 w-auto object-contain">
+                <img src="{{ url('/letter/images/logo-amikom.png') }}" alt="Logo AMIKOM" class="h-10 w-auto object-contain">
                 <div class="border-l border-gray-300 pl-3">
                     <h1 class="text-sm font-bold text-gray-900 leading-tight">Universitas AMIKOM Yogyakarta</h1>
                     <p class="text-xs text-gray-500">Sistem Verifikasi Dokumen Resmi</p>
