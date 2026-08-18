@@ -53,7 +53,7 @@
             <select 
                 id="{{ $selectId }}" 
                 class="text-xs font-bold bg-white border border-gray-300 px-3.5 py-2 rounded-lg outline-none text-amikom-purple cursor-pointer hover:border-amikom-purple transition-all focus:ring-2 focus:ring-amikom-purple/20 shadow-2xs font-label-sm">
-                <option disabled selected>+ SISIPKAN PLACEHOLDER</option>
+                <option value="" disabled selected>+ SISIPKAN PLACEHOLDER</option>
                 @foreach($groupedPlaceholders as $group)
                     <optgroup class="text-[10px] text-gray-400 bg-gray-50 font-bold uppercase" label="{{ strtoupper($group['group']) }}">
                         @foreach($group['items'] as $item)

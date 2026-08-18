@@ -247,11 +247,11 @@ export function initLetterEditor(editorSelector = '#letter-template-editor', sel
             if (selectEl) {
                 selectEl.addEventListener('change', function () {
                     const val = this.value;
-                    if (!val) return;
+                    if (!val || val === '+ SISIPKAN PLACEHOLDER') return;
 
                     const pillHtml = `<span class="placeholder-pill" contenteditable="false">${val}</span>&nbsp;`;
                     editor.insertContent(pillHtml);
-                    this.selectedIndex = 0;
+                    this.value = '';
                     processPlaceholderFormatting(editor);
                 });
             }
@@ -259,6 +259,4 @@ export function initLetterEditor(editorSelector = '#letter-template-editor', sel
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    initLetterEditor();
-});
+
