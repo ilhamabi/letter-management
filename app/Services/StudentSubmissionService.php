@@ -131,8 +131,12 @@ class StudentSubmissionService
             ->first()?->lecturer;
 
         $letterTypesWithApprovers = [];
+        $assignmentService = app(SubmissionAssignmentService::class);
+
+        $resolvedMap = [];
+        $allApproverIds = [];
+
         foreach ($letterTypes as $type) {
-            $approvers = [];
             if ($type->approvalFlow && $type->approvalFlow->steps) {
                 $steps = $type->approvalFlow->steps->sortBy('step_order');
                 foreach ($steps as $step) {
@@ -144,17 +148,40 @@ class StudentSubmissionService
                         if ($student) {
                             $tempSubmission->setRelation('student', $student);
                         }
-                        $approverId = app(SubmissionAssignmentService::class)->resolveApprover($tempSubmission, $step);
-                        $approverUser = User::find($approverId);
-                        $approverName = $approverUser?->name ?? 'Belum Ditentukan';
-                        $lecturer = $approverUser?->lecturer;
-                        $nik = $lecturer?->employee_number ?? '—';
-                        $email = $approverUser?->email ?? '—';
+                        $approverId = $assignmentService->resolveApprover($tempSubmission, $step);
+                        if ($approverId) {
+                            $resolvedMap[$type->id][$step->id] = $approverId;
+                            $allApproverIds[] = $approverId;
+                        }
                     } catch (\Exception $e) {
-                        $approverName = 'Belum Ditentukan';
-                        $nik = '—';
-                        $email = '—';
+                        // Suppress resolution errors gracefully
                     }
+                }
+            }
+        }
+
+        $approverUsers = [];
+        if (!empty($allApproverIds)) {
+            $approverUsers = User::query()
+                ->whereIn('id', array_unique($allApproverIds))
+                ->with('lecturer')
+                ->get()
+                ->keyBy('id');
+        }
+
+        foreach ($letterTypes as $type) {
+            $approvers = [];
+            if ($type->approvalFlow && $type->approvalFlow->steps) {
+                $steps = $type->approvalFlow->steps->sortBy('step_order');
+                foreach ($steps as $step) {
+                    $approverId = $resolvedMap[$type->id][$step->id] ?? null;
+                    $approverUser = $approverId ? ($approverUsers[$approverId] ?? null) : null;
+
+                    $approverName = $approverUser?->name ?? 'Belum Ditentukan';
+                    $lecturer = $approverUser?->lecturer;
+                    $nik = $lecturer?->employee_number ?? '—';
+                    $email = $approverUser?->email ?? '—';
+
                     $approvers[] = [
                         'role' => $step->approval_role?->label() ?? $step->name,
                         'name' => $approverName,

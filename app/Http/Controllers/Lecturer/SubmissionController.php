@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Lecturer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Lecturer\ApproveSubmissionRequest;
+use App\Http\Requests\Lecturer\RejectSubmissionRequest;
 use App\Models\Submission;
 use App\Services\LecturerSubmissionService;
 use Illuminate\Http\RedirectResponse;
@@ -48,10 +50,11 @@ class SubmissionController extends Controller
     /**
      * Handle approval action for a submission (including batch approval for consecutive roles).
      */
-    public function approve(Request $request, Submission $submission, LecturerSubmissionService $lecturerService): RedirectResponse
+    public function approve(ApproveSubmissionRequest $request, Submission $submission, LecturerSubmissionService $lecturerService): RedirectResponse
     {
-        $notes = $request->input('notes');
-        $stepsToApprove = (int) $request->input('steps_to_approve', 1);
+        $validated = $request->validated();
+        $notes = $validated['notes'] ?? null;
+        $stepsToApprove = (int) ($validated['steps_to_approve'] ?? 1);
 
         try {
             $lecturerService->approveSubmission($request->user(), $submission, $notes, $stepsToApprove);
@@ -60,6 +63,7 @@ class SubmissionController extends Controller
                 ->route('lecturer.submissions.index')
                 ->with('success', 'Pengajuan surat berhasil disetujui!');
         } catch (\Throwable $e) {
+            logger()->error('Lecturer approve error: ' . $e->getMessage(), ['exception' => $e]);
             return back()->with('error', $e->getMessage());
         }
     }
@@ -67,25 +71,23 @@ class SubmissionController extends Controller
     /**
      * Handle rejection action for a submission.
      */
-    public function reject(Request $request, Submission $submission, LecturerSubmissionService $lecturerService): RedirectResponse
+    public function reject(RejectSubmissionRequest $request, Submission $submission, LecturerSubmissionService $lecturerService): RedirectResponse
     {
-        $request->validate([
-            'reason' => 'required|string',
-            'notes' => 'nullable|string|max:1000',
-        ]);
+        $validated = $request->validated();
 
         try {
             $lecturerService->rejectSubmission(
                 $request->user(),
                 $submission,
-                $request->input('reason'),
-                $request->input('notes')
+                $validated['reason'],
+                $validated['notes'] ?? null
             );
 
             return redirect()
                 ->route('lecturer.submissions.index')
                 ->with('success', 'Pengajuan surat telah ditolak.');
         } catch (\Throwable $e) {
+            logger()->error('Lecturer reject error: ' . $e->getMessage(), ['exception' => $e]);
             return back()->with('error', $e->getMessage());
         }
     }

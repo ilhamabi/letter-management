@@ -391,7 +391,7 @@ class LecturerSubmissionService
 
         // Render actual HTML document preview using LetterPreviewService for 100% consistent context data binding
         $letterPreviewService = app(LetterPreviewService::class);
-        $previewView = $letterPreviewService->renderSubmissionView($submission);
+        $previewView = $letterPreviewService->renderSubmissionView($submission, [], true);
 
         $previewHtml = $previewView->render();
         $previewFileName = $this->namingService->generateFileName($submission);

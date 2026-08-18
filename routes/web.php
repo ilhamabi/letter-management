@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\LetterTypeController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\Lecturer\DashboardController as LecturerDashboardController;
 use App\Http\Controllers\Lecturer\SubmissionController as LecturerSubmissionController;
+use App\Http\Controllers\LetterAssetController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicVerificationController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
@@ -22,31 +23,7 @@ Route::middleware('auth')
     ->group(function () {
 
         Route::get('/attachments/{attachment}', [AttachmentController::class, 'show'])->name('attachments.show');
-
-        Route::get('/letter/{filename}', function ($filename) {
-            $path = public_path('letter/' . $filename);
-            if (!file_exists($path)) {
-                $path = resource_path('views/components/letter/' . $filename);
-            }
-            if (!file_exists($path)) {
-                $path = resource_path('views/letter/' . $filename);
-            }
-            if (!file_exists($path)) {
-                abort(404);
-            }
-
-            $mimeType = match (pathinfo($filename, PATHINFO_EXTENSION)) {
-                'css' => 'text/css',
-                'png' => 'image/png',
-                'webp' => 'image/webp',
-                'svg' => 'image/svg+xml',
-                'html' => 'text/html',
-                default => 'text/plain',
-            };
-
-            return response(file_get_contents($path))
-                ->header('Content-Type', $mimeType);
-        });
+        Route::get('/letter/{filename}', [LetterAssetController::class, 'show'])->name('letter.asset');
 
         Route::prefix('admin')
             ->middleware('role:ADMIN')
@@ -58,13 +35,40 @@ Route::middleware('auth')
                 )->name('admin.dashboard');
 
                 Route::prefix('letters')->group(function () {
-                    Route::get('/', [LetterTypeController::class, 'index'])->name('admin.letters.index');
-                    Route::get('/create', [LetterTypeController::class, 'create'])->name('admin.letters.create');
-                    Route::post('/', [LetterTypeController::class, 'store'])->name('admin.letters.store');
-                    Route::get('/{letterType}/edit', [LetterTypeController::class, 'edit'])->name('admin.letters.edit');
-                    Route::get('/{letterType}/preview', [LetterTypeController::class, 'preview'])->name('admin.letters.preview');
-                    Route::put('/{letterType}', [LetterTypeController::class, 'update'])->name('admin.letters.update');
-                    Route::delete('/{letterType}', [LetterTypeController::class, 'destroy'])->name('admin.letters.destroy');
+                    Route::get(
+                        '/',
+                        [LetterTypeController::class, 'index']
+                    )->name('admin.letters.index');
+
+                    Route::get(
+                        '/create',
+                        [LetterTypeController::class, 'create']
+                    )->name('admin.letters.create');
+
+                    Route::post(
+                        '/',
+                        [LetterTypeController::class, 'store']
+                    )->name('admin.letters.store');
+
+                    Route::get(
+                        '/{letterType}/edit',
+                        [LetterTypeController::class, 'edit']
+                    )->name('admin.letters.edit');
+
+                    Route::get(
+                        '/{letterType}/preview',
+                        [LetterTypeController::class, 'preview']
+                    )->name('admin.letters.preview');
+
+                    Route::put(
+                        '/{letterType}',
+                        [LetterTypeController::class, 'update']
+                    )->name('admin.letters.update');
+
+                    Route::delete(
+                        '/{letterType}',
+                        [LetterTypeController::class, 'destroy']
+                    )->name('admin.letters.destroy');
                 });
 
 
@@ -165,9 +169,20 @@ Route::middleware('auth')
                 )->name('lecturer.settings');
             });
 
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get(
+            '/profile',
+            [ProfileController::class, 'edit']
+        )->name('profile.edit');
+
+        Route::patch(
+            '/profile',
+            [ProfileController::class, 'update']
+        )->name('profile.update');
+
+        Route::delete(
+            '/profile',
+            [ProfileController::class, 'destroy']
+        )->name('profile.destroy');
     });
 
 require __DIR__ . '/auth.php';
