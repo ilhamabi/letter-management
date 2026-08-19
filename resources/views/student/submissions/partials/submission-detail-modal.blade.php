@@ -94,7 +94,7 @@
                 <x-icon name="visibility" class="w-4 h-4 text-emerald-700" />
                 <span>Pratinjau Surat</span>
             </a>
-            <a id="btn-download-approved-doc" href="#" download class="flex-1 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs">
+            <a id="btn-download-approved-doc" href="#" class="flex-1 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs">
                 <x-icon name="download" class="w-4 h-4" />
                 <span>Unduh / Cetak Surat</span>
             </a>
@@ -350,7 +350,6 @@
                     if (btnPreviewDoc) btnPreviewDoc.href = data.previewUrl || `/student/submissions/${data.id}/preview`;
                     if (btnDownloadDoc) {
                         btnDownloadDoc.href = data.downloadUrl || `/student/submissions/${data.id}/download`;
-                        btnDownloadDoc.download = data.fileName || 'Surat_Resmi.pdf';
                     }
                 } else {
                     approvedDocSection.classList.add('hidden');
