@@ -1,13 +1,17 @@
 #!/bin/sh
 set -e
 
-# APP_KEY sudah di-set permanen lewat Environment Variable di Coolify,
-# jadi TIDAK perlu key:generate di sini.
+cd /var/www/html
 
-php artisan migrate --force
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+# Buat .env kalau belum ada (Coolify biasanya sudah inject env vars langsung,
+# tapi ini jaga-jaga kalau butuh file .env fisik)
+if [ ! -f .env ] && [ -f .env.example ]; then
+    cp .env.example .env
+fi
 
-php-fpm -D
-nginx -g "daemon off;"
+php artisan config:cache || true
+php artisan route:cache || true
+php artisan view:cache || true
+php artisan storage:link || true
+
+exec "$@"
