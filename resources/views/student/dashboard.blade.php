@@ -21,10 +21,14 @@
         class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-pure-white p-8 rounded-xl border border-outline-variant w-full">
         <div>
             <h2 class="font-headline-md text-headline-md text-on-surface mb-2">Selamat datang kembali,
-                {{ explode(' ', $studentName)[0] }}</h2>
+                {{ $studentName }}</h2>
             <p class="font-body-md text-body-md text-on-surface-variant">Berikut ikhtisar permintaan dokumen akademik Anda.
             </p>
         </div>
+    <div class="bg-amikom-purple text-white px-4 py-2 rounded-lg flex items-center gap-2 shrink-0">
+        <x-icon name="calendar_today" class="w-4 h-4" />
+        <span class="text-sm font-medium">{{ Carbon\Carbon::now('Asia/Jakarta')->locale('id')->isoFormat('D MMMM Y') }}</span>
+    </div>
     </section>
 
     <!-- Quick Stats Components -->
