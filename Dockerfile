@@ -5,6 +5,11 @@ FROM node:20-bookworm-slim AS node-builder
 
 WORKDIR /app
 
+# Stage ini cuma butuh Node untuk build assets (vite), tidak butuh Chrome
+# Puppeteer sama sekali. Skip auto-download Chrome supaya npm ci tidak
+# gagal/lambat karena mendownload browser yang tidak dipakai di sini.
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+
 COPY package.json package-lock.json ./
 RUN npm ci
 
@@ -94,6 +99,12 @@ COPY --from=composer-builder /app/vendor ./vendor
 COPY --from=node-builder /app/public/build ./public/build
 
 # ---- Node runtime deps (only "dependencies", not devDependencies) ----
+# Skip Puppeteer's own auto-download here too — we explicitly install
+# chrome-headless-shell in the next step instead.
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+# Force a fixed, known cache dir so both the install step (run as root)
+# and the app at runtime (run as www-data) look in the same place.
+ENV PUPPETEER_CACHE_DIR=/var/www/.cache/puppeteer
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
@@ -104,13 +115,13 @@ RUN npx puppeteer browsers install chrome-headless-shell
 RUN php artisan package:discover --ansi || true
 
 # ---- Permissions ----
-RUN chown -R www-data:www-data /var/www/html \
+RUN chown -R www-data:www-data /var/www/html /var/www/.cache \
     && chmod -R 775 storage bootstrap/cache
 
 # ---- Config files ----
-COPY docker/nginx.conf /etc/nginx/sites-available/default
-COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY nginx.conf /etc/nginx/sites-available/default
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 80
