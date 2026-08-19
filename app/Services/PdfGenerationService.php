@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Models\Submission;
-use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\Browsershot\Browsershot;
+use Spatie\LaravelPdf\Facades\Pdf;
+use Spatie\LaravelPdf\PdfBuilder;
 
 class PdfGenerationService
 {
@@ -15,38 +16,64 @@ class PdfGenerationService
     /**
      * Generate direct PDF download HTTP response for a submission.
      *
-     * @param Submission $submission
-     * @param string $htmlContent
-     * @return \Spatie\LaravelPdf\PdfBuilder
+     * @return PdfBuilder
      */
     public function downloadPdf(Submission $submission, string $htmlContent)
     {
         $fileName = $this->namingService->generateFileName($submission);
-        
-        return Pdf::html($htmlContent)
-            ->format('a4')
-            ->withBrowsershot(function (Browsershot $browsershot) {
-                $browsershot->noSandbox();
-            })
-            ->download($fileName);
+
+        try {
+            return Pdf::html($htmlContent)
+                ->format('a4')
+                ->withBrowsershot(function (Browsershot $browsershot) {
+                    $this->configureBrowsershot($browsershot);
+                })
+                ->download($fileName);
+        } catch (\Throwable $e) {
+            report($e);
+            abort(500, 'Gagal membuat PDF: '.$e->getMessage());
+        }
     }
 
     /**
      * Generate direct inline PDF preview HTTP response for browser.
      *
-     * @param Submission $submission
-     * @param string $htmlContent
-     * @return \Spatie\LaravelPdf\PdfBuilder
+     * @return PdfBuilder
      */
     public function streamPdf(Submission $submission, string $htmlContent)
     {
         $fileName = $this->namingService->generateFileName($submission);
-        
-        return Pdf::html($htmlContent)
-            ->format('a4')
-            ->withBrowsershot(function (Browsershot $browsershot) {
-                $browsershot->noSandbox();
-            })
-            ->inline($fileName);
+
+        try {
+            return Pdf::html($htmlContent)
+                ->format('a4')
+                ->withBrowsershot(function (Browsershot $browsershot) {
+                    $this->configureBrowsershot($browsershot);
+                })
+                ->inline($fileName);
+        } catch (\Throwable $e) {
+            report($e);
+            abort(500, 'Gagal membuat PDF: '.$e->getMessage());
+        }
+    }
+
+    /**
+     * Configure Browsershot/Chromium with Docker/ARM64-safe launch flags.
+     *
+     * The --disable-dev-shm-usage flag is critical inside containers where
+     * /dev/shm is too small, which otherwise causes Chromium to hang or crash.
+     */
+    private function configureBrowsershot(Browsershot $browsershot): void
+    {
+        $browsershot->noSandbox();
+        $browsershot->addChromiumArguments([
+            '--disable-dev-shm-usage',
+            '--disable-gpu',
+            '--disable-setuid-sandbox',
+            '--disable-extensions',
+            '--disable-plugins',
+            '--disable-software-rasterizer',
+        ]);
+        $browsershot->timeout(60);
     }
 }
