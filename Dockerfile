@@ -39,6 +39,9 @@ RUN composer install \
 ########################################
 FROM php:8.3-fpm-bookworm AS runtime
 
+# TARGETARCH is auto-populated by Docker BuildKit (e.g. "amd64" or "arm64")
+ARG TARGETARCH
+
 # ---- System dependencies ----
 RUN apt-get update && apt-get install -y --no-install-recommends \
     nginx \
@@ -72,6 +75,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
 
+# ---- ARM64 only: Chrome-for-Testing/chrome-headless-shell has no native ----
+# ---- Linux ARM64 build, so we install Debian's system chromium instead ----
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+        apt-get update \
+        && apt-get install -y --no-install-recommends chromium \
+        && rm -rf /var/lib/apt/lists/*; \
+    fi
+
 # ---- PHP extensions ----
 RUN docker-php-ext-configure gd --with-jpeg --with-freetype \
     && docker-php-ext-install -j$(nproc) \
@@ -99,23 +110,22 @@ COPY --from=composer-builder /app/vendor ./vendor
 COPY --from=node-builder /app/public/build ./public/build
 
 # ---- Node runtime deps (only "dependencies", not devDependencies) ----
-# Skip Puppeteer's own auto-download here too — we explicitly install
-# chrome-headless-shell in the next step instead.
 ENV PUPPETEER_SKIP_DOWNLOAD=true
-# Force a fixed, known cache dir so both the install step (run as root)
-# and the app at runtime (run as www-data) look in the same place.
-ENV PUPPETEER_CACHE_DIR=/var/www/.cache/puppeteer
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-# ---- Install headless Chrome used by Puppeteer/Browsershot ----
-RUN npx puppeteer browsers install chrome-headless-shell
+# ---- Install Chrome for Puppeteer/Browsershot ----
+# amd64: download official chrome-headless-shell (native build exists)
+# arm64: skip download, we already installed system "chromium" via apt above
+RUN if [ "$TARGETARCH" != "arm64" ]; then \
+        npx puppeteer browsers install chrome-headless-shell; \
+    fi
 
 # ---- Laravel post-install steps ----
 RUN php artisan package:discover --ansi || true
 
 # ---- Permissions ----
-RUN chown -R www-data:www-data /var/www/html /var/www/.cache \
+RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 storage bootstrap/cache
 
 # ---- Config files ----
