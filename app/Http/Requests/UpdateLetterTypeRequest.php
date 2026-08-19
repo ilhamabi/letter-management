@@ -28,7 +28,7 @@ class UpdateLetterTypeRequest extends FormRequest
 
         return [
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:20|unique:letter_types,code,' . $letterTypeId,
+            'code' => 'required|string|max:3|unique:letter_types,code,' . $letterTypeId,
             'description' => 'nullable|string',
             'approval_flow_id' => 'required|exists:approval_flows,id',
             'is_active' => 'required|boolean',

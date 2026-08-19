@@ -14,7 +14,7 @@ class LetterTemplateSeeder extends Seeder
     public function run(): void
     {
         // 1. Template: Surat Persetujuan TA Jalur Non-Reguler (Kelompok)
-        $typeNonReg = LetterType::where('code', 'SP-TA-NONREG')->first();
+        $typeNonReg = LetterType::where('code', 'STN')->first();
         if ($typeNonReg) {
             LetterTemplate::updateOrCreate(
                 ['letter_type_id' => $typeNonReg->id, 'name' => 'Template Persetujuan TA Non-Reguler (Kelompok)'],
@@ -26,7 +26,7 @@ class LetterTemplateSeeder extends Seeder
         }
 
         // 2. Template: Surat Rekomendasi Magang (Individu)
-        $typeMagang = LetterType::where('code', 'SR-MAGANG')->first();
+        $typeMagang = LetterType::where('code', 'SRM')->first();
         if ($typeMagang) {
             LetterTemplate::updateOrCreate(
                 ['letter_type_id' => $typeMagang->id, 'name' => 'Template Rekomendasi Magang (Individu)'],
@@ -38,7 +38,7 @@ class LetterTemplateSeeder extends Seeder
         }
 
         // 3. Template: Surat Rekomendasi Pendaftaran Pendadaran (Individu)
-        $typePendadaran = LetterType::where('code', 'SR-PENDADARAN')->first();
+        $typePendadaran = LetterType::where('code', 'SRP')->first();
         if ($typePendadaran) {
             LetterTemplate::updateOrCreate(
                 ['letter_type_id' => $typePendadaran->id, 'name' => 'Template Rekomendasi Pendaftaran Pendadaran (Individu)'],

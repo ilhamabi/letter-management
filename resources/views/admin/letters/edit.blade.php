@@ -82,10 +82,11 @@
                             id="code" 
                             name="code" 
                             value="{{ old('code', $letterType->code) }}" 
-                            placeholder="Contoh: SKA" 
+                            placeholder="Contoh: SRM" 
+                            maxlength="3"
                             required 
                             class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-900 uppercase font-mono font-bold focus:ring-2 focus:ring-amikom-purple focus:border-amikom-purple focus:bg-white transition-all">
-                        <p class="text-[11px] text-gray-500 font-body-sm">Singkatan unik untuk kode pengarsipan dokumen.</p>
+                        <p class="text-[11px] text-gray-500 font-body-sm">Singkatan unik untuk kode pengarsipan dokumen (Maksimal 3 huruf, contoh: SRM, STN, SRP).</p>
                     </div>
 
                     <!-- Status Keaktifan -->

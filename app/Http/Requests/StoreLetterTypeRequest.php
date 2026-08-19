@@ -23,7 +23,7 @@ class StoreLetterTypeRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:20|unique:letter_types,code',
+            'code' => 'required|string|max:3|unique:letter_types,code',
             'description' => 'nullable|string',
             'approval_flow_id' => 'required|exists:approval_flows,id',
             'is_active' => 'required|boolean',

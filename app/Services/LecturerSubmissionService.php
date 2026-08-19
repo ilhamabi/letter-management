@@ -223,6 +223,23 @@ class LecturerSubmissionService
             });
         }
 
+        // Filter by approval date range (kapan dosen melakukan persetujuan)
+        if (!empty($filters['approval_from'])) {
+            $from = $filters['approval_from'];
+            $query->whereHas('logs', function ($q) use ($userId, $from) {
+                $q->where('user_id', $userId)
+                  ->whereDate('created_at', '>=', $from);
+            });
+        }
+
+        if (!empty($filters['approval_to'])) {
+            $to = $filters['approval_to'];
+            $query->whereHas('logs', function ($q) use ($userId, $to) {
+                $q->where('user_id', $userId)
+                  ->whereDate('created_at', '<=', $to);
+            });
+        }
+
         $sortOrder = ($filters['sort'] ?? 'newest') === 'oldest' ? 'asc' : 'desc';
         $submissions = $query->orderBy('submitted_at', $sortOrder)
             ->paginate(10)
@@ -238,22 +255,30 @@ class LecturerSubmissionService
      */
     public function getAvailableBatches(): array
     {
-        return Student::query()
+        $students = Student::query()
             ->where(function ($q) {
                 $q->whereNotNull('batch_year')
                   ->orWhereNotNull('student_number');
             })
-            ->selectRaw("DISTINCT CASE 
-                WHEN batch_year IS NOT NULL AND batch_year != '' THEN CAST(batch_year AS CHAR)
-                WHEN student_number LIKE '20%' THEN SUBSTRING(student_number, 1, 4)
-                ELSE CONCAT('20', SUBSTRING(student_number, 1, 2))
-            END as cohort_year")
-            ->havingRaw("cohort_year BETWEEN '2000' AND '2099'")
-            ->orderBy('cohort_year', 'desc')
-            ->pluck('cohort_year')
-            ->filter()
-            ->values()
-            ->toArray();
+            ->get(['batch_year', 'student_number']);
+
+        return $students->map(function ($s) {
+            if (!empty($s->batch_year)) {
+                return (string) $s->batch_year;
+            }
+            if (!empty($s->student_number)) {
+                if (str_starts_with($s->student_number, '20')) {
+                    return substr($s->student_number, 0, 4);
+                }
+                return '20' . substr($s->student_number, 0, 2);
+            }
+            return null;
+        })
+        ->filter(fn($b) => !empty($b) && is_numeric($b) && (int)$b >= 2000 && (int)$b <= 2099)
+        ->unique()
+        ->sortDesc()
+        ->values()
+        ->toArray();
     }
 
     /**

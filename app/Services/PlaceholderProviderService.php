@@ -174,7 +174,7 @@ class PlaceholderProviderService
                         'aliases' => ['{{Nomor Surat}}'],
                         'label' => 'Nomor Surat Resmi',
                         'description' => 'Nomor registrasi surat yang di-generate sistem',
-                        'sample' => '41/FIK-D3TI/AMIKOM/VI/2026',
+                        'sample' => 'SRM/1/D3TI/AMIKOM/VIII/2026',
                     ],
                     [
                         'key' => '{{purpose}}',
@@ -284,7 +284,7 @@ class PlaceholderProviderService
         }
 
         // Additional fallbacks for document components
-        $samples['{{letter_number}}'] = '41/FIK-D3TI/AMIKOM/VI/2026';
+        $samples['{{letter_number}}'] = 'SRM/1/D3TI/AMIKOM/VIII/2026';
         $samples['{{print_date}}'] = '11 September 2025';
         $samples['{{approval_date}}'] = '11 September 2025';
 

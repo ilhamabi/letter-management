@@ -89,10 +89,12 @@ class LetterPreviewService
         $groupData = $this->buildGroupMembersData($submission, $student);
         $lecturers = $this->resolveLecturers($student);
 
-        $letterCode = $submission->letterType ? strtoupper($submission->letterType->code) : 'SK';
+        $letterCode = $submission->letterType && !empty($submission->letterType->code)
+            ? strtoupper(trim($submission->letterType->code))
+            : 'SK';
         $romanMonth = $this->getRomanMonth((int) date('n'));
         $year = date('Y');
-        $previewNumber = sprintf('PRATINJAU/%s-%03d/AMIKOM/%s/%s', $letterCode, $submission->id, $romanMonth, $year);
+        $previewNumber = sprintf('%s/PRATINJAU-%d/D3TI/AMIKOM/%s/%s', $letterCode, $submission->id, $romanMonth, $year);
 
         $academicAdvisor = $lecturers['academicAdvisor'];
         $supervisor = $lecturers['supervisor'];

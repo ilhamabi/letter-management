@@ -27,9 +27,9 @@ class SubmissionSeeder extends Seeder
         $eka = Student::where('student_number', '23.01.0005')->first();
 
         // 3 Official Seeded Letter Types
-        $typeNonReg = LetterType::where('code', 'SP-TA-NONREG')->first();
-        $typeMagang = LetterType::where('code', 'SR-MAGANG')->first();
-        $typePendadaran = LetterType::where('code', 'SR-PENDADARAN')->first();
+        $typeNonReg = LetterType::where('code', 'STN')->first();
+        $typeMagang = LetterType::where('code', 'SRM')->first();
+        $typePendadaran = LetterType::where('code', 'SRP')->first();
 
         if (!$typeNonReg || !$typeMagang || !$typePendadaran) {
             return;

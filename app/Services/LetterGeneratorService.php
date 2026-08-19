@@ -27,11 +27,35 @@ class LetterGeneratorService
             },
         ]);
 
-        $letterCode = $submission->letterType ? strtoupper($submission->letterType->code) : 'SK';
-        $romanMonth = $this->getRomanMonth((int) date('n'));
-        $year = date('Y');
+        $existingLetter = GeneratedLetter::where('submission_id', $submission->id)->first();
+        if ($existingLetter && !empty($existingLetter->letter_number)) {
+            return $existingLetter;
+        }
 
-        $letterNumber = sprintf('%s-%03d/AMIKOM/%s/%s', $letterCode, $submission->id, $romanMonth, $year);
+        $letterCode = $submission->letterType && !empty($submission->letterType->code)
+            ? strtoupper(trim($submission->letterType->code))
+            : 'SK';
+
+        $now = now();
+        $year = $now->format('Y');
+        $month = (int) $now->format('n');
+        $romanMonth = $this->getRomanMonth($month);
+
+        // Compute monthly sequence count for letters generated in this month and year
+        $monthlySequence = GeneratedLetter::where('submission_id', '!=', $submission->id)
+            ->where(function ($query) use ($year, $month) {
+                $query->where(function ($q) use ($year, $month) {
+                    $q->whereYear('generated_at', $year)
+                      ->whereMonth('generated_at', $month);
+                })->orWhere(function ($q) use ($year, $month) {
+                    $q->whereNull('generated_at')
+                      ->whereYear('created_at', $year)
+                      ->whereMonth('created_at', $month);
+                });
+            })
+            ->count() + 1;
+
+        $letterNumber = sprintf('%s/%d/D3TI/AMIKOM/%s/%s', $letterCode, $monthlySequence, $romanMonth, $year);
         $qrToken = sprintf('VERIFY-%s-%04d-%s', $letterCode, $submission->id, strtoupper(\Illuminate\Support\Str::random(8)));
         $filePath = $this->namingService->generateFilePath($submission);
 
@@ -41,7 +65,7 @@ class LetterGeneratorService
                 'letter_number' => $letterNumber,
                 'file_path' => $filePath,
                 'qr_token' => $qrToken,
-                'generated_at' => now(),
+                'generated_at' => $now,
             ]
         );
 

@@ -34,6 +34,11 @@
         ['value' => 'disetujui', 'label' => 'Disetujui', 'badge' => 'Disetujui', 'badgeClass' => SubmissionStatus::APPROVED->badgeClass()],
         ['value' => 'ditolak', 'label' => 'Ditolak', 'badge' => 'Ditolak', 'badgeClass' => SubmissionStatus::REJECTED->badgeClass()],
     ];
+
+    $sortOptions = [
+        ['value' => 'newest', 'label' => 'Terbaru'],
+        ['value' => 'oldest', 'label' => 'Terlama'],
+    ];
 @endphp
 
 @section('content')
@@ -62,7 +67,7 @@
                 <x-icon name="filter_list" class="w-5 h-5 text-primary" />
                 <span>Filter Pengajuan</span>
             </div>
-            @if(request()->hasAny(['start_date', 'end_date', 'letter_type_id', 'status']))
+            @if(request()->hasAny(['start_date', 'end_date', 'letter_type_id', 'status', 'sort']))
                 <a href="{{ route('student.submissions.history') }}" class="text-xs font-semibold text-primary hover:text-primary-container transition-colors flex items-center gap-1 cursor-pointer">
                     <x-icon name="restart_alt" class="w-4 h-4" />
                     <span>Reset Filter</span>
@@ -77,19 +82,19 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
             <!-- Date Range -->
-            <div class="lg:col-span-5 flex flex-col gap-1.5">
+            <div class="lg:col-span-4 flex flex-col gap-1.5">
                 <label class="block text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Periode Tanggal</label>
                 <div class="flex items-center gap-2">
                     <!-- Start Date -->
                     <div class="relative flex-1 cursor-pointer" onclick="try{document.getElementById('filter-start-date').showPicker()}catch(e){}">
-                        <input id="filter-start-date-display" type="text" placeholder="dd/mm/yy" readonly class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-lg pl-4 pr-10 h-11 text-body-sm font-body-sm text-on-surface transition-all cursor-pointer">
+                        <input id="filter-start-date-display" type="text" placeholder="dd/mm/yy" readonly class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-xl pl-3.5 pr-9 h-11 text-xs font-body-sm text-on-surface transition-all cursor-pointer">
                         <input id="filter-start-date" name="start_date" type="date" value="{{ request('start_date') }}" onchange="handleDateInputChange()" class="sr-only">
                         <x-icon name="calendar_today" class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" />
                     </div>
                     <span class="text-on-surface-variant font-medium text-sm">-</span>
                     <!-- End Date -->
                     <div class="relative flex-1 cursor-pointer" onclick="try{document.getElementById('filter-end-date').showPicker()}catch(e){}">
-                        <input id="filter-end-date-display" type="text" placeholder="dd/mm/yy" readonly class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-lg pl-4 pr-10 h-11 text-body-sm font-body-sm text-on-surface transition-all cursor-pointer">
+                        <input id="filter-end-date-display" type="text" placeholder="dd/mm/yy" readonly class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-xl pl-3.5 pr-9 h-11 text-xs font-body-sm text-on-surface transition-all cursor-pointer">
                         <input id="filter-end-date" name="end_date" type="date" value="{{ request('end_date') }}" onchange="handleDateInputChange()" class="sr-only">
                         <x-icon name="calendar_today" class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" />
                     </div>
@@ -97,7 +102,7 @@
             </div>
 
             <!-- Jenis Surat -->
-            <div class="lg:col-span-4 flex flex-col gap-1.5">
+            <div class="lg:col-span-3 flex flex-col gap-1.5">
                 <label for="filter-type" class="block text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Jenis Surat</label>
                 <x-select-input 
                     id="filter-type" 
@@ -116,6 +121,18 @@
                     name="status" 
                     placeholder="Semua Status"
                     :options="$statusOptions" 
+                    onchange="document.getElementById('filter-form').submit()" 
+                />
+            </div>
+
+            <!-- Urutan Data -->
+            <div class="lg:col-span-2 flex flex-col gap-1.5">
+                <label for="filter-sort" class="block text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Urutan Data</label>
+                <x-select-input 
+                    id="filter-sort" 
+                    name="sort" 
+                    placeholder="Urutan Data"
+                    :options="$sortOptions" 
                     onchange="document.getElementById('filter-form').submit()" 
                 />
             </div>

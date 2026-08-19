@@ -9,14 +9,14 @@
         <p class="text-gray-600">Lihat riwayat permohonan dokumen yang telah Anda proses beserta keputusan yang diberikan.</p>
     </div>
 
-    <!-- BEGIN: Combined Filters (Symmetrical 3 Columns x 2 Rows Layout) -->
+    <!-- BEGIN: Combined Filters -->
     <form action="{{ route('lecturer.submissions.history') }}" method="GET" id="filter-form" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col gap-3 mb-4">
         <div class="flex items-center justify-between border-b border-gray-200/80 pb-3">
             <div class="flex items-center gap-2 text-gray-900 font-semibold text-sm">
                 <x-icon name="filter_list" class="w-5 h-5 text-amikom-purple" />
                 <span>Filter Riwayat Persetujuan</span>
             </div>
-            @if(request()->hasAny(['search', 'role', 'letter_type_id', 'status', 'batch', 'sort']))
+            @if(request()->hasAny(['search', 'role', 'letter_type_id', 'status', 'batch', 'sort', 'approval_from', 'approval_to']))
                 <a href="{{ route('lecturer.submissions.history') }}" class="text-xs font-semibold text-amikom-purple hover:text-amikom-purple/80 transition-colors flex items-center gap-1 cursor-pointer">
                     <x-icon name="restart_alt" class="w-4 h-4" />
                     <span>Reset Filter</span>
@@ -29,11 +29,9 @@
             @endif
         </div>
 
- <!-- Two-row Filter Layout: Row 1 (Search=5, Peran=2, Jenis=5), Row 2 (Status=4, Angkatan=4, Urutan=4) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-end">
-            <!-- Row 1: Search, Peran, Jenis Surat -->
-            <!-- 1. Search Student (Nama / NIM) -->
-            <div class="lg:col-span-5 flex flex-col gap-1">
+            <!-- Row 1 -->
+            <div class="lg:col-span-3 flex flex-col gap-1">
                 <label class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider" for="searchHistory">Cari Mahasiswa (Nama / NIM)</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
@@ -43,8 +41,7 @@
                 </div>
             </div>
 
-            <!-- 2. Peran Saya -->
-            <div class="lg:col-span-2 flex flex-col gap-1">
+            <div class="lg:col-span-3 flex flex-col gap-1">
                 <label for="filter-role" class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Peran Saya</label>
                 <x-select-input 
                     id="filter-role" 
@@ -55,8 +52,7 @@
                 />
             </div>
 
-            <!-- 3. Jenis Surat -->
-            <div class="lg:col-span-5 flex flex-col gap-1">
+            <div class="lg:col-span-3 flex flex-col gap-1">
                 <label for="filter-type" class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Jenis Surat</label>
                 <x-select-input 
                     id="filter-type" 
@@ -67,9 +63,7 @@
                 />
             </div>
 
-            <!-- Row 2: Status, Angkatan, Urutan -->
-            <!-- 4. Status Pengajuan -->
-            <div class="lg:col-span-4 flex flex-col gap-1">
+            <div class="lg:col-span-3 flex flex-col gap-1">
                 <label for="filter-status" class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Status Pengajuan</label>
                 <x-select-input 
                     id="filter-status" 
@@ -80,8 +74,8 @@
                 />
             </div>
 
-            <!-- 5. Angkatan -->
-            <div class="lg:col-span-4 flex flex-col gap-1">
+            <!-- Row 2 -->
+            <div class="lg:col-span-3 flex flex-col gap-1">
                 <label for="filter-batch" class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Angkatan</label>
                 <x-select-input 
                     id="filter-batch" 
@@ -92,8 +86,26 @@
                 />
             </div>
 
-            <!-- 6. Urutan Data -->
-            <div class="lg:col-span-4 flex flex-col gap-1">
+            <div class="lg:col-span-6 flex flex-col gap-1">
+                <label class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Periode Tanggal Persetujuan</label>
+                <div class="flex items-center gap-2">
+                    <!-- From Date -->
+                    <div class="relative flex-1 cursor-pointer" onclick="try{document.getElementById('filter-approval-from').showPicker()}catch(e){}">
+                        <input id="filter-approval-from-display" type="text" placeholder="dd/mm/yy" readonly class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-amikom-purple/20 focus:border-amikom-purple focus:bg-white rounded-xl pl-3.5 pr-9 h-11 text-xs font-medium text-on-surface transition-all cursor-pointer">
+                        <input id="filter-approval-from" name="approval_from" type="date" value="{{ request('approval_from') }}" onchange="handleApprovalDateChange()" class="sr-only">
+                        <x-icon name="calendar_today" class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" />
+                    </div>
+                    <span class="text-on-surface-variant font-medium text-sm">-</span>
+                    <!-- To Date -->
+                    <div class="relative flex-1 cursor-pointer" onclick="try{document.getElementById('filter-approval-to').showPicker()}catch(e){}">
+                        <input id="filter-approval-to-display" type="text" placeholder="dd/mm/yy" readonly class="w-full bg-surface-container-low border border-outline-variant focus:ring-2 focus:ring-amikom-purple/20 focus:border-amikom-purple focus:bg-white rounded-xl pl-3.5 pr-9 h-11 text-xs font-medium text-on-surface transition-all cursor-pointer">
+                        <input id="filter-approval-to" name="approval_to" type="date" value="{{ request('approval_to') }}" onchange="handleApprovalDateChange()" class="sr-only">
+                        <x-icon name="calendar_today" class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3 flex flex-col gap-1">
                 <label for="filter-sort" class="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Urutan Data</label>
                 <x-select-input 
                     id="filter-sort" 
@@ -113,11 +125,12 @@
             <table class="w-full text-left table-fixed divide-y divide-gray-200">
                 <thead class="bg-[#F8F9FA] border-b border-gray-200 sticky top-0 z-10">
                     <tr>
-                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[28%]">Nama Mahasiswa</th>
+                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[22%]">Nama Mahasiswa</th>
                         <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[10%]">NIM</th>
-                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[20%]">Jenis Surat</th>
-                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[14%]">Tanggal Pengajuan</th>
-                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[18%]">Peran Saya</th>
+                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[16%]">Jenis Surat</th>
+                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[13%]">Tanggal Pengajuan</th>
+                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[15%]">Waktu Persetujuan</th>
+                        <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[14%]">Peran Saya</th>
                         <th class="px-4 py-3 text-xs font-bold uppercase text-gray-500 tracking-wider w-[10%] text-center">Status</th>
                     </tr>
                 </thead>
@@ -167,6 +180,9 @@
                             $letterType = $sub->letterType?->name ?? 'Surat';
                             $submittedDate = $sub->created_at?->translatedFormat('d M Y') ?? $sub->created_at?->format('d M Y');
                             $roleName = $sub->approvalFlowStep?->approval_role?->label() ?? $sub->approvalFlowStep?->name ?? 'Dosen Verifikator';
+
+                            $myLog = $sub->logs->where('user_id', auth()->id())->sortByDesc('created_at')->first();
+                            $myApprovalDate = $myLog ? ($myLog->created_at?->translatedFormat('d M Y H:i') ?? $myLog->created_at?->format('d M Y H:i')) : '-';
                             
                             $statusValue = $getEnumValue($sub->status);
                             $statusLabel = $getEnumLabel($sub->status);
@@ -212,6 +228,7 @@
                             <td class="px-4 py-3 whitespace-nowrap text-gray-600">{{ $studentNim }}</td>
                             <td class="px-4 py-3 text-gray-600 break-words">{{ $letterType }}</td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-600">{{ $submittedDate }}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-gray-800 font-semibold">{{ $myApprovalDate }}</td>
                             <td class="px-4 py-3">
                                 <div class="flex flex-wrap gap-1">
                                     @forelse($myRoles as $roleItem)
@@ -227,7 +244,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td class="py-16 text-center" colspan="6">
+                            <td class="py-16 text-center" colspan="7">
                                 <div class="flex flex-col items-center justify-center gap-3">
                                     <x-icon name="history_toggle_off" class="w-12 h-12 text-gray-300" />
                                     <div>
@@ -391,5 +408,40 @@ function debouncedSearch() {
         document.getElementById('filter-form').submit();
     }, 500);
 }
+
+const approvalFromInput = document.getElementById('filter-approval-from');
+const approvalToInput = document.getElementById('filter-approval-to');
+const approvalFromDisplay = document.getElementById('filter-approval-from-display');
+const approvalToDisplay = document.getElementById('filter-approval-to-display');
+
+function formatToDDMMYY(isoDateStr) {
+    if (!isoDateStr) return '';
+    const parts = isoDateStr.split('-');
+    if (parts.length === 3) {
+        const year = parts[0].slice(-2);
+        const month = parts[1];
+        const day = parts[2];
+        return `${day}/${month}/${year}`;
+    }
+    return isoDateStr;
+}
+
+function updateApprovalDateDisplays() {
+    if (approvalFromDisplay && approvalFromInput) {
+        approvalFromDisplay.value = formatToDDMMYY(approvalFromInput.value);
+    }
+    if (approvalToDisplay && approvalToInput) {
+        approvalToDisplay.value = formatToDDMMYY(approvalToInput.value);
+    }
+}
+
+function handleApprovalDateChange() {
+    updateApprovalDateDisplays();
+    document.getElementById('filter-form').submit();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateApprovalDateDisplays();
+});
 </script>
 @endsection

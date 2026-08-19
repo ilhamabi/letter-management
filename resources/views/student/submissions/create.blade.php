@@ -690,7 +690,7 @@
         const name = selectedOpt ? (selectedOpt.label || '').toUpperCase() : '';
 
         // Toggle Group Members & Group Name
-        if (allowGroup || code.includes('NONREG') || code.includes('KELOMPOK')) {
+        if (allowGroup || code === 'STN' || code.includes('NONREG') || code.includes('KELOMPOK')) {
             if (groupMembersWrapper) groupMembersWrapper.classList.remove('hidden');
             if (groupNameWrapper) groupNameWrapper.classList.remove('hidden');
         } else {
@@ -700,7 +700,7 @@
         }
 
         // Toggle Thesis Title Fields (for Non-Reg TA, Pendadaran, Skripsi)
-        const hasThesis = selectedOpt && (selectedOpt.hasThesisFields === 'true' || code === 'SP-TA-NONREG' || code === 'SR-PENDADARAN' || code.includes('PENDADARAN') || code.includes('TA') || name.includes('PENDADARAN') || name.includes('TUGAS AKHIR'));
+        const hasThesis = selectedOpt && (selectedOpt.hasThesisFields === 'true' || code === 'STN' || code === 'SRP' || code === 'SP-TA-NONREG' || code === 'SR-PENDADARAN' || code.includes('PENDADARAN') || code.includes('TA') || name.includes('PENDADARAN') || name.includes('TUGAS AKHIR'));
         if (hasThesis) {
             if (thesisFieldsWrapper) thesisFieldsWrapper.classList.remove('hidden');
         } else {
@@ -708,7 +708,7 @@
         }
 
         // Toggle Internship / Company / Research Fields (for Magang, Penelitian, Riset, Observasi, or templates with company placeholders)
-        const hasCompany = selectedOpt && (selectedOpt.hasCompanyFields === 'true' || code === 'SR-MAGANG' || code === 'SR-PENELITIAN' || code.includes('MAGANG') || code.includes('PENELITIAN') || code.includes('RISET') || code.includes('OBSERVASI') || code.includes('IZIN') || name.includes('MAGANG') || name.includes('PENELITIAN') || name.includes('RISET') || name.includes('IZIN') || name.includes('UJI COBA'));
+        const hasCompany = selectedOpt && (selectedOpt.hasCompanyFields === 'true' || code === 'SRM' || code === 'SR-MAGANG' || code === 'SR-PENELITIAN' || code.includes('MAGANG') || code.includes('PENELITIAN') || code.includes('RISET') || code.includes('OBSERVASI') || code.includes('IZIN') || name.includes('MAGANG') || name.includes('PENELITIAN') || name.includes('RISET') || name.includes('IZIN') || name.includes('UJI COBA'));
         if (hasCompany) {
             if (companyFieldsWrapper) companyFieldsWrapper.classList.remove('hidden');
         } else {

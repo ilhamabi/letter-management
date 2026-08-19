@@ -21,7 +21,7 @@ class LetterTypeSeeder extends Seeder
 
         // 1. Surat Persetujuan Tugas Akhir Jalur Non-Reguler (Kelompok)
         LetterType::updateOrCreate(
-            ['code' => 'SP-TA-NONREG'],
+            ['code' => 'STN'],
             [
                 'approval_flow_id' => $flow2WaliKaprodi->id,
                 'name' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
@@ -36,7 +36,7 @@ class LetterTypeSeeder extends Seeder
 
         // 2. Surat Rekomendasi Magang (Individu)
         LetterType::updateOrCreate(
-            ['code' => 'SR-MAGANG'],
+            ['code' => 'SRM'],
             [
                 'approval_flow_id' => $flow2WaliKaprodi->id,
                 'name' => 'Surat Rekomendasi Magang',
@@ -51,7 +51,7 @@ class LetterTypeSeeder extends Seeder
 
         // 3. Surat Rekomendasi Pendaftaran Pendadaran (Individu)
         LetterType::updateOrCreate(
-            ['code' => 'SR-PENDADARAN'],
+            ['code' => 'SRP'],
             [
                 'approval_flow_id' => $flow1Kaprodi->id,
                 'name' => 'Surat Rekomendasi Pendaftaran Pendadaran',

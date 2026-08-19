@@ -30,17 +30,16 @@
         <div id="preview-mode-toggle" class="preview-toggle">
             <span class="preview-toggle-title">Mode Preview:</span>
             <div class="preview-toggle-group">
-                <span class="preview-toggle-label" id="toggle-label-sample">Sample Data</span>
                 <button 
                     type="button"
                     id="toggle-switch"
                     class="preview-switch"
                     role="switch"
                     aria-checked="true"
-                    aria-labelledby="toggle-label">
+                    aria-label="Toggle Sample Data Preview">
                     <span class="preview-switch-indicator" id="toggle-indicator"></span>
                 </button>
-                <span class="preview-toggle-label" id="toggle-label-raw">Raw Placeholder</span>
+                <span class="preview-toggle-label" id="toggle-label-sample">Sample Data</span>
             </div>
         </div>
     @endif
@@ -205,6 +204,7 @@
             (function() {
                 const toggleSwitch = document.getElementById('toggle-switch');
                 const toggleIndicator = document.getElementById('toggle-indicator');
+                const toggleLabelSample = document.getElementById('toggle-label-sample');
                 const bodySample = document.getElementById('body-sample');
                 const bodyRaw = document.getElementById('body-raw');
 
@@ -212,25 +212,28 @@
 
                 let isSampleMode = true;
 
-                function togglePreviewMode() {
-                    isSampleMode = !isSampleMode;
-
+                function applyPreviewMode(sampleMode) {
+                    isSampleMode = sampleMode;
                     toggleSwitch.setAttribute('aria-checked', isSampleMode);
 
                     if (isSampleMode) {
-                        toggleIndicator.style.transform = 'translateX(1.5rem)';
+                        toggleIndicator.style.transform = 'translateX(24px)';
                         toggleSwitch.style.backgroundColor = '#431E6D';
-                    } else {
-                        toggleIndicator.style.transform = 'translateX(0.25rem)';
-                        toggleSwitch.style.backgroundColor = '#9ca3af';
-                    }
-
-                    if (isSampleMode) {
+                        if (toggleLabelSample) {
+                            toggleLabelSample.style.color = '#374151';
+                            toggleLabelSample.style.fontWeight = '600';
+                        }
                         bodySample.classList.remove('hidden');
                         bodySample.classList.add('active');
                         bodyRaw.classList.remove('active');
                         bodyRaw.classList.add('hidden');
                     } else {
+                        toggleIndicator.style.transform = 'translateX(4px)';
+                        toggleSwitch.style.backgroundColor = '#9ca3af';
+                        if (toggleLabelSample) {
+                            toggleLabelSample.style.color = '#9ca3af';
+                            toggleLabelSample.style.fontWeight = '500';
+                        }
                         bodyRaw.classList.remove('hidden');
                         bodyRaw.classList.add('active');
                         bodySample.classList.remove('active');
@@ -242,17 +245,24 @@
                     } catch (e) {}
                 }
 
+                let initialMode = true;
                 try {
                     const savedMode = localStorage.getItem('adminPreviewMode');
-                    if (savedMode === 'raw') togglePreviewMode();
+                    if (savedMode === 'raw') {
+                        initialMode = false;
+                    }
                 } catch (e) {}
 
-                toggleSwitch.addEventListener('click', togglePreviewMode);
+                applyPreviewMode(initialMode);
+
+                toggleSwitch.addEventListener('click', function() {
+                    applyPreviewMode(!isSampleMode);
+                });
 
                 toggleSwitch.addEventListener('keydown', function(e) {
                     if (e.key === ' ' || e.key === 'Enter') {
                         e.preventDefault();
-                        togglePreviewMode();
+                        applyPreviewMode(!isSampleMode);
                     }
                 });
             })();
