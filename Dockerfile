@@ -98,6 +98,12 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && rm -rf /var/lib/apt/lists/*
 
+# ---- Chrome/Puppeteer writable dirs (fixes "crashpad_handler: --database
+# is required" — Chrome needs a writable config/cache location) ----
+ENV XDG_CONFIG_HOME=/tmp/.chromium
+ENV XDG_CACHE_HOME=/tmp/.chromium
+RUN mkdir -p /tmp/.chromium && chmod 1777 /tmp/.chromium
+
 WORKDIR /var/www/html
 
 # ---- App code ----
