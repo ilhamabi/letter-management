@@ -13,6 +13,9 @@ class LetterTypeSeeder extends Seeder
      */
     public function run(): void
     {
+        $flow1Wali = ApprovalFlow::where('name', 'Alur Approval 1-Tingkat (Dosen Wali)')->first() 
+            ?? ApprovalFlow::first();
+
         $flow1Kaprodi = ApprovalFlow::where('name', 'Alur Approval 1-Tingkat (Kaprodi)')->first() 
             ?? ApprovalFlow::first();
 
@@ -53,7 +56,7 @@ class LetterTypeSeeder extends Seeder
         LetterType::updateOrCreate(
             ['code' => 'SRP'],
             [
-                'approval_flow_id' => $flow1Kaprodi->id,
+                'approval_flow_id' => $flow1Wali->id,
                 'name' => 'Surat Rekomendasi Pendaftaran Pendadaran',
                 'description' => 'Surat rekomendasi kelayakan untuk mengikuti pendaftaran pendadaran atau ujian tugas akhir.',
                 'minimum_gpa' => 2.00,

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\ApprovalRole;
 use App\Enums\SubmissionLogStatus;
 use App\Enums\SubmissionStatus;
+use App\Models\Lecturer;
 use App\Models\LecturerPosition;
 use App\Models\LetterType;
 use App\Models\Student;
@@ -16,6 +17,7 @@ use App\Models\SubmissionGroupMember;
 use App\Models\SubmissionLog;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -106,6 +108,14 @@ class StudentSubmissionService
 
     /**
      * Retrieve prerequisite form data for creating a new submission.
+     *
+     * @return array{
+     *     student: Student|null,
+     *     letterTypes: Collection<int, LetterType>,
+     *     letterTypesWithApprovers: array<int, array<int, array{role: string, name: string, nik: string, email: string}>>,
+     *     academicAdvisor: Lecturer|null,
+     *     kaprodi: Lecturer|null
+     * }
      */
     public function getCreateFormData(User $user): array
     {
@@ -130,9 +140,20 @@ class StudentSubmissionService
             ->with('lecturer.user')
             ->first()?->lecturer;
 
-        $letterTypesWithApprovers = [];
-        $assignmentService = app(SubmissionAssignmentService::class);
+        $letterTypesWithApprovers = $this->buildLetterTypesWithApprovers($letterTypes, $student);
 
+        return compact('student', 'letterTypes', 'letterTypesWithApprovers', 'academicAdvisor', 'kaprodi');
+    }
+
+    /**
+     * Resolve approval steps and approver user info for letter types.
+     *
+     * @param  Collection<int, LetterType>  $letterTypes
+     * @return array<int, array<int, array{role: string, name: string, nik: string, email: string}>>
+     */
+    private function buildLetterTypesWithApprovers(Collection $letterTypes, ?Student $student): array
+    {
+        $assignmentService = app(SubmissionAssignmentService::class);
         $resolvedMap = [];
         $allApproverIds = [];
 
@@ -153,7 +174,7 @@ class StudentSubmissionService
                             $resolvedMap[$type->id][$step->id] = $approverId;
                             $allApproverIds[] = $approverId;
                         }
-                    } catch (\Exception $e) {
+                    } catch (\Throwable $e) {
                         // Suppress resolution errors gracefully
                     }
                 }
@@ -169,6 +190,7 @@ class StudentSubmissionService
                 ->keyBy('id');
         }
 
+        $letterTypesWithApprovers = [];
         foreach ($letterTypes as $type) {
             $approvers = [];
             if ($type->approvalFlow && $type->approvalFlow->steps) {
@@ -193,7 +215,7 @@ class StudentSubmissionService
             $letterTypesWithApprovers[$type->id] = $approvers;
         }
 
-        return compact('student', 'letterTypes', 'letterTypesWithApprovers', 'academicAdvisor', 'kaprodi');
+        return $letterTypesWithApprovers;
     }
 
     /**
