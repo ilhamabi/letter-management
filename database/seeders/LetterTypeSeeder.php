@@ -26,7 +26,7 @@ class LetterTypeSeeder extends Seeder
         LetterType::updateOrCreate(
             ['code' => 'STN'],
             [
-                'approval_flow_id' => $flow2WaliKaprodi->id,
+                'approval_flow_id' => $flow1Kaprodi->id,
                 'name' => 'Surat Persetujuan Tugas Akhir Jalur Non-Reguler',
                 'description' => 'Surat persetujuan resmi pelaksanaan Tugas Akhir secara berkelompok melalui jalur non-reguler.',
                 'minimum_gpa' => 2.75,
@@ -41,7 +41,7 @@ class LetterTypeSeeder extends Seeder
         LetterType::updateOrCreate(
             ['code' => 'SRM'],
             [
-                'approval_flow_id' => $flow2WaliKaprodi->id,
+                'approval_flow_id' => $flow1Wali->id,
                 'name' => 'Surat Rekomendasi Magang',
                 'description' => 'Surat rekomendasi dari dosen wali untuk mahasiswa yang mengajukan kegiatan magang / kerja praktik.',
                 'minimum_gpa' => 2.50,
@@ -56,7 +56,7 @@ class LetterTypeSeeder extends Seeder
         LetterType::updateOrCreate(
             ['code' => 'SRP'],
             [
-                'approval_flow_id' => $flow1Wali->id,
+                'approval_flow_id' => $flow1Kaprodi->id,
                 'name' => 'Surat Rekomendasi Pendaftaran Pendadaran',
                 'description' => 'Surat rekomendasi kelayakan untuk mengikuti pendaftaran pendadaran atau ujian tugas akhir.',
                 'minimum_gpa' => 2.00,

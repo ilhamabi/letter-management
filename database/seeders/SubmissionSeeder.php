@@ -50,10 +50,9 @@ class SubmissionSeeder extends Seeder
             ],
             'created_at' => now()->subDays(5),
             'workflowService' => $workflowService,
-            'stepsToApprove' => 2,
+            'stepsToApprove' => 1,
             'notesPerStep' => [
                 'IPK dan SKS memenuhi syarat. Disetujui Dosen Wali.',
-                'Rekomendasi magang disetujui Kaprodi dan terbit.'
             ],
         ]);
 
@@ -72,7 +71,7 @@ class SubmissionSeeder extends Seeder
             ]);
         }
 
-        // 3. Pengajuan TA Non-Reguler (Kelompok) - PENDING LEVEL 2
+        // 3. Pengajuan TA Non-Reguler (Kelompok) - PENDING LEVEL 1
         if ($budi && $citra) {
             $this->createSubmission([
                 'student' => $budi,
@@ -85,8 +84,7 @@ class SubmissionSeeder extends Seeder
                 'created_at' => now()->subDays(3),
                 'members' => [$citra, $doni],
                 'workflowService' => $workflowService,
-                'stepsToApprove' => 1,
-                'notesPerStep' => ['Persyaratan akademik kelompok disetujui Dosen Wali.'],
+                'stepsToApprove' => 0,
             ]);
         }
 
