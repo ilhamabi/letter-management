@@ -96,8 +96,8 @@ class LetterTypeController extends Controller
     {
         $id = is_object($letterType) ? $letterType->id : ($letterType ?? $request->query('id'));
         $letterTypeModel = $this->letterTypeService->getLetterTypeById((int) $id);
-        
-        $bodyContent = optional($letterTypeModel->activeTemplate)->body_content 
+
+        $bodyContent = optional($letterTypeModel->activeTemplate)->body_content
             ?? '<div class="doc-title-main">' . e($letterTypeModel->name) . '</div><p>Belum ada isi template surat yang dikonfigurasi.</p>';
 
         $signatureProps = [
@@ -116,16 +116,42 @@ class LetterTypeController extends Controller
     }
 
     /**
-     * Remove the specified letter type from storage.
+     * Remove the specified letter type from storage or deactivate if submissions exist.
      */
     public function destroy(Request $request, $letterType)
     {
         $id = is_object($letterType) ? $letterType->id : ($letterType ?? $request->input('id'));
         $letterTypeModel = $this->letterTypeService->getLetterTypeById((int) $id);
 
+        $hasSubmissions = $letterTypeModel->submissions()->exists();
         $this->letterTypeService->deleteLetterType($letterTypeModel);
+
+        if ($hasSubmissions) {
+            return redirect()->route('admin.letters.index')
+                ->with('success', 'Jenis Surat ini memiliki riwayat pengajuan sehingga statusnya telah diubah menjadi Nonaktif.');
+        }
 
         return redirect()->route('admin.letters.index')
             ->with('success', 'Jenis Surat berhasil dihapus.');
+    }
+
+    /**
+     * Toggle status active/inactive for the specified letter type.
+     */
+    public function toggleStatus(Request $request, $letterType)
+    {
+        $id = is_object($letterType) ? $letterType->id : ($letterType ?? $request->input('id'));
+        $letterTypeModel = $this->letterTypeService->getLetterTypeById((int) $id);
+
+        if ($letterTypeModel->is_active) {
+            $this->letterTypeService->deactivateLetterType($letterTypeModel);
+            $message = 'Jenis Surat berhasil dinonaktifkan.';
+        } else {
+            $this->letterTypeService->activateLetterType($letterTypeModel);
+            $message = 'Jenis Surat berhasil diaktifkan kembali.';
+        }
+
+        return redirect()->route('admin.letters.index')
+            ->with('success', $message);
     }
 }

@@ -69,6 +69,11 @@ Route::middleware('auth')
                         '/{letterType}',
                         [LetterTypeController::class, 'destroy']
                     )->name('admin.letters.destroy');
+
+                    Route::patch(
+                        '/{letterType}/toggle-status',
+                        [LetterTypeController::class, 'toggleStatus']
+                    )->name('admin.letters.toggle-status');
                 });
 
 
