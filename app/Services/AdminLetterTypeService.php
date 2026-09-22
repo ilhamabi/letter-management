@@ -9,19 +9,19 @@ use App\Models\LetterType;
 class AdminLetterTypeService
 {
     /**
-     * Get all letter types with their approval flows, steps, and active template.
+     * Get all letter types with their approval flows, steps, active template, and submissions count.
      */
     public function getAllLetterTypes()
     {
-        return LetterType::with(['approvalFlow.steps', 'activeTemplate'])->latest()->get();
+        return LetterType::with(['approvalFlow.steps', 'activeTemplate'])->withCount('submissions')->latest()->get();
     }
 
     /**
-     * Get a single letter type by ID with relationships.
+     * Get a single letter type by ID with relationships and submissions count.
      */
     public function getLetterTypeById(int $id): LetterType
     {
-        return LetterType::with(['approvalFlow.steps', 'activeTemplate'])->findOrFail($id);
+        return LetterType::with(['approvalFlow.steps', 'activeTemplate'])->withCount('submissions')->findOrFail($id);
     }
 
     /**
@@ -102,11 +102,25 @@ class AdminLetterTypeService
     }
 
     /**
-     * Delete a letter type and its templates.
+     * Delete a letter type and its templates, or deactivate if submissions exist.
      */
     public function deleteLetterType(LetterType $letterType): bool
     {
+        if ($letterType->submissions()->exists()) {
+            return $this->deactivateLetterType($letterType);
+        }
+
         LetterTemplate::where('letter_type_id', $letterType->id)->delete();
         return $letterType->delete();
+    }
+
+    public function deactivateLetterType(LetterType $letterType): bool
+    {
+        return $letterType->update(['is_active' => false]);
+    }
+
+    public function activateLetterType(LetterType $letterType): bool
+    {
+        return $letterType->update(['is_active' => true]);
     }
 }

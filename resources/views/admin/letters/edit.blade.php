@@ -188,13 +188,38 @@
 
             <!-- Action Bar -->
             <div class="flex items-center justify-between gap-3 pt-4 border-t border-gray-200">
-                <button 
-                    type="button" 
-                    onclick="openModal('delete-confirmation-modal')"
-                    class="px-5 py-2.5 rounded-lg text-sm font-bold text-red-600 hover:bg-red-50 border border-red-200 transition-all font-label-md inline-flex items-center gap-1.5">
-                    <x-icon name="delete" class="w-4 h-4" />
-                    <span>Hapus Jenis Surat</span>
-                </button>
+                @php
+                    $submissionsCount = isset($letterType->submissions_count) 
+                        ? $letterType->submissions_count 
+                        : $letterType->submissions()->count();
+                    $hasSubmissions = $submissionsCount > 0;
+                    $isActive = (bool) $letterType->is_active;
+                @endphp
+                @if(!$isActive)
+                    <button 
+                        type="button" 
+                        onclick="openModal('delete-confirmation-modal')"
+                        class="px-5 py-2.5 rounded-lg text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-all font-label-md inline-flex items-center gap-1.5">
+                        <x-icon name="check_circle" class="w-4 h-4 text-emerald-600" />
+                        <span>Aktifkan Jenis Surat</span>
+                    </button>
+                @elseif($hasSubmissions)
+                    <button 
+                        type="button" 
+                        onclick="openModal('delete-confirmation-modal')"
+                        class="px-5 py-2.5 rounded-lg text-sm font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition-all font-label-md inline-flex items-center gap-1.5">
+                        <x-icon name="warning" class="w-4 h-4 text-amber-600" />
+                        <span>Nonaktifkan Jenis Surat</span>
+                    </button>
+                @else
+                    <button 
+                        type="button" 
+                        onclick="openModal('delete-confirmation-modal')"
+                        class="px-5 py-2.5 rounded-lg text-sm font-bold text-red-600 hover:bg-red-50 border border-red-200 transition-all font-label-md inline-flex items-center gap-1.5">
+                        <x-icon name="delete" class="w-4 h-4" />
+                        <span>Hapus Jenis Surat</span>
+                    </button>
+                @endif
 
                 <div class="flex items-center gap-3">
                     <a href="{{ route('admin.letters.index') }}" class="px-6 py-2.5 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-100 border border-gray-300 transition-all font-label-md">
